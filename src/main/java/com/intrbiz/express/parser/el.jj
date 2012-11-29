@@ -1,0 +1,896 @@
+options {
+  STATIC = false;
+  UNICODE_INPUT = true;
+}
+
+PARSER_BEGIN(ELParser)
+
+package com.intrbiz.express.parser;
+
+import com.intrbiz.express.*;
+import com.intrbiz.express.operator.*;
+import com.intrbiz.express.statement.*;
+import java.util.*;
+
+@SuppressWarnings("all")
+public final class ELParser {
+
+}
+
+PARSER_END(ELParser)
+
+SKIP : { " " | "\t" | "\n" | "\r" | "\r\n" }
+TOKEN : 
+{ 
+    <#DIGITS : (["0"-"9"])+ > 
+  | <DOT : "." >
+  | <ADD : "+" >
+  | <SUB : "-" >
+  | <MUL : "*" >
+  | <DIV : "/" >
+  | <DIV1 : "div" >
+  | <POW : "^" >
+  | <MOD : "%" >
+  | <MOD1 : "mod" >
+  | <EQ : "==" >
+  | <EQ1 : "eq" >
+  | <NE : "!=" >
+  | <NE1 : "ne" >
+  | <GT : ">" >
+  | <GT1 : "gt" >
+  | <LT : "<" >
+  | <LT1 : "lt" >
+  | <GTEQ : ">=" >
+  | <GTEQ1 : "gteq" >
+  | <LTEQ : "<=" >
+  | <LTEQ1 : "lteq" >
+  | <OR : "||" >
+  | <OR1 : "or" >
+  | <AND : "&&" >
+  | <AND1 : "and" >
+  | <NOT : "!" >
+  | <NOT1 : "not" >
+  | <STCOMP : "(" >
+  | <EDCOMP : ")" >
+  | <ARGSEP : "," >
+  | <STARR  : "[" >
+  | <EDARR  : "]" >
+  | <NEW    : "new" >
+  | <RETURN : "return" >
+  | <IF     : "if" >
+  | <ELSE   : "else" >
+  | <IN     : "in" >
+  | <FOR    : "for" >
+  | <WHILE  : "while" >
+  | <BREAK  : "break" >
+  | <EXPORT  : "export" >
+  | <STARTBLOCK : "{">
+  | <ENDBLOCK   : "}">
+  | <ASSIGNMENT : "=" >
+  | <ADDASSIGNMENT : "+=" >
+  | <SUBASSIGNMENT : "-=" >
+  | <MULASSIGNMENT : "*=" >
+  | <DIVASSIGNMENT : "/=" >
+  | <POWASSIGNMENT : "^=" >
+  | <MODASSIGNMENT : "%=" >
+  | <INCASSIGNMENT : "++" >
+  | <DECASSIGNMENT : "--" >
+  | <STATEMENT     : ";" >
+  | <LACTION       : "@" >
+  | <NLINT : <DIGITS> > 
+  | <NLLONG : <DIGITS> "L" > 
+  | <NLFLOAT : <DIGITS> "." <DIGITS> > 
+  | <NLDOUBLE : <DIGITS> "." <DIGITS> "D" | <DIGITS> "D" > 
+  | <LBOOLEAN : "true" | "TRUE" | "false" | "FALSE" > 
+  | <LNULL : "null" | "NULL" >
+  | <LENTITY : ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9","_"])* >
+  | <#HEXCHAR : ["a"-"f","A"-"F","0"-"9"]> 
+  | <#ESCAPECHAR : "\\" ["n","t","b","r","f","\\","'","\"", "/"] > 
+  | <#UESCAPECHAR : "\\u" <HEXCHAR><HEXCHAR><HEXCHAR><HEXCHAR> > 
+  | <LSTRING : "\'" ( (~["\'","\\","\n","\r"]) | <ESCAPECHAR> | <UESCAPECHAR>)* "\'" >
+  | <QUOTE : "\"" > : STRINGSTATE 
+}
+
+<STRINGSTATE> MORE  : { "\\" : ESCSTATE }
+<STRINGSTATE> TOKEN : { <ENDQUOTE : <QUOTE> > : DEFAULT | <CHAR : ~["\"","\\"]> }
+<ESCSTATE> TOKEN : { <CNTRLESC : ["\'","\\","/","b","f","n","r","t"]> : STRINGSTATE }
+<ESCSTATE> MORE  : { "u" : HEXSTATE }
+<HEXSTATE> TOKEN : { <#HEX : ["a"-"f","A"-"F","0"-"9"]> | <HEXESC : <HEX><HEX><HEX><HEX> > : STRINGSTATE }
+
+private IntLiteral readIntLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <NLINT>
+    {return new IntLiteral( Integer.parseInt(t.image) );}
+}
+
+private LongLiteral readLongLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <NLLONG>
+    {return new LongLiteral( Long.parseLong( t.image.substring( 0, t.image.length() -1 ) ) );}
+}
+
+private FloatLiteral readFloatLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <NLFLOAT>
+    {return new FloatLiteral( Float.parseFloat( t.image ) );}
+}
+
+private DoubleLiteral readDoubleLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <NLDOUBLE>
+    {return new DoubleLiteral( Double.parseDouble( t.image.substring( 0, t.image.length() -1 ) ) );}
+}
+
+private BooleanLiteral readBooleanLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <LBOOLEAN>
+    {return new BooleanLiteral( Boolean.parseBoolean( t.image ) );}
+}
+
+private StringLiteral readStringLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <LSTRING>
+    {return new StringLiteral( t.image.substring(1, t.image.length() -1), true );}
+}
+
+private NullLiteral readNullLiteral(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <LNULL>
+    {return new NullLiteral();}
+}
+
+private String readEntityName(ELContext c) throws ELException : 
+{
+    Token t;
+}
+{
+    t = <LENTITY>
+    { return t.image;}
+}
+
+private Entity readEntityLiteral(ELContext c) throws ELException : 
+{
+    String en;
+}
+{
+    en = readEntityName(c)
+    {return new Entity( en );}
+}
+
+private Literal readNLiteral(ELContext c) throws ELException :
+{
+    Literal l;
+}
+{
+    ( l = readIntLiteral(c) | l = readLongLiteral(c) | l = readFloatLiteral(c) | l = readDoubleLiteral(c) )
+    { return l; }
+}
+
+private Operator readLiteral(ELContext c) throws ELException :
+{
+    Operator l;
+}
+{
+    ( 
+    	l = readNLiteral(c)             | 
+    	l = readBooleanLiteral(c)       | 
+    	l = readStringLiteral(c)        | 
+    	l = readNullLiteral(c)          | 
+    	l = readEntityLiteral(c)
+    )
+    { return l; }
+}
+
+private Operator readFunction(ELContext c) throws ELException :
+{
+    Token ift;
+    String fn;
+    Function f = null;
+    List<Operator> args = new LinkedList<Operator>();
+    Map<String,Operator> namedArgs = new TreeMap<String,Operator>();
+    Operator a;
+    String argName;
+}
+{
+    (
+     (
+      fn = readEntityName(c) |
+      (
+       ift = <IF>
+       { fn = ift.image; }
+      )
+     )
+     <STCOMP>
+     (
+      	(
+      		LOOKAHEAD (2)    
+      		(
+      			argName = readEntityName(c)
+	  			<ASSIGNMENT>
+	  			a = readExpression(c)
+	  			{ namedArgs.put(argName, a); }
+	  		) |
+	  		(
+	   			a = readExpression(c)
+	  			{ args.add(a); }
+	  		)
+	  	)
+	  	(
+	   		<ARGSEP>
+	   		(
+      			LOOKAHEAD (2)
+      			(
+      				argName = readEntityName(c)
+	  				<ASSIGNMENT>
+	  				a = readExpression(c)
+	  				{ namedArgs.put(argName, a); }
+	  			) |
+	  			(
+	   				a = readExpression(c)
+	  				{ args.add(a); }
+	  			)
+	  		)
+	  	)*
+     )?
+     <EDCOMP>
+    )
+    {
+	if ("coalesce".equals(fn))
+	{
+	  f = new Coalesce();
+	}
+	else if ("dateformat".equals(fn))
+	{
+	  f = new DateFormat();
+	}
+	else if ("double".equals(fn))
+	{
+	  f = new DoubleCast();
+	}
+	else if ("float".equals(fn))
+	{
+	  f = new FloatCast();
+	}
+	else if ("long".equals(fn))
+	{
+	  f = new LongCast();
+	}
+	else if ("int".equals(fn))
+	{
+	  f = new IntCast();
+	}
+	else if ("string".equals(fn))
+	{
+	  f = new StringCast();
+	}
+	else if ("list".equals(fn))
+	{
+	  f = new ListCast();
+	}
+	else if ("getuuid".equals(fn))
+	{
+	  f = new GetUUID();
+	}
+	else if ("if".equals(fn))
+	{
+	  f = new If();
+	}
+	else if ("instanceof".equals(fn))
+	{
+	  f = new InstanceOf();
+	}
+	else if ("isempty".equals(fn))
+	{
+	  f = new IsEmpty();
+	}
+	else if ("isnull".equals(fn))
+	{
+	  f = new IsNull();
+	}
+	else if ("urlencode".equals(fn))
+	{
+	  f = new URLEncode();
+	}
+	else if ("urldecode".equals(fn))
+	{
+	  f = new URLDecode();
+	}
+	else if ("print".equals(fn))
+	{
+		f = new Print();
+	}
+	else if (c != null )
+	{
+		f = c.getCustomFunction( fn );
+	}
+	
+	if (f == null)
+	{
+	      throw new ELException("Could not get function: " + fn);
+	}
+
+	f.setParameters(args);
+	f.setNamedParameters(namedArgs);
+	return f;
+    }
+}
+
+private Operator readAction(ELContext c) throws ELException :
+{
+	String an;
+	List<Operator> args = new LinkedList<Operator>();
+	Map<String, Operator> namedArgs = new HashMap<String, Operator>();
+	String argName;
+	Operator a;
+}
+{
+	(
+		<LACTION>
+		an = readEntityName(c)
+		<STCOMP>
+		(
+	      	(
+	      		LOOKAHEAD (2)    
+	      		(
+	      			argName = readEntityName(c)
+		  			<ASSIGNMENT>
+		  			a = readExpression(c)
+		  			{ namedArgs.put(argName, a); }
+		  		) |
+		  		(
+		   			a = readExpression(c)
+		  			{ args.add(a); }
+		  		)
+		  	)
+		  	(
+		   		<ARGSEP>
+		   		(
+	      			LOOKAHEAD (2)
+	      			(
+	      				argName = readEntityName(c)
+		  				<ASSIGNMENT>
+		  				a = readExpression(c)
+		  				{ namedArgs.put(argName, a); }
+		  			) |
+		  			(
+		   				a = readExpression(c)
+		  				{ args.add(a); }
+		  			)
+		  		)
+		  	)*
+	     )?
+		<EDCOMP>
+	)
+	{
+		return new Action(an, args, namedArgs);
+	}
+}
+
+private Operator readValue(ELContext c) throws ELException : 
+{
+    Operator v;
+}
+{
+    v = readValuePrefix(c)
+    (
+	v = readValueSuffix(c,v)
+    )*
+    { return v; }
+}
+
+private Operator readValuePrefix(ELContext c) throws ELException :
+{
+    Operator p;
+}
+{
+	(
+		(
+			<STCOMP> 
+			p = readExpression(c) 
+			<EDCOMP> 
+			{ p = new Complex(p); }
+		) |
+		LOOKAHEAD(readAction(c))    p = readAction(c)   |
+		LOOKAHEAD(readFunction(c))  p = readFunction(c) |
+		LOOKAHEAD(readLiteral(c))   p = readLiteral(c)
+	)
+	{ return p; }
+}
+
+private Operator readValueSuffix(ELContext c, Operator l) throws ELException :
+{
+    Operator o;
+}
+{
+    (LOOKAHEAD(readMethodInvoke(c,l)) o = readMethodInvoke(c,l) | o = readPropertyInvoke(c,l) | o = readArrayInvoke(c,l))
+    { return o; }
+}
+
+private Operator readPropertyInvoke(ELContext c, Operator l) throws ELException :
+{
+    String name;
+}
+{
+    <DOT>
+    name = readEntityName(c)
+    { return new PropertyInvoke(l, name); }
+}
+
+private Operator readArrayInvoke(ELContext c, Operator l) throws ELException :
+{
+    Operator r;
+}
+{
+    <STARR>
+    r = readExpression(c)
+    <EDARR>
+    { return new ArrayInvoke(l,r); }
+}
+
+private Operator readMethodInvoke(ELContext c, Operator l) throws ELException :
+{
+    String name;
+    List<Operator> args = new LinkedList<Operator>();
+    Map<String,Operator> namedArgs = new TreeMap<String,Operator>();
+    Operator a;
+    String argName;
+}
+{
+    (
+    	<DOT>
+    	name = readEntityName(c)
+    	<STCOMP>
+		(
+      		(
+      			LOOKAHEAD (2)    
+      			(
+      				argName = readEntityName(c)
+	  				<ASSIGNMENT>
+	  				a = readExpression(c)
+	  				{ namedArgs.put(argName, a); }
+	  			) |
+	  			(
+	   				a = readExpression(c)
+	  				{ args.add(a); }
+	  			)
+	  		)
+	  		(
+	   			<ARGSEP>
+	   			(
+      				LOOKAHEAD (2)
+      				(
+      					argName = readEntityName(c)
+	  					<ASSIGNMENT>
+	  					a = readExpression(c)
+	  					{ namedArgs.put(argName, a); }
+	  				) |
+	  				(
+	   					a = readExpression(c)
+	  					{ args.add(a); }
+	  				)
+	  			)
+	  		)*
+     	)?
+    	<EDCOMP>
+    )
+    {
+		return new MethodInvoke(l, name, args, namedArgs);
+    }
+}
+
+private Operator readUnary(ELContext c) throws ELException :
+{
+    Operator o;
+}
+{
+      ((<NOT> | <NOT1>)
+       o = readValue(c)
+       { return new LogicalNot(o); })	
+    | 
+      (<SUB>
+       o = readValue(c)
+       { return new Sub(null, o); })
+}
+
+
+private Operator readNew(ELContext c) throws ELException :
+{
+	StringBuilder name = new StringBuilder();
+    String cn;
+    List<Operator> args = new LinkedList<Operator>();
+    Operator a;
+}
+{
+	(<NEW>
+     cn = readEntityName(c)
+     { name.append(cn); }
+     (<DOT>
+      cn = readEntityName(c)
+      { name.append(".").append(cn); })*
+     <STCOMP>
+     (a = readExpression(c)
+	  { args.add(a); }
+	  (<ARGSEP>
+	   a = readExpression(c)
+	   { args.add(a); })*)?
+     <EDCOMP>)
+    { return new NewObject(name.toString(), args); }
+}
+
+private Operator readOperator(ELContext c) throws ELException :
+{
+    Operator o;
+}
+{
+    (o = readNew(c)
+     | o = readValue(c)
+     | o = readUnary(c))
+    { return o; }
+}
+
+StatementBlock readStatements(ELContext c) throws ELException :
+{
+	StatementBlock r = new StatementBlock();
+	Statement s;
+}
+{	
+	((s = readStatement(c)
+	  { r.getStatements().add(s); }))+
+	{ return r; }
+}
+
+private Statement readStatement(ELContext c) throws ELException :
+{
+	Statement s;
+}
+{
+	(LOOKAHEAD(readIfStatement(c)) s = readIfStatement(c) |
+	 LOOKAHEAD(readForEachStatement(c)) s = readForEachStatement(c) |
+	 LOOKAHEAD(readForStatement(c)) s = readForStatement(c) |
+	 LOOKAHEAD(readWhileStatement(c)) s = readWhileStatement(c) |
+	 s = readBreakStatement(c) |
+	 s = readReturnStatement(c) |
+	 s = readExportStatement(c) |
+     s = readDefaultStatement(c))
+	{ return s; }
+}
+
+private Statement readIfStatement(ELContext c) throws ELException :
+{
+	StatementBlock tb;
+	StatementBlock fb = null;
+	StatementBlock eib;
+    Operator eit;
+    List<IfStatement.ElseIfStatement> eis = new LinkedList<IfStatement.ElseIfStatement>();
+	Operator t;
+}
+{
+	<IF>
+	<STCOMP>
+	t = readExpression(c)
+	<EDCOMP>
+	<STARTBLOCK>
+	tb = readStatements(c)
+	<ENDBLOCK>
+	(LOOKAHEAD(2) <ELSE>
+	 <IF>
+	 <STCOMP>
+	 eit = readExpression(c)
+	 <EDCOMP>
+	 <STARTBLOCK>
+	 eib = readStatements(c)
+	 <ENDBLOCK>
+	 { eis.add(new IfStatement.ElseIfStatement(eit, eib)); }
+	)*
+	(<ELSE>
+	 <STARTBLOCK>
+	 fb = readStatements(c)
+	 <ENDBLOCK>
+	)?
+	{ return new IfStatement(t, tb, eis, fb); }
+}
+
+private Statement readWhileStatement(ELContext c) throws ELException :
+{
+	Operator t;
+	StatementBlock b;
+}
+{
+	<WHILE>
+	<STCOMP>
+	t = readExpression(c)
+	<EDCOMP>
+	<STARTBLOCK>
+	b = readStatements(c)
+	<ENDBLOCK>
+	{ return new WhileStatement(t,b); }
+}
+
+private Statement readForStatement(ELContext c) throws ELException :
+{
+	StatementBlock b;
+	Operator a;
+	Operator t;
+	Operator i;
+}
+{
+	<FOR>
+	<STCOMP>
+	a = readAssignment(c)
+	<STATEMENT>
+	t = readExpression(c)
+	<STATEMENT>
+	i = readAssignment(c)
+	<EDCOMP>
+	<STARTBLOCK>
+	b = readStatements(c)
+	<ENDBLOCK>
+	{ return new ForStatement(a, t, i, b); }
+}
+
+private Statement readForEachStatement(ELContext c) throws ELException :
+{
+	StatementBlock blk;
+	String var;
+	Operator col;
+}
+{
+	<FOR>
+	<STCOMP>
+	var = readEntityName(c)
+	<IN>
+	col = readExpression(c)
+	<EDCOMP>
+	<STARTBLOCK>
+	blk = readStatements(c)
+	<ENDBLOCK>
+	{ return new ForEachStatement(var, col, blk); }
+}
+
+private Statement readDefaultStatement(ELContext c) throws ELException :
+{
+	Operator o;
+}
+{
+	(o = readExpression(c)
+	 <STATEMENT>)
+	{ return new DefaultStatement(o); }
+}
+
+private Statement readBreakStatement(ELContext c) throws ELException :
+{
+}
+{
+	(<BREAK>
+	 <STATEMENT>)
+	{ return new BreakStatement(); }
+}
+
+private Statement readReturnStatement(ELContext c) throws ELException :
+{
+	Operator o;
+}
+{
+	(<RETURN>
+	 o = readExpression(c)
+	 <STATEMENT>)
+	{ return new ReturnStatement(o); }
+}
+
+private Statement readExportStatement(ELContext c) throws ELException :
+{
+	String varName;
+}
+{
+	(<EXPORT>
+	 varName = readEntityName(c)
+	 <STATEMENT>)
+	{ return new ExportStatement(varName); }
+}
+
+Operator readExpression(ELContext c) throws ELException :
+{
+    Operator o;
+}
+{
+	(LOOKAHEAD(readAssignment(c)) o = readAssignment(c) |
+	 o = readOrExpression(c))
+	{ return o; }
+}
+
+private Operator readAssignment(ELContext c) throws ELException :
+{
+	Operator l;
+	Operator r;
+}
+{
+	(l = readOrExpression(c)
+	 (
+	  (<INCASSIGNMENT>
+	   { l = new Assignment(l, new Add(l, new IntLiteral(1))); }) |
+	  (<DECASSIGNMENT>
+	   { l = new Assignment(l, new Sub(l, new IntLiteral(1))); })
+	 )?
+	 (
+	  (<ASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, r); }) |
+	  (<POWASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Pow(l, r)); }) |
+	  (<DIVASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Div(l, r)); }) |
+	  (<MULASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Mul(l, r)); }) |
+	  (<MODASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Mod(l, r)); }) |
+	  (<ADDASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Add(l, r)); }) |
+	  (<SUBASSIGNMENT>
+	   r = readOrExpression(c)
+	   { l = new Assignment(l, new Sub(l, r)); })
+	 )?
+	)
+	{ return l; }
+}
+
+private Operator readOrExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readAndExpression(c)
+     ((<OR> | <OR1>)
+      r = readAndExpression(c)
+      { l = new LogicalOr(l, r); }
+     )*)
+    { return l; }
+}
+
+private Operator readAndExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readEqualityExpression(c)
+      ((<AND> | <AND1>)
+       r = readEqualityExpression(c)
+       {l = new LogicalAnd(l,r); }
+      )*)
+    { return l; }
+}
+
+private Operator readEqualityExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (
+     l = readCompareExpression(c)
+     (
+	  (
+	   (
+	    <EQ> | <EQ1>
+	   )
+	   r = readCompareExpression(c)
+	   { l = new Equals(l,r); }
+	  )
+	  |
+	  (
+	   (
+	    <NE> | <NE1>
+	   )
+	   r = readCompareExpression(c)
+	   { l = new NotEquals(l,r); }
+	  )
+     )*
+    )
+    { return l; }
+}
+
+private Operator readCompareExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readAddExpression(c)
+      (
+	((<GT> | <GT1>)
+	 r = readAddExpression(c)
+	 { l = new GT(l,r); })
+	|((<LT> | <LT1>)
+	 r = readAddExpression(c)
+	 { l = new LT(l,r); })
+	|((<GTEQ> | <GTEQ1>)
+	 r = readAddExpression(c)
+	 { l = new GTEQ(l,r); })
+	|((<LTEQ> | <LTEQ1>)
+	 r = readAddExpression(c)
+	 { l = new LTEQ(l,r); })
+      )*)
+    { return l; }
+}
+
+private Operator readAddExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readMulExpression(c)
+      (
+	     (<ADD>
+	       r = readMulExpression(c)
+	       { l = new Add(l,r); })
+	    |(<SUB>
+	       r = readMulExpression(c)
+	       { l = new Sub(l,r); })
+      )*
+    )
+    { return l; }
+}
+
+private Operator readMulExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readPowExpression(c)
+      ( 
+	(<MUL>
+	  r = readPowExpression(c)
+	  { l = new Mul(l,r); })
+	|((<DIV> | <DIV1>)
+	  r = readPowExpression(c)
+	  { l = new Div(l,r); })
+	|(<MOD>
+	  r = readPowExpression(c)
+	  { l = new Mod(l,r); })
+      )*)
+    { return l; }
+}
+
+private Operator readPowExpression(ELContext c) throws ELException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    ( l = readOperator(c)
+      ( 
+	<POW>
+	 r = readOperator(c)
+	 { l = new Pow(l,r); }
+      )*)
+    { return l; }
+}
