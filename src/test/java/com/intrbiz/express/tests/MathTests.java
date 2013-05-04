@@ -5,14 +5,14 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.util.ELUtil;
 
 public class MathTests
 {
 
     @Test
-    public void addition() throws ELException
+    public void addition() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{1 + 2}", null).get(null, null);
@@ -22,7 +22,7 @@ public class MathTests
     }
     
     @Test
-    public void substraction() throws ELException
+    public void substraction() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{3 - 2}", null).get(null, null);
@@ -37,7 +37,7 @@ public class MathTests
     }
 
     @Test
-    public void multiplication() throws ELException
+    public void multiplication() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{2 * 2}", null).get(null, null);
@@ -47,7 +47,7 @@ public class MathTests
     }
     
     @Test
-    public void division() throws ELException
+    public void division() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{6 / 2}", null).get(null, null);
@@ -57,7 +57,7 @@ public class MathTests
     }
     
     @Test
-    public void modulo() throws ELException
+    public void modulo() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{4 % 2}", null).get(null, null);
@@ -71,7 +71,7 @@ public class MathTests
     }
     
     @Test
-    public void power() throws ELException
+    public void power() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{2 ^ 2}", null).get(null, null);
@@ -86,7 +86,7 @@ public class MathTests
     }
     
     @Test
-    public void minusNumber() throws ELException
+    public void minusNumber() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{-2}", null).get(null, null);

@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class Complex extends UnaryOperator
 {
@@ -18,14 +18,14 @@ public class Complex extends UnaryOperator
 	}
 
 	@Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		Operator op = this.getOperator();
 		return op.get(context, source);
 	}
 
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 		Operator op = this.getOperator();
 		op.set(context, value, source);

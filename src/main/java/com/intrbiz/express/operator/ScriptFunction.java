@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.statement.Statement;
 import com.intrbiz.express.value.ValueScript;
 
@@ -31,7 +31,7 @@ public class ScriptFunction extends Function
         this.script = script;
     }
     
-    protected void bindParameters(ELContext sctx)
+    protected void bindParameters(ExpressContext sctx)
     {
         // bind parameters
         int i = 0;
@@ -42,14 +42,14 @@ public class ScriptFunction extends Function
         }        
     }
     
-    protected void bindValue(ELContext sctx, Object value)
+    protected void bindValue(ExpressContext sctx, Object value)
     {
         // bind value
         sctx.setEntity("value", value, null);
     }
 
     @Override
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         // enter the root frame
         context.enterFrame(true);
@@ -69,7 +69,7 @@ public class ScriptFunction extends Function
     }
 
     @Override
-    public void set(ELContext context, Object value, Object source) throws ELException
+    public void set(ExpressContext context, Object value, Object source) throws ExpressException
     {
         // enter the root frame
         context.enterFrame(true);

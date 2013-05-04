@@ -5,7 +5,7 @@ import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 
-public interface ELContext
+public interface ExpressContext
 {
     // customisable stuff
     

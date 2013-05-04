@@ -3,8 +3,8 @@ package com.intrbiz.express.value;
 import java.io.Serializable;
 import java.io.StringReader;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.parser.ELParser;
 import com.intrbiz.express.parser.ParseException;
 import com.intrbiz.express.parser.TokenMgrError;
@@ -21,13 +21,13 @@ public class ValueScript implements Serializable
         super();
     }
 
-    public ValueScript(ELContext context, String script) throws ELException
+    public ValueScript(ExpressContext context, String script) throws ExpressException
     {
         this();
         this.parse(context, script);
     }
 
-    public ScriptReturn executeWithState(ELContext context, Object source) throws ELException
+    public ScriptReturn executeWithState(ExpressContext context, Object source) throws ExpressException
     {
         // enter the root frame
         context.enterFrame(true);
@@ -44,7 +44,7 @@ public class ValueScript implements Serializable
         }
     }
 
-    public Object execute(ELContext context, Object source) throws ELException
+    public Object execute(ExpressContext context, Object source) throws ExpressException
     {
         // enter the root frame
         context.enterFrame(true);
@@ -62,7 +62,7 @@ public class ValueScript implements Serializable
         return null;
     }
 
-    public void parse(ELContext context, String script) throws ELException
+    public void parse(ExpressContext context, String script) throws ExpressException
     {
         ELParser parser = new ELParser(new StringReader(script));
         try
@@ -71,15 +71,15 @@ public class ValueScript implements Serializable
         }
         catch (TokenMgrError e)
         {
-            throw new ELException("Error parsing script: [" + script + "]", e);
+            throw new ExpressException("Error parsing script: [" + script + "]", e);
         }
-        catch (ELException ee)
+        catch (ExpressException ee)
         {
-            throw new ELException("Error parsing script: [" + script + "]", ee);
+            throw new ExpressException("Error parsing script: [" + script + "]", ee);
         }
         catch (ParseException pe)
         {
-            throw new ELException("Error parsing script: [" + script + "]", pe);
+            throw new ExpressException("Error parsing script: [" + script + "]", pe);
         }
     }
 

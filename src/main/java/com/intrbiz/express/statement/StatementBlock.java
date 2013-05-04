@@ -3,8 +3,8 @@ package com.intrbiz.express.statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class StatementBlock extends Statement
 {
@@ -21,7 +21,7 @@ public class StatementBlock extends Statement
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         try
         {

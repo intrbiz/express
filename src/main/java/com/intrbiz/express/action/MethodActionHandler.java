@@ -13,7 +13,7 @@ import java.util.List;
 import com.intrbiz.Util;
 import com.intrbiz.collections.Condition;
 import com.intrbiz.collections.Mapping;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.metadata.Action;
 import com.intrbiz.metadata.ArgName;
 import com.intrbiz.metadata.ArgNames;
@@ -117,11 +117,11 @@ public final class MethodActionHandler implements ActionHandler
         }
         catch (IllegalArgumentException e)
         {
-            throw new ELException("Failed to execute action: " + this.action, e);
+            throw new ExpressException("Failed to execute action: " + this.action, e);
         }
         catch (IllegalAccessException e)
         {
-            throw new ELException("Failed to execute action: " + this.action, e);
+            throw new ExpressException("Failed to execute action: " + this.action, e);
         }
     }
 

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.action.ActionHandler.ActionArgument;
 
@@ -48,7 +48,7 @@ public class ActionOperator extends Function
     }
 
     @Override
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         // load the cached action
         if (this.action == null) this.setupAction(context, source);
@@ -65,25 +65,25 @@ public class ActionOperator extends Function
         {
             return this.action.act(args);
         }
-        catch (ELException e)
+        catch (ExpressException e)
         {
             throw e;
         }
         catch (Exception e)
         {
-            throw new ELException("Error executing action", e);
+            throw new ExpressException("Error executing action", e);
         }
     }
     
-    private void setupAction(ELContext context, Object source) throws ELException
+    private void setupAction(ExpressContext context, Object source) throws ExpressException
     {
         // get the action
         ActionHandler a = context.getAction(this.getName(), source);
-        if (a == null) throw new ELException("Cannot find action: " + this.getName());
+        if (a == null) throw new ExpressException("Cannot find action: " + this.getName());
         // map the arguments to the action
         List<Operator> args = new LinkedList<Operator>();
         // some sanity checks
-        if ((this.getParameters().size() + this.getNamedParameters().size()) > a.getArguments().size()) throw new ELException("To many arguments are provided for action: " + this.getName());
+        if ((this.getParameters().size() + this.getNamedParameters().size()) > a.getArguments().size()) throw new ExpressException("To many arguments are provided for action: " + this.getName());
         // firstly append any ordered arguments
         // then append named arguments
         Iterator<Operator> i = this.getParameters().iterator();
@@ -103,7 +103,7 @@ public class ActionOperator extends Function
             }
         }
         // sanity check
-        if (args.size() != a.getArguments().size()) throw new ELException("Some strange error binding action arguments, for action: " + this.getName());
+        if (args.size() != a.getArguments().size()) throw new ExpressException("Some strange error binding action arguments, for action: " + this.getName());
         // cache
         this.actionArguments = args;
         this.action = a;

@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class NotEquals extends Equals
 {
@@ -19,7 +19,7 @@ public class NotEquals extends Equals
     }
 
     @Override
-    public Boolean get(ELContext context,Object source) throws ELException
+    public Boolean get(ExpressContext context,Object source) throws ExpressException
     {
     	return ! super.get(context, source);
     }

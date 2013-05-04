@@ -4,8 +4,8 @@ import static com.intrbiz.Util.isEmpty;
 
 import java.util.Collection;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class IsEmpty extends Function
 {
@@ -17,7 +17,7 @@ public class IsEmpty extends Function
 
     @SuppressWarnings("rawtypes")
 	@Override
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         Operator ev = this.getParameters().get(0);
         Object evo = ev.get(context,source);

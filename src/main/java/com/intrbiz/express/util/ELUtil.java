@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Add;
 import com.intrbiz.express.operator.NullLiteral;
 import com.intrbiz.express.operator.Operator;
@@ -18,7 +18,7 @@ import com.intrbiz.express.parser.TokenMgrError;
 
 public class ELUtil
 {
-    public static final Operator parseEL(String expression, ELContext context) throws ELException
+    public static final Operator parseEL(String expression, ExpressContext context) throws ExpressException
     {
         expression = expression.substring(2, expression.length() - 1);
         ELParser parser = new ELParser(new StringReader(expression));
@@ -28,20 +28,20 @@ public class ELUtil
         }
         catch (TokenMgrError e)
         {
-            throw new ELException("Error parsing script: [" + expression + "]", e);
+            throw new ExpressException("Error parsing script: [" + expression + "]", e);
         }
-        catch (ELException ee)
+        catch (ExpressException ee)
         {
-            throw new ELException("Error parsing expression: [" + expression + "]", ee);
+            throw new ExpressException("Error parsing expression: [" + expression + "]", ee);
         }
         catch (ParseException pe)
         {
-            throw new ELException("Error parsing expression: [" + expression + "]", pe);
+            throw new ExpressException("Error parsing expression: [" + expression + "]", pe);
         }
         
     }
     
-    public static final Operator parseEmbeddedEL(String input, ELContext context) throws ELException
+    public static final Operator parseEmbeddedEL(String input, ExpressContext context) throws ExpressException
     {
         if (input == null) return new NullLiteral();
         if (isEmpty(input)) return new StringLiteral("", false);
@@ -130,7 +130,7 @@ public class ELUtil
         }
         catch (IOException e)
         {
-            throw new ELException("Error processing el, io error", e);
+            throw new ExpressException("Error processing el, io error", e);
         }
         finally
         {

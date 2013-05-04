@@ -5,15 +5,31 @@ import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 
-public abstract class AbstractELContext implements ELContext
+public class DefaultContext implements ExpressContext
 {
     private final ELStatementFrame root = new ELStatementFrame();
 
     private ELStatementFrame frame = root;
+    
+    private final ExpressExtensionRegistry extensions;
+    
+    private final ExpressEntityResolver resolver;
 
-    public AbstractELContext()
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
     {
         super();
+        this.extensions = extensions;
+        this.resolver = resolver;
+    }
+    
+    public DefaultContext(ExpressExtensionRegistry registry)
+    {
+        this(registry, null);
+    }
+    
+    public DefaultContext()
+    {
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null);
     }
 
     public Object getEntity(String name, Object source)
@@ -26,7 +42,18 @@ public abstract class AbstractELContext implements ELContext
         return this.getEntityInner(name, source);
     }
 
-    public abstract Object getEntityInner(String name, Object source);
+    protected Object getEntityInner(String name, Object source)
+    {
+        if (this.resolver == null) return null;
+        return this.resolver.getEntity(name, source);
+    }
+    
+    @Override
+    public ActionHandler getAction(String name, Object source)
+    {
+        if (this.resolver == null) return null;
+        return this.resolver.getAction(name, source); 
+    }
 
     public void setEntity(String name, Object value, Object source)
     {
@@ -42,24 +69,20 @@ public abstract class AbstractELContext implements ELContext
         this.root.setEntity(name, value);
     }
 
-    @Override
-    public ActionHandler getAction(String name, Object source)
-    {
-        return null;
-    }
-
     // default implementations to make like simpler
 
     @Override
     public Function getCustomFunction(String name)
     {
-        return null;
+        if (this.extensions == null) return null;
+        return this.extensions.loadFunction(name);
     }
 
     @Override
     public Decorator getCustomDecorator(String name, Class<?> entityType)
     {
-        return null;
+        if (this.extensions == null) return null;
+        return this.extensions.loadDecorator(name, entityType);
     }
 
     // Stack Control

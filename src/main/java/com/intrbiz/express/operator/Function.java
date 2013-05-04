@@ -7,8 +7,8 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
 
 /**
@@ -117,21 +117,21 @@ public abstract class Function extends Operator
     }
 
     @Override
-    public Converter getConverter(ELContext context, Object source) throws ELException
+    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
     {
-        throw new ELException("Cannot get converter,  expression contains a function");
+        throw new ExpressException("Cannot get converter,  expression contains a function");
     }
 
     @Override
-    public Validator getValidator(ELContext context, Object source) throws ELException
+    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
     {
-        throw new ELException("Cannot get validator,  expression contains a function");
+        throw new ExpressException("Cannot get validator,  expression contains a function");
     }
     
     @Override
-    public void set(ELContext context, Object value, Object source) throws ELException
+    public void set(ExpressContext context, Object value, Object source) throws ExpressException
     {
-        throw new ELException("Cannot set value, expression contains a function");
+        throw new ExpressException("Cannot set value, expression contains a function");
     }
 
 }

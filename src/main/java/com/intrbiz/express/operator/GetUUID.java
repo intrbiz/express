@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.util.uuid.UUIDFactory;
 
 public class GetUUID extends Function
@@ -13,13 +13,13 @@ public class GetUUID extends Function
     }
 
     @Override
-    public Object get(ELContext context,Object source) throws ELException
+    public Object get(ExpressContext context,Object source) throws ExpressException
     {
     	return UUIDFactory.uuid();
     }
 
     @Override
-    public void set(ELContext context, Object value,Object source) throws ELException
+    public void set(ExpressContext context, Object value,Object source) throws ExpressException
     {
     }
 }

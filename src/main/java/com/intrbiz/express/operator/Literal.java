@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 
 public abstract class Literal extends Operator
@@ -20,13 +20,13 @@ public abstract class Literal extends Operator
 	}
 
 	@Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		return this.getValue();
 	}
 
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 	}
 }

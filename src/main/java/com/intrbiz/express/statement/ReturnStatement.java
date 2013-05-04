@@ -1,7 +1,7 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
 public class ReturnStatement extends DefaultStatement
@@ -12,13 +12,13 @@ public class ReturnStatement extends DefaultStatement
         super();
     }
 
-    public ReturnStatement(Operator operator) throws ELException
+    public ReturnStatement(Operator operator) throws ExpressException
     {
         super(operator);
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         Object ret = this.getOperator().get(ctx, source);
         ctx.getFrame().doReturn(ret);

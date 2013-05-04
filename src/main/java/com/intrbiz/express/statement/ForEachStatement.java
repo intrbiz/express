@@ -1,7 +1,7 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
 public class ForEachStatement extends ControlStatement
@@ -21,7 +21,7 @@ public class ForEachStatement extends ControlStatement
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         // get the collection to process
         Object col = this.getCollection().get(ctx, source);
@@ -49,7 +49,7 @@ public class ForEachStatement extends ControlStatement
         // error if it is not a collection
         else if (col != null)
         {
-            throw new ELException("Cannot execute foreach on: " + col.getClass());
+            throw new ExpressException("Cannot execute foreach on: " + col.getClass());
         }
     }
 

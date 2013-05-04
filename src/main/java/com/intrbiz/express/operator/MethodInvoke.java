@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class MethodInvoke extends Operator
 {
@@ -94,7 +94,7 @@ public class MethodInvoke extends Operator
     }
 
     @Override
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         Object on  = this.getLeft().get(context, source);
         if (on != null)
@@ -133,9 +133,9 @@ public class MethodInvoke extends Operator
                         {
                             throw (Error) te;
                         }
-                        else if (te instanceof ELException)
+                        else if (te instanceof ExpressException)
                         {
-                            throw (ELException) te;
+                            throw (ExpressException) te;
                         }
                     }
                 }

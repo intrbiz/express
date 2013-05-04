@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class Sub extends BinaryOperator
 {
@@ -19,7 +19,7 @@ public class Sub extends BinaryOperator
 	}
 
 	@Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		if (this.getLeft() == null)
 		{
@@ -84,7 +84,7 @@ public class Sub extends BinaryOperator
 	}
 
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 	}
 }

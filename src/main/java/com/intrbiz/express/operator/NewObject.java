@@ -4,8 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class NewObject extends Operator
 {
@@ -62,7 +62,7 @@ public class NewObject extends Operator
     }
 
     @Override
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         try
         {
@@ -88,28 +88,28 @@ public class NewObject extends Operator
                         return c.newInstance( args );
                     }
                 }
-                throw new ELException("Could not create new object: " + this.getClassName());
+                throw new ExpressException("Could not create new object: " + this.getClassName());
             }
         }
         catch (ClassNotFoundException e)
         {
-            throw new ELException("Could not create new object: " + this.getClassName(), e);
+            throw new ExpressException("Could not create new object: " + this.getClassName(), e);
         }
         catch (InstantiationException e)
         {
-            throw new ELException("Could not create new object: " + this.getClassName(), e);
+            throw new ExpressException("Could not create new object: " + this.getClassName(), e);
         }
         catch (IllegalAccessException e)
         {
-            throw new ELException("Could not create new object: " + this.getClassName(), e);
+            throw new ExpressException("Could not create new object: " + this.getClassName(), e);
         }
         catch (IllegalArgumentException e)
         {
-            throw new ELException("Could not create new object: " + this.getClassName(), e);
+            throw new ExpressException("Could not create new object: " + this.getClassName(), e);
         }
         catch (InvocationTargetException e)
         {
-            throw new ELException("Could not create new object: " + this.getClassName(), e);
+            throw new ExpressException("Could not create new object: " + this.getClassName(), e);
         }
     }
 

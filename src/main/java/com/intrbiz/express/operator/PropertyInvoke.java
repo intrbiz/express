@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 
 import com.intrbiz.converter.Converter;
 import com.intrbiz.converter.ConverterManager;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
 import com.intrbiz.express.dynamic.EntityProxy;
 import com.intrbiz.express.util.ELUtil;
@@ -51,7 +51,7 @@ public class PropertyInvoke extends Operator
 		return this.getLeft() + "." + this.getProperty();
 	}
 
-	protected Object resolveEntity(ELContext context, Object source) throws ELException
+	protected Object resolveEntity(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = this.getLeft().get(context, source);
 		if (obj instanceof ValueExpression)
@@ -69,13 +69,13 @@ public class PropertyInvoke extends Operator
 		return obj;
 	}
 
-	protected String resolveProperty(ELContext ctx, Object src) throws ELException
+	protected String resolveProperty(ExpressContext ctx, Object src) throws ExpressException
 	{
 		return this.getProperty();
 	}
 
 	@Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
@@ -104,7 +104,7 @@ public class PropertyInvoke extends Operator
 	}
 
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
@@ -132,7 +132,7 @@ public class PropertyInvoke extends Operator
 	}
 
 	@Override
-	public Converter getConverter(ELContext context, Object source) throws ELException
+	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
@@ -155,13 +155,13 @@ public class PropertyInvoke extends Operator
 			}
 			catch (Exception e)
 			{
-				throw new ELException("Could not get converter");
+				throw new ExpressException("Could not get converter");
 			}
 		}
 	}
 
 	@Override
-	public Validator getValidator(ELContext context, Object source) throws ELException
+	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
@@ -184,7 +184,7 @@ public class PropertyInvoke extends Operator
 			}
 			catch (Exception e)
 			{
-				throw new ELException("Could not get validator");
+				throw new ExpressException("Could not get validator");
 			}
 		}
 	}

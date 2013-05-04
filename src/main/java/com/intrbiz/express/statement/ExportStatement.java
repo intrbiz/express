@@ -1,7 +1,7 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class ExportStatement extends Statement
 {
@@ -20,7 +20,7 @@ public class ExportStatement extends Statement
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         String var = this.getVariable();
         Object value = ctx.getEntity(var, source);

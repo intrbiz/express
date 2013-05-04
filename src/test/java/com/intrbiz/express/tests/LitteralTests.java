@@ -5,14 +5,14 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.util.ELUtil;
 
 public class LitteralTests
 {
 
     @Test
-    public void litteralInteger() throws ELException
+    public void litteralInteger() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{1234}", null).get(null, null);
@@ -22,7 +22,7 @@ public class LitteralTests
     }
 
     @Test
-    public void litteralFloat() throws ELException
+    public void litteralFloat() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{1234.567}", null).get(null, null);
@@ -32,7 +32,7 @@ public class LitteralTests
     }
 
     @Test
-    public void litteralLong() throws ELException
+    public void litteralLong() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{1234L}", null).get(null, null);
@@ -42,7 +42,7 @@ public class LitteralTests
     }
     
     @Test
-    public void litteralDouble() throws ELException
+    public void litteralDouble() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{1234.567}", null).get(null, null);
@@ -52,7 +52,7 @@ public class LitteralTests
     }
     
     @Test
-    public void litteralString() throws ELException
+    public void litteralString() throws ExpressException
     {
         Object o;
         o = ELUtil.parseEL("#{'test'}", null).get(null, null);

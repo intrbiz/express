@@ -3,8 +3,8 @@ package com.intrbiz.express.value;
 import java.io.Serializable;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 import com.intrbiz.express.util.ELUtil;
 import com.intrbiz.validator.Validator;
@@ -20,7 +20,7 @@ public class ValueExpression implements Serializable
         super();
     }
 
-    public ValueExpression(ELContext context, String expression) throws ELException
+    public ValueExpression(ExpressContext context, String expression) throws ExpressException
     {
         this();
         this.parse(context, expression);
@@ -36,17 +36,17 @@ public class ValueExpression implements Serializable
         return s.startsWith("#{") && s.endsWith("}");
     }
 
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
         return this.operator.get(context, source);
     }
 
-    public void set(ELContext context, Object in, Object source) throws ELException
+    public void set(ExpressContext context, Object in, Object source) throws ExpressException
     {
         this.operator.set(context, in, source);
     }
 
-    public void parse(ELContext context, String expression) throws ELException
+    public void parse(ExpressContext context, String expression) throws ExpressException
     {
         // treat as a string with embedded EL expressions
         this.operator = ELUtil.parseEmbeddedEL(expression, context);
@@ -58,12 +58,12 @@ public class ValueExpression implements Serializable
         return "#{" + String.valueOf(this.operator) + "}";
     }
 
-    public Converter getConverter(ELContext context, Object source) throws ELException
+    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
     {
         return operator.getConverter(context, source);
     }
 
-    public Validator getValidator(ELContext context, Object source) throws ELException
+    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
     {
         return operator.getValidator(context, source);
     }

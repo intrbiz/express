@@ -1,12 +1,12 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 
 public abstract class Statement
 {
-    public abstract void execute(ELContext ctx, Object source) throws ELException;
+    public abstract void execute(ExpressContext ctx, Object source) throws ExpressException;
     
     public abstract String toString(String padding);
     

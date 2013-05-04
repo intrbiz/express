@@ -1,8 +1,8 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.EntityProxy;
 import com.intrbiz.express.value.ValueExpression;
 import com.intrbiz.validator.Validator;
@@ -29,7 +29,7 @@ public class Entity extends Literal
 	}
 
 	@Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for expression chaining
@@ -46,15 +46,15 @@ public class Entity extends Literal
 		{
 			return ((EntityProxy) obj).getEntity(context, source);
 		}
-		else if (obj instanceof ELContext)
+		else if (obj instanceof ExpressContext)
 		{
-			return ((ELContext) obj).getEntity(this.getValue(), source);
+			return ((ExpressContext) obj).getEntity(this.getValue(), source);
 		}
 		return obj;
 	}
 
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for chaining of expressions
@@ -74,7 +74,7 @@ public class Entity extends Literal
 	}
 
 	@Override
-	public Converter getConverter(ELContext context, Object source) throws ELException
+	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for chaining of expressions
@@ -90,7 +90,7 @@ public class Entity extends Literal
 	}
 
 	@Override
-	public Validator getValidator(ELContext context, Object source) throws ELException
+	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for chaining of expressions

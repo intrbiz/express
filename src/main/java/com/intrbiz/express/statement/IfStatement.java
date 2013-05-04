@@ -2,8 +2,8 @@ package com.intrbiz.express.statement;
 
 import java.util.List;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
 public class IfStatement extends ControlStatement
@@ -26,7 +26,7 @@ public class IfStatement extends ControlStatement
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         if ((Boolean) this.test.get(ctx, source))
         {

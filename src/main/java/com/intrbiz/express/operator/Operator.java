@@ -1,8 +1,8 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
 
 public abstract class Operator
@@ -15,18 +15,18 @@ public abstract class Operator
         this.name = name ;
     }
     
-    public Converter getConverter(ELContext context, Object source)  throws ELException
+    public Converter getConverter(ExpressContext context, Object source)  throws ExpressException
     {
-        throw new ELException("Cannot get converter,  expression contains a operator") ;
+        throw new ExpressException("Cannot get converter,  expression contains a operator") ;
     }
     
-    public Object get(ELContext context, Object source) throws ELException
+    public Object get(ExpressContext context, Object source) throws ExpressException
     {
-        throw new ELException("Unimplemented");
+        throw new ExpressException("Unimplemented");
     }
-    public void set(ELContext context, Object value, Object source) throws ELException
+    public void set(ExpressContext context, Object value, Object source) throws ExpressException
     {
-        throw new ELException("Unimplemented");
+        throw new ExpressException("Unimplemented");
     }
 
     /**
@@ -47,8 +47,8 @@ public abstract class Operator
         return this.name;
     } 
     
-    public Validator getValidator(ELContext context, Object source)  throws ELException
+    public Validator getValidator(ExpressContext context, Object source)  throws ExpressException
     {
-        throw new ELException("Cannot get validator,  expression contains a operater") ;
+        throw new ExpressException("Cannot get validator,  expression contains a operater") ;
     }
 }

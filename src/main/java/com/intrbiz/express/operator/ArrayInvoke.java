@@ -6,8 +6,8 @@ import java.util.Map;
 
 import com.intrbiz.converter.Converter;
 import com.intrbiz.converter.ConverterManager;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
 import com.intrbiz.express.util.ELUtil;
 import com.intrbiz.validator.ValidationManager;
@@ -30,7 +30,7 @@ public class ArrayInvoke extends BinaryOperator
 
 	@SuppressWarnings("rawtypes")
     @Override
-	public Object get(ELContext context, Object source) throws ELException
+	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 		// get the entity
 		Object entity = this.getLeft().get(context, source);
@@ -96,7 +96,7 @@ public class ArrayInvoke extends BinaryOperator
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public void set(ELContext context, Object value, Object source) throws ELException
+	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 		// get the entity
 		Object entity = this.getLeft().get(context, source);
@@ -160,7 +160,7 @@ public class ArrayInvoke extends BinaryOperator
 	}
 
 	@Override
-	public Converter getConverter(ELContext context, Object source) throws ELException
+	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
 		// get the entity
 		Object entity = this.getLeft().get(context, source);
@@ -185,14 +185,14 @@ public class ArrayInvoke extends BinaryOperator
 			}
 			catch (Exception e)
 			{
-				throw new ELException("Could not get converter");
+				throw new ExpressException("Could not get converter");
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public Validator getValidator(ELContext context, Object source) throws ELException
+	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
 		// get the entity
 		Object entity = this.getLeft().get(context, source);
@@ -217,7 +217,7 @@ public class ArrayInvoke extends BinaryOperator
 			}
 			catch (Exception e)
 			{
-				throw new ELException("Could not get validator");
+				throw new ExpressException("Could not get validator");
 			}
 		}
 		return null;

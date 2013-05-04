@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.action.MethodActionHandler;
 import com.intrbiz.express.operator.ActionOperator;
@@ -18,7 +18,7 @@ import com.intrbiz.metadata.ArgName;
 public class ActionTests
 {   
     @Test
-    public void findActionMethods() throws ELException
+    public void findActionMethods() throws ExpressException
     {
         ThingWithActions thing = new ThingWithActions();
         for (ActionHandler ah : MethodActionHandler.findActionHandlers(thing))
@@ -28,7 +28,7 @@ public class ActionTests
     }
 
     @Test
-    public void noArgAction() throws ELException
+    public void noArgAction() throws ExpressException
     {
         Operator o;
         o = ELUtil.parseEL("#{@test()}", null);
@@ -39,7 +39,7 @@ public class ActionTests
     }
     
     @Test
-    public void simpleArgsAction() throws ELException
+    public void simpleArgsAction() throws ExpressException
     {
         Operator o;
         o = ELUtil.parseEL("#{@test('abc', 'def')}", null);
@@ -50,7 +50,7 @@ public class ActionTests
     }
     
     @Test
-    public void namedArgsAction() throws ELException
+    public void namedArgsAction() throws ExpressException
     {
         Operator o;
         o = ELUtil.parseEL("#{@test(value = 'test', options = list('a', 'b', 'c'))}", null);

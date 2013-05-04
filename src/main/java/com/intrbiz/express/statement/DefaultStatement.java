@@ -1,7 +1,7 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
 public class DefaultStatement extends Statement
@@ -19,7 +19,7 @@ public class DefaultStatement extends Statement
         this.operator = operator;
     }
     
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         this.getOperator().get(ctx, source);
     }

@@ -1,7 +1,7 @@
 package com.intrbiz.express.statement;
 
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
 public class ForStatement extends ControlStatement
@@ -24,7 +24,7 @@ public class ForStatement extends ControlStatement
     }
 
     @Override
-    public void execute(ELContext ctx, Object source) throws ELException
+    public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
         // execute the assignment
         this.getAssignment().get(ctx, source);

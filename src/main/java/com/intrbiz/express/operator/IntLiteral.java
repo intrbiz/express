@@ -2,8 +2,8 @@ package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
 import com.intrbiz.converter.converters.ConverterInteger;
-import com.intrbiz.express.ELContext;
-import com.intrbiz.express.ELException;
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
 import com.intrbiz.validator.validators.ValidatorInteger;
 
@@ -31,13 +31,13 @@ public class IntLiteral extends Literal
 	
 
 	@Override
-	public Converter getConverter(ELContext context, Object source) throws ELException
+	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
 		return new ConverterInteger();
 	}
 
 	@Override
-	public Validator getValidator(ELContext context, Object source) throws ELException
+	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
 		return new ValidatorInteger();
 	}

@@ -9,70 +9,70 @@ import java.util.*;
 @SuppressWarnings("all")
 public final class ELParser implements ELParserConstants {
 
-  final private IntLiteral readIntLiteral(ELContext c) throws ParseException, ELException {
+  final private IntLiteral readIntLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(NLINT);
      {if (true) return new IntLiteral( Integer.parseInt(t.image) );}
     throw new Error("Missing return statement in function");
   }
 
-  final private LongLiteral readLongLiteral(ELContext c) throws ParseException, ELException {
+  final private LongLiteral readLongLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(NLLONG);
      {if (true) return new LongLiteral( Long.parseLong( t.image.substring( 0, t.image.length() -1 ) ) );}
     throw new Error("Missing return statement in function");
   }
 
-  final private FloatLiteral readFloatLiteral(ELContext c) throws ParseException, ELException {
+  final private FloatLiteral readFloatLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(NLFLOAT);
      {if (true) return new FloatLiteral( Float.parseFloat( t.image ) );}
     throw new Error("Missing return statement in function");
   }
 
-  final private DoubleLiteral readDoubleLiteral(ELContext c) throws ParseException, ELException {
+  final private DoubleLiteral readDoubleLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(NLDOUBLE);
      {if (true) return new DoubleLiteral( Double.parseDouble( t.image.substring( 0, t.image.length() -1 ) ) );}
     throw new Error("Missing return statement in function");
   }
 
-  final private BooleanLiteral readBooleanLiteral(ELContext c) throws ParseException, ELException {
+  final private BooleanLiteral readBooleanLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(LBOOLEAN);
      {if (true) return new BooleanLiteral( Boolean.parseBoolean( t.image ) );}
     throw new Error("Missing return statement in function");
   }
 
-  final private StringLiteral readStringLiteral(ELContext c) throws ParseException, ELException {
+  final private StringLiteral readStringLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(LSTRING);
      {if (true) return new StringLiteral( t.image.substring(1, t.image.length() -1), true );}
     throw new Error("Missing return statement in function");
   }
 
-  final private NullLiteral readNullLiteral(ELContext c) throws ParseException, ELException {
+  final private NullLiteral readNullLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(LNULL);
      {if (true) return new NullLiteral();}
     throw new Error("Missing return statement in function");
   }
 
-  final private String readEntityName(ELContext c) throws ParseException, ELException {
+  final private String readEntityName(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(LENTITY);
       {if (true) return t.image;}
     throw new Error("Missing return statement in function");
   }
 
-  final private Entity readEntityLiteral(ELContext c) throws ParseException, ELException {
+  final private Entity readEntityLiteral(ExpressContext c) throws ParseException, ExpressException {
     String en;
     en = readEntityName(c);
      {if (true) return new Entity( en );}
     throw new Error("Missing return statement in function");
   }
 
-  final private Literal readNLiteral(ELContext c) throws ParseException, ELException {
+  final private Literal readNLiteral(ExpressContext c) throws ParseException, ExpressException {
     Literal l;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NLINT:
@@ -96,7 +96,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readLiteral(ELContext c) throws ParseException, ELException {
+  final private Operator readLiteral(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NLINT:
@@ -126,7 +126,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readFunction(ELContext c) throws ParseException, ELException {
+  final private Operator readFunction(ExpressContext c) throws ParseException, ExpressException {
     Token ift;
     String fn;
     Function f = null;
@@ -315,7 +315,7 @@ public final class ELParser implements ELParserConstants {
 
         if (f == null)
         {
-              {if (true) throw new ELException("Could not get function: " + fn);}
+              {if (true) throw new ExpressException("Could not get function: " + fn);}
         }
 
         f.setParameters(args);
@@ -324,7 +324,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readAction(ELContext c) throws ParseException, ELException {
+  final private Operator readAction(ExpressContext c) throws ParseException, ExpressException {
         String an;
         List<Operator> args = new LinkedList<Operator>();
         Map<String, Operator> namedArgs = new HashMap<String, Operator>();
@@ -433,7 +433,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readValue(ELContext c) throws ParseException, ELException {
+  final private Operator readValue(ExpressContext c) throws ParseException, ExpressException {
     Operator v;
     v = readValuePrefix(c);
     label_3:
@@ -453,7 +453,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readValuePrefix(ELContext c) throws ParseException, ELException {
+  final private Operator readValuePrefix(ExpressContext c) throws ParseException, ExpressException {
     Operator p;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case STCOMP:
@@ -479,7 +479,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readValueSuffix(ELContext c, Operator l) throws ParseException, ELException {
+  final private Operator readValueSuffix(ExpressContext c, Operator l) throws ParseException, ExpressException {
     Operator o;
     if (jj_2_8(2147483647)) {
       o = readMethodInvoke(c,l);
@@ -501,7 +501,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readPropertyInvoke(ELContext c, Operator l) throws ParseException, ELException {
+  final private Operator readPropertyInvoke(ExpressContext c, Operator l) throws ParseException, ExpressException {
     String name;
     jj_consume_token(DOT);
     name = readEntityName(c);
@@ -509,7 +509,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readArrayInvoke(ELContext c, Operator l) throws ParseException, ELException {
+  final private Operator readArrayInvoke(ExpressContext c, Operator l) throws ParseException, ExpressException {
     Operator r;
     jj_consume_token(STARR);
     r = readExpression(c);
@@ -518,7 +518,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readMethodInvoke(ELContext c, Operator l) throws ParseException, ELException {
+  final private Operator readMethodInvoke(ExpressContext c, Operator l) throws ParseException, ExpressException {
     String name;
     List<Operator> args = new LinkedList<Operator>();
     Map<String,Operator> namedArgs = new TreeMap<String,Operator>();
@@ -627,7 +627,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readUnary(ELContext c) throws ParseException, ELException {
+  final private Operator readUnary(ExpressContext c) throws ParseException, ExpressException {
     Operator o;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NOT:
@@ -660,7 +660,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readNew(ELContext c) throws ParseException, ELException {
+  final private Operator readNew(ExpressContext c) throws ParseException, ExpressException {
         StringBuilder name = new StringBuilder();
     String cn;
     List<Operator> args = new LinkedList<Operator>();
@@ -725,7 +725,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readOperator(ELContext c) throws ParseException, ELException {
+  final private Operator readOperator(ExpressContext c) throws ParseException, ExpressException {
     Operator o;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NEW:
@@ -758,7 +758,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public StatementBlock readStatements(ELContext c) throws ParseException, ELException {
+  final public StatementBlock readStatements(ExpressContext c) throws ParseException, ExpressException {
         StatementBlock r = new StatementBlock();
         Statement s;
     label_7:
@@ -797,7 +797,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readStatement(ExpressContext c) throws ParseException, ExpressException {
         Statement s;
     if (jj_2_11(2147483647)) {
       s = readIfStatement(c);
@@ -845,7 +845,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readIfStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readIfStatement(ExpressContext c) throws ParseException, ExpressException {
         StatementBlock tb;
         StatementBlock fb = null;
         StatementBlock eib;
@@ -891,7 +891,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readWhileStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readWhileStatement(ExpressContext c) throws ParseException, ExpressException {
         Operator t;
         StatementBlock b;
     jj_consume_token(WHILE);
@@ -905,7 +905,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readForStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readForStatement(ExpressContext c) throws ParseException, ExpressException {
         StatementBlock b;
         Operator a;
         Operator t;
@@ -925,7 +925,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readForEachStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readForEachStatement(ExpressContext c) throws ParseException, ExpressException {
         StatementBlock blk;
         String var;
         Operator col;
@@ -942,7 +942,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readDefaultStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readDefaultStatement(ExpressContext c) throws ParseException, ExpressException {
         Operator o;
     o = readExpression(c);
     jj_consume_token(STATEMENT);
@@ -950,14 +950,14 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readBreakStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readBreakStatement(ExpressContext c) throws ParseException, ExpressException {
     jj_consume_token(BREAK);
     jj_consume_token(STATEMENT);
           {if (true) return new BreakStatement();}
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readReturnStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readReturnStatement(ExpressContext c) throws ParseException, ExpressException {
         Operator o;
     jj_consume_token(RETURN);
     o = readExpression(c);
@@ -966,7 +966,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Statement readExportStatement(ELContext c) throws ParseException, ELException {
+  final private Statement readExportStatement(ExpressContext c) throws ParseException, ExpressException {
         String varName;
     jj_consume_token(EXPORT);
     varName = readEntityName(c);
@@ -975,7 +975,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public Operator readExpression(ELContext c) throws ParseException, ELException {
+  final public Operator readExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator o;
     if (jj_2_16(2147483647)) {
       o = readAssignment(c);
@@ -1008,7 +1008,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readAssignment(ELContext c) throws ParseException, ELException {
+  final private Operator readAssignment(ExpressContext c) throws ParseException, ExpressException {
         Operator l;
         Operator r;
     l = readOrExpression(c);
@@ -1092,7 +1092,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readOrExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readOrExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readAndExpression(c);
@@ -1126,7 +1126,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readAndExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readAndExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readEqualityExpression(c);
@@ -1160,7 +1160,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readEqualityExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readEqualityExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readCompareExpression(c);
@@ -1222,7 +1222,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readCompareExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readCompareExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readAddExpression(c);
@@ -1322,7 +1322,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readAddExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readAddExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readMulExpression(c);
@@ -1358,7 +1358,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readMulExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readMulExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readPowExpression(c);
@@ -1413,7 +1413,7 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private Operator readPowExpression(ELContext c) throws ParseException, ELException {
+  final private Operator readPowExpression(ExpressContext c) throws ParseException, ExpressException {
     Operator l;
     Operator r;
     l = readOperator(c);

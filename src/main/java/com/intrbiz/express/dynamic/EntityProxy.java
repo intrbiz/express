@@ -1,8 +1,8 @@
 package com.intrbiz.express.dynamic;
 
-import com.intrbiz.express.ELContext;
+import com.intrbiz.express.ExpressContext;
 
 public interface EntityProxy
 {
-	Object getEntity(ELContext ctx, Object source);
+	Object getEntity(ExpressContext ctx, Object source);
 }
