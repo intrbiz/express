@@ -17,9 +17,9 @@ public class MethodInvoke extends Operator
     private Operator left;
 
     private List<Operator> arguments;
-    
+
     private Map<String, Operator> namedParameters = new TreeMap<String, Operator>();
-    
+
     private static final AtomicReferenceFieldUpdater<MethodInvoke, DecoratorCache> cacheUpdater = AtomicReferenceFieldUpdater.newUpdater(MethodInvoke.class, DecoratorCache.class, "cache");
 
     private volatile DecoratorCache cache = null;
@@ -41,11 +41,11 @@ public class MethodInvoke extends Operator
     {
         this.arguments = arguments;
     }
-    
+
     /**
      * Get the functions named parameters
-     * @return
-     * returns Map<String,Operator>
+     * 
+     * @return returns Map<String,Operator>
      */
     public Map<String, Operator> getNamedParameters()
     {
@@ -54,8 +54,9 @@ public class MethodInvoke extends Operator
 
     /**
      * Set the functions named parameters
+     * 
      * @param namedParameters
-     * returns void
+     *            returns void
      */
     public void setNamedParameters(Map<String, Operator> namedParameters)
     {
@@ -96,7 +97,7 @@ public class MethodInvoke extends Operator
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
-        Object on  = this.getLeft().get(context, source);
+        Object on = this.getLeft().get(context, source);
         if (on != null)
         {
             // evaluate the arguments to assist in overload detection
@@ -110,17 +111,20 @@ public class MethodInvoke extends Operator
             Class<?> cls = on.getClass();
             for (Method m : cls.getMethods())
             {
-                if ( m.getName().equals(this.getName()) && this.methodMatch(args, m))
+                if (m.getName().equals(this.getName()) && this.methodMatch(args, m))
                 {
                     try
                     {
+                        m.setAccessible(true);
                         return m.invoke(on, args);
                     }
                     catch (IllegalArgumentException e)
                     {
+                        throw new ExpressException("Error invoking method: " + m + ", operator: " + this.toString(), e);
                     }
                     catch (IllegalAccessException e)
                     {
+                        throw new ExpressException("Error invoking method: " + m + ", operator: " + this.toString(), e);
                     }
                     catch (InvocationTargetException e)
                     {
@@ -133,16 +137,13 @@ public class MethodInvoke extends Operator
                         {
                             throw (Error) te;
                         }
-                        else if (te instanceof ExpressException)
-                        {
-                            throw (ExpressException) te;
-                        }
+                        else if (te instanceof ExpressException) { throw (ExpressException) te; }
                     }
                 }
             }
             // a decorator
             DecoratorCache cache = this.cache;
-            if ( ! (cache != null && cls.equals(cache.type)))
+            if (!(cache != null && cls.equals(cache.type)))
             {
                 // get the decorator for this type
                 Decorator d = context.getCustomDecorator(this.getName(), cls);
@@ -160,14 +161,11 @@ public class MethodInvoke extends Operator
                     // TODO this.logger.warn("Failed to load decorator: " + this.getName() + " for type: " + cls.getName());
                 }
             }
-            if (cache != null)
-            {
-                return cache.decorator.get(context, source);
-            }
+            if (cache != null) { return cache.decorator.get(context, source); }
         }
         return null;
     }
-    
+
     protected boolean methodMatch(Object[] args, Method m)
     {
         Class<?>[] types = m.getParameterTypes();
@@ -177,12 +175,69 @@ public class MethodInvoke extends Operator
             {
                 Object arg = args[i];
                 Class<?> type = types[i];
-                if (arg != null && (!type.isInstance(arg))) return false;
+                //
+                if (isPrimitive(type))
+                {
+                    if (! primitiveInstanceOf(type, arg))
+                    {
+                        return false;
+                    }
+                }
+                else if (arg != null && (!type.isInstance(arg))) 
+                {
+                    return false;
+                }
             }
+        }
+        else
+        {
+            return false;
         }
         return true;
     }
-    
+
+    private static boolean isPrimitive(Class<?> parameterType)
+    {
+        return int.class == parameterType || long.class == parameterType || float.class == parameterType || double.class == parameterType || boolean.class == parameterType || short.class == parameterType || byte.class == parameterType || char.class == parameterType;
+    }
+
+    private static boolean primitiveInstanceOf(Class<?> parameterType, Object obj)
+    {
+        if (int.class == parameterType)
+        {
+            return obj instanceof Integer;
+        }
+        else if (long.class == parameterType)
+        {
+            return obj instanceof Long;
+        }
+        else if (float.class == parameterType)
+        {
+            return obj instanceof Float;
+        }
+        else if (double.class == parameterType)
+        {
+            return obj instanceof Double;
+        }
+        else if (boolean.class == parameterType)
+        {
+            return obj instanceof Boolean;
+        }
+        else if (short.class == parameterType)
+        {
+            return obj instanceof Short;
+        }
+        else if (byte.class  == parameterType)
+        {
+            return obj instanceof Byte;
+        }
+        else if (char.class == parameterType)
+        {
+            return obj instanceof Character;
+        }
+        return false;
+    }
+
     private static class DecoratorCache
     {
         public Decorator decorator;
