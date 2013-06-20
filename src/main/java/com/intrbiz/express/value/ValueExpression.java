@@ -28,12 +28,29 @@ public class ValueExpression implements Serializable
 
     public ValueExpression(Operator operator)
     {
+        this.setOperator(operator);
+    }
+
+    public void parse(ExpressContext context, String expression) throws ExpressException
+    {
+        // Treat as a string with embedded EL expressions
+        this.setOperator(ELUtil.parseEmbeddedEL(expression, context));
+    }
+
+    protected void setOperator(Operator operator)
+    {
         this.operator = operator;
     }
 
-    public static boolean isValueExpression(String s)
+    public Operator getOperator()
     {
-        return s.startsWith("#{") && s.endsWith("}");
+        return this.operator;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "#{" + String.valueOf(this.operator) + "}";
     }
 
     public Object get(ExpressContext context, Object source) throws ExpressException
@@ -46,18 +63,6 @@ public class ValueExpression implements Serializable
         this.operator.set(context, in, source);
     }
 
-    public void parse(ExpressContext context, String expression) throws ExpressException
-    {
-        // treat as a string with embedded EL expressions
-        this.operator = ELUtil.parseEmbeddedEL(expression, context);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "#{" + String.valueOf(this.operator) + "}";
-    }
-
     public Converter getConverter(ExpressContext context, Object source) throws ExpressException
     {
         return operator.getConverter(context, source);
@@ -68,8 +73,8 @@ public class ValueExpression implements Serializable
         return operator.getValidator(context, source);
     }
 
-    public Operator getOperator()
+    public static boolean isValueExpression(String s)
     {
-        return this.operator;
+        return s.startsWith("#{") && s.endsWith("}");
     }
 }

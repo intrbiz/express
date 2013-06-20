@@ -94,6 +94,7 @@ public class PropertyInvoke extends Operator
 				return null;
 			try
 			{
+			    getter.setAccessible(true);
 				return getter.invoke(entity, new Object[] {});
 			}
 			catch (Exception e)
@@ -123,6 +124,7 @@ public class PropertyInvoke extends Operator
 				return;
 			try
 			{
+			    setter.setAccessible(true);
 				setter.invoke(entity, new Object[] { value });
 			}
 			catch (Exception e)
