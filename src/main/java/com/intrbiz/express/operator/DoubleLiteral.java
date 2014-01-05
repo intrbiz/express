@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.converters.ConverterDouble;
+import com.intrbiz.converter.converters.DoubleConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
@@ -36,7 +36,7 @@ public class DoubleLiteral extends Literal
 	@Override
 	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ConverterDouble();
+		return new DoubleConverter();
 	}
 
 	@Override

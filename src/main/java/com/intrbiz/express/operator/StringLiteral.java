@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.converters.ConverterString;
+import com.intrbiz.converter.converters.StringConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
@@ -151,7 +151,7 @@ public class StringLiteral extends Literal
     @Override
     public Converter getConverter(ExpressContext context, Object source) throws ExpressException
     {
-        return new ConverterString();
+        return new StringConverter();
     }
 
     @Override

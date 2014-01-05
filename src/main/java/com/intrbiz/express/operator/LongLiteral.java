@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.converters.ConverterLong;
+import com.intrbiz.converter.converters.LongConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
@@ -37,7 +37,7 @@ public class LongLiteral extends Literal
 	@Override
 	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ConverterLong();
+		return new LongConverter();
 	}
 
 	@Override

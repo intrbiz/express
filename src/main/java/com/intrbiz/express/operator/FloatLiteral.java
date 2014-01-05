@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.converters.ConverterFloat;
+import com.intrbiz.converter.converters.FloatConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
@@ -31,7 +31,7 @@ public class FloatLiteral extends Literal
 	@Override
 	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ConverterFloat();
+		return new FloatConverter();
 	}
 
 	@Override

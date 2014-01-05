@@ -3,7 +3,6 @@ package com.intrbiz.express.operator;
 import java.lang.reflect.Method;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.ConverterManager;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
@@ -153,7 +152,7 @@ public class PropertyInvoke extends Operator
 				return null;
 			try
 			{
-				return ConverterManager.getConverter(getter);
+				return Converter.fromMethod(getter);
 			}
 			catch (Exception e)
 			{

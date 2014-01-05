@@ -1,7 +1,7 @@
 package com.intrbiz.express.operator;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.converters.ConverterInteger;
+import com.intrbiz.converter.converters.IntegerConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
@@ -33,7 +33,7 @@ public class IntLiteral extends Literal
 	@Override
 	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ConverterInteger();
+		return new IntegerConverter();
 	}
 
 	@Override

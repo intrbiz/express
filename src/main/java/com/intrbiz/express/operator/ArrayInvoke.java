@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.intrbiz.converter.Converter;
-import com.intrbiz.converter.ConverterManager;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
@@ -181,7 +180,7 @@ public class ArrayInvoke extends BinaryOperator
 				return null;
 			try
 			{
-				return ConverterManager.getConverter(getter);
+				return Converter.fromMethod(getter);
 			}
 			catch (Exception e)
 			{
