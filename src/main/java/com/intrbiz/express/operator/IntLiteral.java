@@ -5,7 +5,7 @@ import com.intrbiz.converter.converters.IntegerConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
-import com.intrbiz.validator.validators.ValidatorInteger;
+import com.intrbiz.validator.validators.IntegerValidator;
 
 
 public class IntLiteral extends Literal
@@ -39,6 +39,6 @@ public class IntLiteral extends Literal
 	@Override
 	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ValidatorInteger();
+		return new IntegerValidator();
 	}
 }

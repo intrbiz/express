@@ -5,7 +5,7 @@ import com.intrbiz.converter.converters.StringConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
-import com.intrbiz.validator.validators.ValidatorText;
+import com.intrbiz.validator.validators.TextValidator;
 
 public class StringLiteral extends Literal
 {
@@ -157,6 +157,6 @@ public class StringLiteral extends Literal
     @Override
     public Validator getValidator(ExpressContext context, Object source) throws ExpressException
     {
-        return new ValidatorText();
+        return new TextValidator();
     }
 }

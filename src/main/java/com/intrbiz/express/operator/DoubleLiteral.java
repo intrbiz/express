@@ -5,7 +5,7 @@ import com.intrbiz.converter.converters.DoubleConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
-import com.intrbiz.validator.validators.ValidatorDouble;
+import com.intrbiz.validator.validators.DoubleValidator;
 
 public class DoubleLiteral extends Literal
 {
@@ -42,6 +42,6 @@ public class DoubleLiteral extends Literal
 	@Override
 	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ValidatorDouble();
+		return new DoubleValidator();
 	}
 }

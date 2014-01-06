@@ -5,7 +5,7 @@ import com.intrbiz.converter.converters.FloatConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
-import com.intrbiz.validator.validators.ValidatorFloat;
+import com.intrbiz.validator.validators.FloatValidator;
 
 public class FloatLiteral extends Literal
 {
@@ -37,6 +37,6 @@ public class FloatLiteral extends Literal
 	@Override
 	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ValidatorFloat();
+		return new FloatValidator();
 	}
 }

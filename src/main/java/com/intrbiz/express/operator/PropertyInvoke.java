@@ -9,7 +9,6 @@ import com.intrbiz.express.dynamic.DynamicEntity;
 import com.intrbiz.express.dynamic.EntityProxy;
 import com.intrbiz.express.util.ELUtil;
 import com.intrbiz.express.value.ValueExpression;
-import com.intrbiz.validator.ValidationManager;
 import com.intrbiz.validator.Validator;
 
 public class PropertyInvoke extends Operator
@@ -181,7 +180,7 @@ public class PropertyInvoke extends Operator
 				return null;
 			try
 			{
-				return ValidationManager.getValidator(getter);
+				return Validator.fromMethod(getter);
 			}
 			catch (Exception e)
 			{

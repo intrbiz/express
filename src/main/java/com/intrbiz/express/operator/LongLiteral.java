@@ -5,7 +5,7 @@ import com.intrbiz.converter.converters.LongConverter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.validator.Validator;
-import com.intrbiz.validator.validators.ValidatorLong;
+import com.intrbiz.validator.validators.LongValidator;
 
 public class LongLiteral extends Literal
 {
@@ -43,6 +43,6 @@ public class LongLiteral extends Literal
 	@Override
 	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
 	{
-		return new ValidatorLong();
+		return new LongValidator();
 	}
 }

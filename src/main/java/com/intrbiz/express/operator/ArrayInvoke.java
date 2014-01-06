@@ -9,7 +9,6 @@ import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
 import com.intrbiz.express.util.ELUtil;
-import com.intrbiz.validator.ValidationManager;
 import com.intrbiz.validator.Validator;
 
 public class ArrayInvoke extends BinaryOperator
@@ -212,7 +211,7 @@ public class ArrayInvoke extends BinaryOperator
 				return null;
 			try
 			{
-				return ValidationManager.getValidator(getter);
+				return Validator.fromMethod(getter);
 			}
 			catch (Exception e)
 			{
