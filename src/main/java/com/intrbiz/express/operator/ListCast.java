@@ -1,5 +1,6 @@
 package com.intrbiz.express.operator;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,21 @@ public class ListCast extends Function
         for (Operator o : this.getParameters())
         {
             Object p = o.get(context,source);
-            ret.add(p);
+            if (p instanceof Collection)
+            {
+                ret.addAll((Collection<?>) p);
+            }
+            else if (p instanceof Iterable)
+            {
+                for (Object i : ((Iterable<?>) p))
+                {
+                    ret.add(i);
+                }
+            }
+            else
+            {
+                ret.add(p);
+            }
         }
         return ret ;
     }
