@@ -10,9 +10,9 @@ public class DefaultContext implements ExpressContext
     private final ELStatementFrame root = new ELStatementFrame();
 
     private ELStatementFrame frame = root;
-    
+
     private final ExpressExtensionRegistry extensions;
-    
+
     private final ExpressEntityResolver resolver;
 
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
@@ -21,12 +21,17 @@ public class DefaultContext implements ExpressContext
         this.extensions = extensions;
         this.resolver = resolver;
     }
-    
+
     public DefaultContext(ExpressExtensionRegistry registry)
     {
         this(registry, null);
     }
-    
+
+    public DefaultContext(ExpressEntityResolver resolver)
+    {
+        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver);
+    }
+
     public DefaultContext()
     {
         this(ExpressExtensionRegistry.getDefaultRegistry(), null);
@@ -47,12 +52,12 @@ public class DefaultContext implements ExpressContext
         if (this.resolver == null) return null;
         return this.resolver.getEntity(name, source);
     }
-    
+
     @Override
     public ActionHandler getAction(String name, Object source)
     {
         if (this.resolver == null) return null;
-        return this.resolver.getAction(name, source); 
+        return this.resolver.getAction(name, source);
     }
 
     public void setEntity(String name, Object value, Object source)
