@@ -39,6 +39,10 @@ public class DateFormat extends Function
         {
             date = ((Calendar)value).getTime();
         }
+        else if (value instanceof Long)
+        {
+            date = new Date((Long) value);
+        }
         else
         {
             return "" ;            
