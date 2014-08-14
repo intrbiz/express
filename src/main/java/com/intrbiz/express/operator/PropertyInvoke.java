@@ -1,6 +1,7 @@
 package com.intrbiz.express.operator;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import com.intrbiz.converter.Converter;
 import com.intrbiz.express.ExpressContext;
@@ -122,6 +123,10 @@ public class PropertyInvoke extends Operator
 		if (entity instanceof DynamicEntity)
 		{
 			return ((DynamicEntity) entity).get(property, context, source);
+		}
+		else if (entity instanceof Map)
+		{
+		    return ((Map<?, ?>) entity).get(property);
 		}
 		else
 		{
