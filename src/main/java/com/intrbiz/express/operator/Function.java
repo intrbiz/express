@@ -117,13 +117,13 @@ public abstract class Function extends Operator
     }
 
     @Override
-    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
+    public Converter<?> getConverter(ExpressContext context, Object source) throws ExpressException
     {
         throw new ExpressException("Cannot get converter,  expression contains a function");
     }
 
     @Override
-    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
+    public Validator<?> getValidator(ExpressContext context, Object source) throws ExpressException
     {
         throw new ExpressException("Cannot get validator,  expression contains a function");
     }

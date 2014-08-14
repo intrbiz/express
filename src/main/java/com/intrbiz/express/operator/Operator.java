@@ -15,7 +15,7 @@ public abstract class Operator
         this.name = name ;
     }
     
-    public Converter getConverter(ExpressContext context, Object source)  throws ExpressException
+    public Converter<?> getConverter(ExpressContext context, Object source)  throws ExpressException
     {
         throw new ExpressException("Cannot get converter,  expression contains a operator") ;
     }
@@ -47,7 +47,7 @@ public abstract class Operator
         return this.name;
     } 
     
-    public Validator getValidator(ExpressContext context, Object source)  throws ExpressException
+    public Validator<?> getValidator(ExpressContext context, Object source)  throws ExpressException
     {
         throw new ExpressException("Cannot get validator,  expression contains a operater") ;
     }

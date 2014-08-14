@@ -149,13 +149,13 @@ public class StringLiteral extends Literal
     }
 
     @Override
-    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
+    public Converter<?> getConverter(ExpressContext context, Object source) throws ExpressException
     {
         return new StringConverter();
     }
 
     @Override
-    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
+    public Validator<?> getValidator(ExpressContext context, Object source) throws ExpressException
     {
         return new TextValidator();
     }

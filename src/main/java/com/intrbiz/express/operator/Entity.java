@@ -74,7 +74,7 @@ public class Entity extends Literal
 	}
 
 	@Override
-	public Converter getConverter(ExpressContext context, Object source) throws ExpressException
+	public Converter<?> getConverter(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for chaining of expressions
@@ -90,7 +90,7 @@ public class Entity extends Literal
 	}
 
 	@Override
-	public Validator getValidator(ExpressContext context, Object source) throws ExpressException
+	public Validator<?> getValidator(ExpressContext context, Object source) throws ExpressException
 	{
 		Object obj = context.getEntity(this.getValue(), source);
 		// Allow for chaining of expressions

@@ -177,7 +177,7 @@ public class ArrayInvoke extends BinaryOperator
     }
 
     @Override
-    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
+    public Converter<?> getConverter(ExpressContext context, Object source) throws ExpressException
     {
         // get the entity
         Object entity = this.getLeft().get(context, source);
@@ -207,7 +207,7 @@ public class ArrayInvoke extends BinaryOperator
     }
 
     @Override
-    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
+    public Validator<?> getValidator(ExpressContext context, Object source) throws ExpressException
     {
         // get the entity
         Object entity = this.getLeft().get(context, source);

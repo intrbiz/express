@@ -63,12 +63,12 @@ public class ValueExpression implements Serializable
         this.operator.set(context, in, source);
     }
 
-    public Converter getConverter(ExpressContext context, Object source) throws ExpressException
+    public Converter<?> getConverter(ExpressContext context, Object source) throws ExpressException
     {
         return operator.getConverter(context, source);
     }
 
-    public Validator getValidator(ExpressContext context, Object source) throws ExpressException
+    public Validator<?> getValidator(ExpressContext context, Object source) throws ExpressException
     {
         return operator.getValidator(context, source);
     }
