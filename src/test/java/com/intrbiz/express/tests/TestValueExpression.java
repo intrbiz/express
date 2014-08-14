@@ -1,4 +1,4 @@
-package com.intrbiz.express.sample;
+package com.intrbiz.express.tests;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
