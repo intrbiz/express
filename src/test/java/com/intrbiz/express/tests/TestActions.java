@@ -15,7 +15,7 @@ import com.intrbiz.express.util.ELUtil;
 import com.intrbiz.metadata.Action;
 import com.intrbiz.metadata.ArgName;
 
-public class ActionTests
+public class TestActions
 {   
     @Test
     public void findActionMethods() throws ExpressException

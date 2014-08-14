@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.util.ELUtil;
 
-public class LitteralTests
+public class TestLitterals
 {
 
     @Test
@@ -45,7 +45,7 @@ public class LitteralTests
     public void litteralDouble() throws ExpressException
     {
         Object o;
-        o = ELUtil.parseEL("#{1234.567}", null).get(null, null);
+        o = ELUtil.parseEL("#{1234.567D}", null).get(null, null);
         //
         assertThat(o, is(instanceOf(Double.class)));
         assertThat( (Double) o, is(equalTo(1234.567D)));

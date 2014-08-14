@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.util.ELUtil;
 
-public class MathTests
+public class TestMaths
 {
 
     @Test
