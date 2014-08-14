@@ -3,6 +3,8 @@ package com.intrbiz.express.tests;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,5 +45,28 @@ public class TestEntities
         Object o = ELUtil.parseEL("#{bean.doSomeThing()}", this.context).get(context, null);
         assertThat(o, is(instanceOf(String.class)));
         assertThat( (String) o, is(equalTo("Done")));
+    }
+    
+    @Test()
+    public void testGetSomeMap()
+    {
+        Object o = ELUtil.parseEL("#{bean.someMap}", this.context).get(context, null);
+        assertThat(o, is(instanceOf(Map.class)));
+    }
+    
+    @Test()
+    public void testSomeMapGetNameA()
+    {
+        Object o = ELUtil.parseEL("#{bean.someMap.name_a}", this.context).get(context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat( (String) o, is(equalTo("Value A")));
+    }
+    
+    @Test()
+    public void testSomeMapGetNameB()
+    {
+        Object o = ELUtil.parseEL("#{bean.someMap['name b']}", this.context).get(context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat( (String) o, is(equalTo("Value B")));
     }
 }
