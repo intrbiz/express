@@ -1,28 +1,26 @@
 package com.intrbiz.express.operator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
+import com.intrbiz.express.util.ELReflectUtil;
 
 public class MethodInvoke extends Operator
 {
-
     private Operator left;
 
     private List<Operator> arguments;
 
     private Map<String, Operator> namedParameters = new TreeMap<String, Operator>();
 
-    private static final AtomicReferenceFieldUpdater<MethodInvoke, DecoratorCache> cacheUpdater = AtomicReferenceFieldUpdater.newUpdater(MethodInvoke.class, DecoratorCache.class, "cache");
-
-    private volatile DecoratorCache cache = null;
+    private volatile DecoratorCache decoratorCache = null;
+    
+    private volatile MethodCache methodCache = null;
 
     public MethodInvoke(Operator e, String methodName, List<Operator> arguments, Map<String, Operator> namedParameters)
     {
@@ -97,156 +95,91 @@ public class MethodInvoke extends Operator
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        // what are we accessing methods on
         Object on = this.getLeft().get(context, source);
-        if (on != null)
+        if (on == null) return null;
+        // the class of the object we are accessing
+        Class<?> cls = on.getClass();
+        // evaluate the arguments to assist in overload detection
+        Object[] args = new Object[this.getArguments().size()];
+        int i = 0;
+        for (Operator op : this.getArguments())
         {
-            // evaluate the arguments to assist in overload detection
-            Object[] args = new Object[this.getArguments().size()];
-            int i = 0;
-            for (Operator op : this.getArguments())
-            {
-                args[i++] = op.get(context, source);
-            }
-            // get the class for find the method to call
-            Class<?> cls = on.getClass();
-            for (Method m : cls.getMethods())
-            {
-                if (m.getName().equals(this.getName()) && this.methodMatch(args, m))
-                {
-                    try
-                    {
-                        m.setAccessible(true);
-                        return m.invoke(on, args);
-                    }
-                    catch (IllegalArgumentException e)
-                    {
-                        throw new ExpressException("Error invoking method: " + m + ", operator: " + this.toString(), e);
-                    }
-                    catch (IllegalAccessException e)
-                    {
-                        throw new ExpressException("Error invoking method: " + m + ", operator: " + this.toString(), e);
-                    }
-                    catch (InvocationTargetException e)
-                    {
-                        Throwable te = e.getTargetException();
-                        if (te instanceof RuntimeException)
-                        {
-                            throw (RuntimeException) te;
-                        }
-                        else if (te instanceof Error)
-                        {
-                            throw (Error) te;
-                        }
-                        else if (te instanceof ExpressException) { throw (ExpressException) te; }
-                    }
-                }
-            }
-            // a decorator
-            DecoratorCache cache = this.cache;
-            if (!(cache != null && cls.equals(cache.type)))
-            {
-                // get the decorator for this type
-                Decorator d = context.getCustomDecorator(this.getName(), cls);
-                if (d != null)
-                {
-                    d.setEntity(this.getLeft());
-                    d.setParameters(this.getArguments());
-                    d.setNamedParameters(this.getNamedParameters());
-                    cache = new DecoratorCache(d, cls);
-                    // cache
-                    cacheUpdater.set(this, cache);
-                }
-                else
-                {
-                    // TODO this.logger.warn("Failed to load decorator: " + this.getName() + " for type: " + cls.getName());
-                }
-            }
-            if (cache != null) { return cache.decorator.get(context, source); }
+            args[i++] = op.get(context, source);
         }
+        // find the method to call
+        Method method = this.getMethod(cls, args, context);
+        if (method != null) 
+            return ELReflectUtil.invokeMethod(method, on, args);
+        // maybe this method is a decorator (virtual method)
+        Decorator decorator = this.getDecorator(cls, context);
+        if (decorator != null) 
+            return decorator.get(context, source);
         return null;
     }
-
-    protected boolean methodMatch(Object[] args, Method m)
+    
+    protected Decorator getDecorator(Class<?> onClass, ExpressContext context)
     {
-        Class<?>[] types = m.getParameterTypes();
-        if (args.length == types.length)
+        DecoratorCache cache = this.decoratorCache;
+        if (cache == null || onClass != cache.type)
         {
-            for (int i = 0; i < args.length; i++)
+            // get the decorator for this type
+            Decorator d = context.getCustomDecorator(this.getName(), onClass);
+            if (d != null)
             {
-                Object arg = args[i];
-                Class<?> type = types[i];
-                //
-                if (isPrimitive(type))
+                d.setEntity(this.getLeft());
+                d.setParameters(this.getArguments());
+                d.setNamedParameters(this.getNamedParameters());
+                // cache the loaded decorator
+                cache = new DecoratorCache(d, onClass);
+                if (context.isCaching()) this.decoratorCache = cache;
+            }
+        }
+        return cache == null ? null : cache.decorator;
+    }
+    
+    protected Method getMethod(Class<?> onClass, Object[] args, ExpressContext context)
+    {
+        MethodCache cache = this.methodCache;
+        if (cache == null || onClass != cache.type)
+        {
+            cache = null;
+            for (Method method : onClass.getMethods())
+            {
+                if (method.getName().equals(this.getName()) && ELReflectUtil.methodMatch(method, args))
                 {
-                    if (! primitiveInstanceOf(type, arg))
-                    {
-                        return false;
-                    }
-                }
-                else if (arg != null && (!type.isInstance(arg))) 
-                {
-                    return false;
+                    method.setAccessible(true);
+                    cache = new MethodCache(method, onClass);
+                    if (context.isCaching()) this.methodCache = cache;
+                    break;
                 }
             }
         }
-        else
-        {
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean isPrimitive(Class<?> parameterType)
-    {
-        return int.class == parameterType || long.class == parameterType || float.class == parameterType || double.class == parameterType || boolean.class == parameterType || short.class == parameterType || byte.class == parameterType || char.class == parameterType;
-    }
-
-    private static boolean primitiveInstanceOf(Class<?> parameterType, Object obj)
-    {
-        if (int.class == parameterType)
-        {
-            return obj instanceof Integer;
-        }
-        else if (long.class == parameterType)
-        {
-            return obj instanceof Long;
-        }
-        else if (float.class == parameterType)
-        {
-            return obj instanceof Float;
-        }
-        else if (double.class == parameterType)
-        {
-            return obj instanceof Double;
-        }
-        else if (boolean.class == parameterType)
-        {
-            return obj instanceof Boolean;
-        }
-        else if (short.class == parameterType)
-        {
-            return obj instanceof Short;
-        }
-        else if (byte.class  == parameterType)
-        {
-            return obj instanceof Byte;
-        }
-        else if (char.class == parameterType)
-        {
-            return obj instanceof Character;
-        }
-        return false;
+        return cache == null ? null : cache.method;
     }
 
     private static class DecoratorCache
     {
-        public Decorator decorator;
+        public final Decorator decorator;
 
-        public Class<?> type;
+        public final Class<?> type;
 
         public DecoratorCache(Decorator decorator, Class<?> type)
         {
             this.decorator = decorator;
+            this.type = type;
+        }
+    }
+    
+    private static class MethodCache
+    {
+        public final Method method;
+        
+        public final Class<?> type;
+        
+        public MethodCache(Method method, Class<?> type)
+        {
+            this.method = method;
             this.type = type;
         }
     }

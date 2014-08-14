@@ -1,10 +1,9 @@
 package com.intrbiz.express.util;
 
-import static com.intrbiz.Util.isEmpty;
+import static com.intrbiz.Util.*;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.Method;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
@@ -149,49 +148,4 @@ public class ELUtil
         }
         return op;
     }
-   
-    public static Method findGetter(Object entity, String field)
-    {
-        if (entity == null) return null;
-        String methodName = "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
-        Method[] methods = entity.getClass().getMethods();
-        for (int i = 0; i < methods.length; i++)
-        {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) { return method; }
-        }
-        methodName = "is" + field.substring(0, 1).toUpperCase() + field.substring(1);
-        for (int i = 0; i < methods.length; i++)
-        {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) { return method; }
-        }
-        methodName = field;
-        for (int i = 0; i < methods.length; i++)
-        {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) { return method; }
-        }
-        return null;
-    }
-
-    public static Method findSetter(Object entity, String field)
-    {
-        if (entity == null) return null;
-        String methodName = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);
-        Method[] methods = entity.getClass().getMethods();
-        for (int i = 0; i < methods.length; i++)
-        {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) { return method; }
-        }
-        methodName = field;
-        for (int i = 0; i < methods.length; i++)
-        {
-            Method method = methods[i];
-            if (method.getName().equals(methodName)) { return method; }
-        }
-        return null;
-    }
-
 }
