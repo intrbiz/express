@@ -14,6 +14,8 @@ public class DefaultContext implements ExpressContext
     private final ExpressExtensionRegistry extensions;
 
     private final ExpressEntityResolver resolver;
+    
+    private boolean caching = true;
 
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
     {
@@ -109,5 +111,17 @@ public class DefaultContext implements ExpressContext
     public ELStatementFrame getFrame()
     {
         return this.frame;
+    }
+
+    @Override
+    public boolean isCaching()
+    {
+        return this.caching;
+    }
+
+    @Override
+    public void setCaching(boolean caching)
+    {
+        this.caching = caching;
     }
 }

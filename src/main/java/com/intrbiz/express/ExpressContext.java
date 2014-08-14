@@ -32,4 +32,10 @@ public interface ExpressContext
     void exitFrame();
 
     ELStatementFrame getFrame();
+    
+    // config
+    
+    boolean isCaching();
+    
+    void setCaching(boolean caching);
 }
