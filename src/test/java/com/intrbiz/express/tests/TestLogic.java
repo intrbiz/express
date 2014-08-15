@@ -187,4 +187,42 @@ public class TestLogic
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(true)));
     }
+    
+    // not
+    
+    @Test
+    public void testNotTrue()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{! true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNotTrue2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{not true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNotFalse()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{! false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testNotFalse2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{not false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
 }
