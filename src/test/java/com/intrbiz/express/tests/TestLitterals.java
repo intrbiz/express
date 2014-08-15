@@ -66,4 +66,11 @@ public class TestLitterals
         assertThat( (String) o, is(equalTo("test 'test'")));
     }
 
+    @Test
+    public void litteralNull() throws ExpressException
+    {
+        Object o = ELUtil.parseEL("#{null}", null).get(null, null);
+        assertThat(o, is(nullValue()));
+    }
+    
 }
