@@ -73,4 +73,19 @@ public class TestLitterals
         assertThat(o, is(nullValue()));
     }
     
+    @Test
+    public void litteralTrue() throws ExpressException
+    {
+        Object o = ELUtil.parseEL("#{true}", null).get(null, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void litteralFalse() throws ExpressException
+    {
+        Object o = ELUtil.parseEL("#{false}", null).get(null, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
 }
