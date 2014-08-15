@@ -76,6 +76,15 @@ public class TestLogic
         assertThat((Boolean) o, is(equalTo(true)));
     }
     
+    @Test
+    public void testAnd7()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true && true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
     // or
     
     @Test
@@ -130,6 +139,15 @@ public class TestLogic
         Object o = ve.get(this.context, null);
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testOr7()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true || false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
     }
     
     // precedence
