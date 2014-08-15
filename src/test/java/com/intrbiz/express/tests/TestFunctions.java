@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -100,6 +102,29 @@ public class TestFunctions
     public void testIsEmptyCollectionFalse()
     {
         this.context.setEntity("alist", Arrays.asList("A", "B", "C"), null);
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty('blah')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testIsEmptyMapTrue()
+    {
+        this.context.setEntity("alist", new HashMap<String, String>(), null);
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty(alist)}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testIsEmptyMapFalse()
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("A", "1");
+        map.put("B", "2");
+        this.context.setEntity("alist", map, null);
         ValueExpression ve = new ValueExpression(this.context, "#{isempty('blah')}");
         Object o = ve.get(this.context, null);
         assertThat(o, is(instanceOf(Boolean.class)));

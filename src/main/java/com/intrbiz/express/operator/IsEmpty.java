@@ -1,8 +1,9 @@
 package com.intrbiz.express.operator;
 
-import static com.intrbiz.Util.isEmpty;
+import static com.intrbiz.Util.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
@@ -30,6 +31,10 @@ public class IsEmpty extends Function
         else if (evo instanceof Collection)
         {
         	return ((Collection) evo).isEmpty();
+        }
+        else if (evo instanceof Map)
+        {
+            return ((Map) evo).isEmpty();
         }
         
         return true;
