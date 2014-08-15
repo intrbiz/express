@@ -3,6 +3,8 @@ package com.intrbiz.express.tests;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -52,6 +54,53 @@ public class TestFunctions
     public void testIsNullFalse()
     {
         ValueExpression ve = new ValueExpression(this.context, "#{isnull('test')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testIsEmptyNullTrue()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty(null)}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+
+    @Test
+    public void testIsEmptyStringTrue()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty('')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testIsEmptyStringFalse()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty('blah')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testIsEmptyCollectionTrue()
+    {
+        this.context.setEntity("alist", new LinkedList<String>(), null);
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty(alist)}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testIsEmptyCollectionFalse()
+    {
+        this.context.setEntity("alist", Arrays.asList("A", "B", "C"), null);
+        ValueExpression ve = new ValueExpression(this.context, "#{isempty('blah')}");
         Object o = ve.get(this.context, null);
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(false)));
