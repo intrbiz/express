@@ -131,5 +131,42 @@ public class TestLogic
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(false)));
     }
-
+    
+    // precedence
+    
+    @Test
+    public void testCompound1()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true and true or false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testCompound2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true and false or false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testCompound3()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true or (true or false)}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testCompound4()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true or false and true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
 }
