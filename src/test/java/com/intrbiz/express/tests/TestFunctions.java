@@ -130,4 +130,13 @@ public class TestFunctions
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(false)));
     }
+    
+    @Test
+    public void testURLEncode()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{urlencode('Some /:/@ value to encode')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat((String) o, is(equalTo("Some+%2F%3A%2F%40+value+to+encode")));
+    }
 }
