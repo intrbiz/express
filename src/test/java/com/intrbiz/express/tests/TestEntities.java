@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.intrbiz.express.DefaultContext;
 import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.operator.Operator;
 import com.intrbiz.express.tests.model.SomeBean;
 import com.intrbiz.express.util.ELUtil;
 
@@ -76,5 +77,21 @@ public class TestEntities
         Object o = ELUtil.parseEL("#{bean.someBool}", this.context).get(context, null);
         assertThat(o, is(instanceOf(Boolean.class)));
         assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test()
+    public void testGetSetSomeProperty()
+    {
+        Operator op = ELUtil.parseEL("#{bean.someProperty}", this.context);
+        // get
+        Object a = op.get(context, null);
+        assertThat(a, is(instanceOf(String.class)));
+        assertThat((String) a, is(equalTo("Has a value")));
+        // set
+        op.set(context, "Some different value", null);
+        // get again
+        Object b = op.get(context, null);
+        assertThat(b, is(instanceOf(String.class)));
+        assertThat((String) b, is(equalTo("Some different value")));
     }
 }
