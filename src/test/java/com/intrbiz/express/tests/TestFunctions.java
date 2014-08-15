@@ -139,4 +139,13 @@ public class TestFunctions
         assertThat(o, is(instanceOf(String.class)));
         assertThat((String) o, is(equalTo("Some+%2F%3A%2F%40+value+to+encode")));
     }
+    
+    @Test
+    public void testURLDecode()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{urldecode('Some%20%2F%3A%2F%40%20value%20to%20encode')}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat((String) o, is(equalTo("Some /:/@ value to encode")));
+    }
 }
