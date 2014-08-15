@@ -58,4 +58,42 @@ public class TestLogic
         assertThat((Boolean) o, is(equalTo(false)));
     }
     
+    // or
+    
+    @Test
+    public void testOr1()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true or true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testOr2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true or false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testOr3()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{false or true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testOr4()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{false or false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
 }
