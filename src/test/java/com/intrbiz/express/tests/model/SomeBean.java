@@ -9,6 +9,8 @@ public class SomeBean
     
     private Map<String, String> someMap = new HashMap<String, String>();
     
+    private boolean someBool = true;
+    
     public SomeBean()
     {
         super();
@@ -39,5 +41,15 @@ public class SomeBean
     public void setSomeMap(Map<String, String> someMap)
     {
         this.someMap = someMap;
+    }
+
+    public boolean isSomeBool()
+    {
+        return someBool;
+    }
+
+    public void setSomeBool(boolean someBool)
+    {
+        this.someBool = someBool;
     }
 }

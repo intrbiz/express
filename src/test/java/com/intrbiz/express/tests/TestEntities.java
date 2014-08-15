@@ -69,4 +69,12 @@ public class TestEntities
         assertThat(o, is(instanceOf(String.class)));
         assertThat( (String) o, is(equalTo("Value B")));
     }
+    
+    @Test()
+    public void testSomeBoole()
+    {
+        Object o = ELUtil.parseEL("#{bean.someBool}", this.context).get(context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
 }
