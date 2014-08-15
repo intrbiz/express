@@ -58,6 +58,24 @@ public class TestLogic
         assertThat((Boolean) o, is(equalTo(false)));
     }
     
+    @Test
+    public void testAnd5()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true and true and false and true and false and true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testAnd6()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true and true and true and true and true and true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
     // or
     
     @Test
@@ -96,4 +114,22 @@ public class TestLogic
         assertThat((Boolean) o, is(equalTo(false)));
     }
     
+    @Test
+    public void testOr5()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true or true or false or true or false or true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testOr6()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{false or false or false or false or false or false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+
 }
