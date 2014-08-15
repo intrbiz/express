@@ -240,4 +240,115 @@ public class TestEquality
         assertThat((Boolean) o, is(equalTo(false)));
     }
     
+    // lt
+    
+    @Test
+    public void testLt1()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 < 2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 < 2L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt3()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1L < 2L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt4()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{-1 < 2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt5()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{2 < 1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testLt6()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{-2 < -1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt7()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 lt 2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt8()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 lt 2L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt9()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1L lt 2L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt10()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{-1 lt 2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testLt11()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{2 lt 1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testLt12()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{-2 lt -1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    
 }
