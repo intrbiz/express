@@ -130,4 +130,114 @@ public class TestEquality
         assertThat((Boolean) o, is(equalTo(true)));
     }
     
+    // not equal
+    
+    @Test
+    public void testNe1()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 ne 1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1.2 ne 1.2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe3()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{10000L ne 10000L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe4()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1.2D ne 1.2D}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+   
+    @Test
+    public void testNe5()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{'test' ne 'test'}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe6()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 ne 1L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe7()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 != 1}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe8()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1.2 != 1.2}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe9()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{10000L != 10000L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe10()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1.2D != 1.2D}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+   
+    @Test
+    public void testNe11()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{'test' != 'test'}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testNe12()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{1 != 1L}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
 }
