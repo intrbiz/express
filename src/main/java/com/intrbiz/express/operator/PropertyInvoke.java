@@ -21,6 +21,10 @@ public class PropertyInvoke extends Operator
 	private volatile MethodCache getterCache;
 	
 	private volatile MethodCache setterCache;
+	
+	private volatile ConverterCache converterCache;
+	
+	private volatile ValidatorCache validatorCache;
 
 	public PropertyInvoke(Operator e, String property)
 	{
@@ -110,6 +114,44 @@ public class PropertyInvoke extends Operator
         }
         return cache == null ? null : cache.method;
     }
+	
+	   protected Converter<?> getConverter(Method method)
+	    {
+	        ConverterCache cache = this.converterCache;
+	        if (cache == null || cache.method != method)
+	        {
+	            cache = null;
+	            try
+	            {
+	                cache = new ConverterCache(Converter.fromMethod(method), method);
+	                this.converterCache = cache;
+	            }
+	            catch (Exception e)
+	            {
+	                throw new ExpressException("Could not get converter");
+	            }
+	        }
+	        return cache == null ? null : cache.converter;
+	    }
+	    
+	    protected Validator<?> getValidator(Method method)
+	    {
+	        ValidatorCache cache = this.validatorCache;
+	        if (cache == null || cache.method != method)
+	        {
+	            cache = null;
+	            try
+	            {
+	                cache = new ValidatorCache(Validator.fromMethod(method), method);
+	                this.validatorCache = cache;
+	            }
+	            catch (Exception e)
+	            {
+	                throw new ExpressException("Could not get validator");
+	            }
+	        }
+	        return cache == null ? null : cache.validator;
+	    }
 
 	@Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
@@ -175,16 +217,7 @@ public class PropertyInvoke extends Operator
 		{
 			Method getter = this.getGetter(entity.getClass(), property, context);
 			if (getter != null)
-			{
-    			try
-    			{
-    				return Converter.fromMethod(getter);
-    			}
-    			catch (Exception e)
-    			{
-    				throw new ExpressException("Could not get converter");
-    			}
-			}
+			    return this.getConverter(getter);
 		}
 		return null;
 	}
@@ -206,16 +239,7 @@ public class PropertyInvoke extends Operator
 		{
 			Method getter = this.getGetter(entity.getClass(), property, context);
 			if (getter != null)
-			{
-    			try
-    			{
-    				return Validator.fromMethod(getter);
-    			}
-    			catch (Exception e)
-    			{
-    				throw new ExpressException("Could not get validator");
-    			}
-			}
+			    return this.getValidator(getter);
 		}
 		return null;
 	}
@@ -232,4 +256,30 @@ public class PropertyInvoke extends Operator
 	        this.type = type;
 	    }
 	}
+	
+	private static class ConverterCache
+	{
+	    public final Converter<?> converter;
+	    
+	    public final Method method;
+	    
+	    public ConverterCache(Converter<?> converter, Method method)
+	    {
+	        this.converter = converter;
+	        this.method = method;
+	    }
+	}
+	
+	private static class ValidatorCache
+    {
+        public final Validator<?> validator;
+        
+        public final Method method;
+        
+        public ValidatorCache(Validator<?> validator, Method method)
+        {
+            this.validator = validator;
+            this.method = method;
+        }
+    }
 }
