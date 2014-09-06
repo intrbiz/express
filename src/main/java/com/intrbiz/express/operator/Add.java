@@ -62,4 +62,10 @@ public class Add extends BinaryOperator
     public void set(ExpressContext context, Object value, Object source) throws ExpressException
     {
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

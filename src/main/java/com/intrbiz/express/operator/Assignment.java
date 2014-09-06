@@ -25,4 +25,10 @@ public class Assignment extends BinaryOperator
         this.getLeft().set(context, r, source);
         return null;
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

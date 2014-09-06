@@ -27,4 +27,9 @@ public abstract class UnaryOperator extends Operator
 		return this.getName() + " " + this.getOperator();
 	}
 
+	@Override
+    public boolean isConstant()
+    {
+        return this.getOperator().isConstant();
+    }
 }

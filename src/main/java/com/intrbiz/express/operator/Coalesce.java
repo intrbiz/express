@@ -26,6 +26,9 @@ public class Coalesce extends Function
     	return null;
     }
     
-    
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

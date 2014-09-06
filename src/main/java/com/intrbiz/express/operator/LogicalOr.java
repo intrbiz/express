@@ -38,7 +38,9 @@ public class LogicalOr extends BinaryOperator
     {
     }
     
-    
-    
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

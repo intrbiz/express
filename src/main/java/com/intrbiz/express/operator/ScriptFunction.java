@@ -85,4 +85,10 @@ public class ScriptFunction extends Function
             context.exitFrame();
         }
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

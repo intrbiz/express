@@ -248,4 +248,10 @@ public class ArrayInvoke extends BinaryOperator
             this.type = type;
         }
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

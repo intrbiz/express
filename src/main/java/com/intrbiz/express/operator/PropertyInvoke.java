@@ -282,4 +282,10 @@ public class PropertyInvoke extends Operator
             this.method = method;
         }
     }
+	
+	@Override
+    public boolean isConstant()
+    {
+        return false;
+    }
 }

@@ -9,7 +9,6 @@ import com.intrbiz.express.ExpressException;
 
 public class NewObject extends Operator
 {
-
     private String className;
 
     private List<Operator> arguments;
@@ -127,5 +126,11 @@ public class NewObject extends Operator
         }
         sb.append(")");
         return sb.toString();
+    }
+    
+    @Override
+    public boolean isConstant()
+    {
+        return false;
     }
 }

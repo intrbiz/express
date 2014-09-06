@@ -37,4 +37,9 @@ public class InstanceOf extends Function
         }
     }
 
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

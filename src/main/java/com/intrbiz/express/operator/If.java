@@ -30,6 +30,9 @@ public class If extends Function
         }
     }
     
-    
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

@@ -22,4 +22,10 @@ public class GetUUID extends Function
     public void set(ExpressContext context, Object value,Object source) throws ExpressException
     {
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

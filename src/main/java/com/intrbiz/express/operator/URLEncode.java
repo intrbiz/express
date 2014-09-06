@@ -7,7 +7,6 @@ import com.intrbiz.express.ExpressException;
 
 public class URLEncode extends Function
 {
-
 	public URLEncode()
 	{
 		super("urlencode");
@@ -37,4 +36,9 @@ public class URLEncode extends Function
 	{
 	}
 
+	@Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

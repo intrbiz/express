@@ -29,4 +29,10 @@ public abstract class Literal extends Operator
 	public void set(ExpressContext context, Object value, Object source) throws ExpressException
 	{
 	}
+	
+	@Override
+	public boolean isConstant()
+	{
+	    return true;
+	}
 }

@@ -108,4 +108,10 @@ public class ActionOperator extends Function
         this.actionArguments = args;
         this.action = a;
     }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

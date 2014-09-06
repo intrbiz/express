@@ -50,4 +50,18 @@ public abstract class BinaryOperator extends Operator
 	{
 		return  (this.getLeft() == null ? "" : this.getLeft() + " ") + this.getName() + " " + this.getRight();
 	}
+	
+	@Override
+    public boolean isConstant()
+    {
+        return this.isIdempotent() && this.getLeft().isConstant() && this.getRight().isConstant();
+    }
+	
+	/**
+     * Does this operation return the same result given the same arguments
+     */
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

@@ -17,6 +17,12 @@ public class Print extends Function
 		Operator op = this.getParameters().get(0);
 		Object val = op.get(context, source);
 		System.out.println(val);
-		return null;
+		return val;
 	}
+	
+	@Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

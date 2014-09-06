@@ -28,6 +28,9 @@ public class IntCast extends Function
     {
     }
     
-    
-        
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

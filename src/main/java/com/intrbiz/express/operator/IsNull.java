@@ -15,13 +15,13 @@ public class IsNull extends Function
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
         Operator ev = this.getParameters().get(0);
-        
         Object evo = ev.get(context,source);
-
         return evo == null;
-        
     }
     
-    
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

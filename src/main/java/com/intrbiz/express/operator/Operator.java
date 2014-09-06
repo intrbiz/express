@@ -51,4 +51,13 @@ public abstract class Operator
     {
         throw new ExpressException("Cannot get validator,  expression contains a operater") ;
     }
+    
+    /**
+     * Is this operator constant, IE: will it always evaluate 
+     * to the same value, making it ideal to optimisation.
+     */
+    public boolean isConstant()
+    {
+        return false;
+    }
 }
