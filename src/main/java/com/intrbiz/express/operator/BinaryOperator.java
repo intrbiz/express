@@ -54,7 +54,7 @@ public abstract class BinaryOperator extends Operator
 	@Override
     public boolean isConstant()
     {
-        return this.isIdempotent() && this.getLeft().isConstant() && this.getRight().isConstant();
+        return this.isIdempotent() && (this.getLeft() == null ? true : this.getLeft().isConstant()) && (this.getRight() == null ? true : this.getRight().isConstant());
     }
 	
 	/**
