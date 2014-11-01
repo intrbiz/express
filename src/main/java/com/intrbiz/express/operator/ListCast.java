@@ -41,5 +41,9 @@ public class ListCast extends Function
         return ret ;
     }
     
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

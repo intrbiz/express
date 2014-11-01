@@ -14,6 +14,12 @@ public class ValueExpression implements Serializable
     private static final long serialVersionUID = 1L;
 
     private Operator operator = null;
+    
+    private boolean constant = false;
+    
+    private volatile boolean cached = false;
+    
+    private volatile Object cachedValue;
 
     public ValueExpression()
     {
@@ -40,11 +46,17 @@ public class ValueExpression implements Serializable
     protected void setOperator(Operator operator)
     {
         this.operator = operator;
+        this.constant = this.operator.isConstant();
     }
 
     public Operator getOperator()
     {
         return this.operator;
+    }
+    
+    public boolean isConstant()
+    {
+        return this.constant;
     }
 
     @Override
@@ -55,7 +67,17 @@ public class ValueExpression implements Serializable
 
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
-        return this.operator.get(context, source);
+        // check if we have a cached value
+        if (this.cached) return this.cachedValue;
+        // eval
+        Object value = this.operator.get(context, source);
+        // cache constant expressions
+        if (this.constant)
+        {
+            this.cachedValue = value;
+            this.cached = true;
+        }
+        return value;
     }
 
     public void set(ExpressContext context, Object in, Object source) throws ExpressException

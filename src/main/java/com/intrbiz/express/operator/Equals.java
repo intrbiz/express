@@ -45,4 +45,10 @@ public class Equals extends BinaryOperator
 		}
 		return new Boolean(left.equals(right));
 	}
+	
+	@Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

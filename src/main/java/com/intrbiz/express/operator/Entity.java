@@ -104,4 +104,10 @@ public class Entity extends Literal
 		}
 		return null;		
 	}
+	
+	@Override
+	public boolean isConstant()
+	{
+	    return false;
+	}
 }

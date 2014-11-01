@@ -28,6 +28,9 @@ public class FloatCast extends Function
     {
     }
     
-    
-        
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }   
 }

@@ -22,12 +22,16 @@ public class LogicalNot extends UnaryOperator
 	{
 		Operator val = this.getOperator();
 		Object eval = val.get(context, source);
-		if (eval instanceof Boolean)
+		if (eval == null)
+		{
+		    return true;
+		}
+		else if (eval instanceof Boolean)
 		{
 			boolean beval = ((Boolean) eval).booleanValue();
 			return new Boolean(!beval);
 		}
-		return null;
+		return false;
 	}
 
 	@Override

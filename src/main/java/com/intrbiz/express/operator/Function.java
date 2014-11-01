@@ -134,4 +134,29 @@ public abstract class Function extends Operator
         throw new ExpressException("Cannot set value, expression contains a function");
     }
 
+    @Override
+    public boolean isConstant()
+    {
+        if (! this.isIdempotent()) return false;
+        for (Operator op : this.getParameters())
+        {
+            if (! op.isConstant())
+                return false;
+        }
+        for (Operator op : this.getNamedParameters().values())
+        {
+            if (! op.isConstant())
+                return false;
+        }
+        return true;
+    }
+    
+    /**
+     * If given the same arguments does this function return the same result.
+     * @return true if the result of this function is the same given the same arguments everytime it is invoked.
+     */
+    public boolean isIdempotent()
+    {
+        return false;
+    }
 }

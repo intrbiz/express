@@ -24,6 +24,9 @@ public class StringCast extends Function
     {
     }
     
-    
-        
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

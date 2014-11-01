@@ -5,7 +5,6 @@ import com.intrbiz.express.ExpressException;
 
 public class DoubleCast extends Function
 {
-
     public DoubleCast()
     {
         super("double");
@@ -28,6 +27,9 @@ public class DoubleCast extends Function
     {
     }
     
-    
-        
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

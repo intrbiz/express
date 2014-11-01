@@ -183,4 +183,10 @@ public class MethodInvoke extends Operator
             this.type = type;
         }
     }
+    
+    @Override
+    public boolean isConstant()
+    {
+        return false;
+    }
 }

@@ -5,7 +5,6 @@ import com.intrbiz.express.ExpressException;
 
 public class LT extends BinaryOperator
 {
-    
     public LT()
     {
         super("<");
@@ -52,5 +51,11 @@ public class LT extends BinaryOperator
     @Override
     public void set(ExpressContext context, Object value, Object source) throws ExpressException
     {
+    }
+    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
     }
 }

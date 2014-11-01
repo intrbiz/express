@@ -40,6 +40,9 @@ public class IsEmpty extends Function
         return true;
     }
     
-    
-    
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }

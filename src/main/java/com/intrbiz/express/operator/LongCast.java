@@ -28,6 +28,9 @@ public class LongCast extends Function
     {
     }
     
-    
-        
+    @Override
+    public boolean isIdempotent()
+    {
+        return true;
+    }
 }
