@@ -4,7 +4,7 @@
 
   <groupId>com.intrbiz.express</groupId>
   <artifactId>express</artifactId>
-  <version>4.0.0-rc-1</version>
+  <version>4.0.0-rc-2</version>
   <packaging>jar</packaging>
 
   <name>Intrbiz Express</name>
