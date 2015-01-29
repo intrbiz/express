@@ -8,7 +8,6 @@
   <packaging>jar</packaging>
 
   <name>Intrbiz Express</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,22 +41,34 @@
 	</distributionManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.10</version>
-      <scope>test</scope>
-    </dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit-dep</artifactId>
+		<version>4.10</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.hamcrest</groupId>
+		<artifactId>hamcrest-core</artifactId>
+		<version>1.1</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.hamcrest</groupId>
+		<artifactId>hamcrest-library</artifactId>
+		<version>1.1</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.hamcrest</groupId>
+		<artifactId>hamcrest-integration</artifactId>
+		<version>1.1</version>
+		<scope>test</scope>
+	</dependency>
     <dependency>
     	<groupId>com.intrbiz.core</groupId>
     	<artifactId>core</artifactId>
-    	<version>1.0.0-rc-2</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.hamcrest</groupId>
-    	<artifactId>hamcrest-all</artifactId>
-    	<version>1.1</version>
-	<scope>test</scope>
+    	<version>1.0.0</version>
     </dependency>
     <dependency>
     	<groupId>log4j</groupId>
