@@ -62,7 +62,7 @@ public class WhileStatement extends ControlStatement
         StringBuilder sb = new StringBuilder();
         sb.append(p).append("while (").append(this.getTest().toString()).append(") {\r\n");
         sb.append(this.block.toString(p + "  "));
-        sb.append(p).append("}");
+        sb.append(p).append("}\r\n");
         return sb.toString();
     }
 }

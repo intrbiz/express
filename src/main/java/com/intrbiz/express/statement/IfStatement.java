@@ -106,21 +106,21 @@ public class IfStatement extends ControlStatement
         StringBuilder sb = new StringBuilder();
         sb.append(p).append("if (").append(this.getTest().toString()).append(") {\r\n");
         sb.append(this.getTrueBlock().toString(p + "  "));
-        sb.append(p).append("}");
+        sb.append(p).append("}\r\n");
         if (this.getElseIfs() != null)
         {
             for (ElseIfStatement eis : this.getElseIfs())
             {
                 sb.append(p).append("\r\nelse if (").append(eis.getTest().toString()).append(") {\r\n");
                 sb.append(eis.getBlock().toString(p + "  "));
-                sb.append(p).append("}");                
+                sb.append(p).append("}\r\n");                
             }
         }
         if (this.getFalseBlock() != null)
         {
             sb.append(p).append("\r\nelse {\r\n");
             sb.append(this.getFalseBlock().toString(p + "  "));
-            sb.append(p).append("}");
+            sb.append(p).append("}\r\n");
         }
         return sb.toString();
     }

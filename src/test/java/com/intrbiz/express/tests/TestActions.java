@@ -10,6 +10,7 @@ import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.action.MethodActionHandler;
 import com.intrbiz.express.operator.ActionOperator;
 import com.intrbiz.express.operator.Operator;
+import com.intrbiz.express.operator.Wrapped;
 import com.intrbiz.express.util.ELUtil;
 import com.intrbiz.metadata.Action;
 import com.intrbiz.metadata.ArgName;
@@ -34,7 +35,7 @@ public class TestActions
         //
         System.out.println(o.toString());
         //
-        assertThat(o, is(instanceOf(ActionOperator.class)));
+        assertThat(((Wrapped) o).getOperator(), is(instanceOf(ActionOperator.class)));
     }
     
     @Test
@@ -45,7 +46,7 @@ public class TestActions
         //
         System.out.println(o.toString());
         //
-        assertThat(o, is(instanceOf(ActionOperator.class)));
+        assertThat(((Wrapped) o).getOperator(), is(instanceOf(ActionOperator.class)));
     }
     
     @Test
@@ -56,7 +57,7 @@ public class TestActions
         //
         System.out.println(o.toString());
         //
-        assertThat(o, is(instanceOf(ActionOperator.class)));
+        assertThat(((Wrapped) o).getOperator(), is(instanceOf(ActionOperator.class)));
     }
     
     public static class ThingWithActions

@@ -19,6 +19,6 @@ public class BreakStatement extends Statement
 
     public String toString(String p)
     {
-        return p  + "break;";
+        return p  + "break;\r\n";
     }
 }

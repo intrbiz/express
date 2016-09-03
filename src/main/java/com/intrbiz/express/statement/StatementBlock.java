@@ -9,10 +9,18 @@ import com.intrbiz.express.ExpressException;
 public class StatementBlock extends Statement
 {
     private List<Statement> statements = new LinkedList<Statement>();
+    
+    private boolean tagged;
 
     public StatementBlock()
     {
         super();
+    }
+    
+    public StatementBlock(boolean tagged)
+    {
+        super();
+        this.tagged = tagged;
     }
 
     public StatementBlock(List<Statement> statements)
@@ -49,13 +57,25 @@ public class StatementBlock extends Statement
         this.statements = statements;
     }
 
+    public boolean isTagged()
+    {
+        return tagged;
+    }
+
+    public void setTagged(boolean tagged)
+    {
+        this.tagged = tagged;
+    }
+
     public String toString(String p)
     {
         StringBuilder sb = new StringBuilder();
+        if (this.tagged) sb.append("<# ");
         for (Statement s : this.getStatements())
         {
-            sb.append(s.toString(p)).append("\r\n");
+            sb.append(s.toString(p));
         }
+        if (this.tagged) sb.append(" #>");
         return sb.toString();
     }
 }

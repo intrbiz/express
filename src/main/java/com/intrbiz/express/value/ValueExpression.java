@@ -39,8 +39,8 @@ public class ValueExpression implements Serializable
 
     public void parse(ExpressContext context, String expression) throws ExpressException
     {
-        // Treat as a string with embedded EL expressions
-        this.setOperator(ELUtil.parseEmbeddedEL(expression, context));
+        Operator op = ELUtil.parseEL(expression, context);
+        this.setOperator(op);
     }
 
     protected void setOperator(Operator operator)
@@ -62,7 +62,7 @@ public class ValueExpression implements Serializable
     @Override
     public String toString()
     {
-        return "#{" + String.valueOf(this.operator) + "}";
+        return String.valueOf(this.operator);
     }
 
     public Object get(ExpressContext context, Object source) throws ExpressException

@@ -91,7 +91,7 @@ public class ForStatement extends ControlStatement
         StringBuilder sb = new StringBuilder();
         sb.append(p).append("for (").append(this.getAssignment().toString()).append("; ").append(this.getTest().toString()).append("; ").append(this.getIncrement().toString()).append(") {\r\n");
         sb.append(this.block.toString(p + "  "));
-        sb.append(p).append("}");
+        sb.append(p).append("}\r\n");
         return sb.toString();
     }
 }

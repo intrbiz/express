@@ -29,6 +29,6 @@ public class ExportStatement extends Statement
 
     public String toString(String p)
     {
-        return p + "export " + this.getVariable() + ";";
+        return p + "export " + this.getVariable() + ";\r\n";
     }
 }

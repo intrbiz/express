@@ -3,7 +3,6 @@ package com.intrbiz.express.operator;
 
 public abstract class UnaryOperator extends Operator
 {
-
 	private Operator value;
 
 	protected UnaryOperator(String name)

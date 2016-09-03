@@ -67,7 +67,7 @@ public class ValueScript implements Serializable
         ELParser parser = new ELParser(new StringReader(script));
         try
         {
-            this.statement = parser.readStatements(context);
+            this.statement = parser.readFullStatements(context);
         }
         catch (TokenMgrError e)
         {

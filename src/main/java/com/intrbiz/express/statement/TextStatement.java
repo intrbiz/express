@@ -4,16 +4,16 @@ import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
-public class DefaultStatement extends Statement
+public class TextStatement extends Statement
 {
     private Operator operator;
     
-    public DefaultStatement()
+    public TextStatement()
     {
         super();
     }
     
-    public DefaultStatement(Operator operator)
+    public TextStatement(Operator operator)
     {
         this();
         this.operator = operator;
@@ -21,7 +21,7 @@ public class DefaultStatement extends Statement
     
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        this.getOperator().get(ctx, source);
+        System.out.println("Text: " + this.getOperator().get(ctx, source));
     }
 
     public Operator getOperator()
@@ -36,6 +36,6 @@ public class DefaultStatement extends Statement
     
     public String toString(String p)
     {
-        return p + this.getOperator().toString() + ";\r\n";
+        return this.getOperator().toString();
     }
 }

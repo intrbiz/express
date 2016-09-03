@@ -11,113 +11,113 @@ public interface ELParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int DIGITS = 6;
+  int NON_EXPRESSION_TEXT = 1;
   /** RegularExpression Id. */
-  int DOT = 7;
+  int START_EXPRESSION = 2;
   /** RegularExpression Id. */
-  int ADD = 8;
+  int START_SCRIPT = 3;
   /** RegularExpression Id. */
-  int SUB = 9;
+  int DIGITS = 9;
   /** RegularExpression Id. */
-  int MUL = 10;
+  int DOT = 10;
   /** RegularExpression Id. */
-  int DIV = 11;
+  int ADD = 11;
   /** RegularExpression Id. */
-  int DIV1 = 12;
+  int SUB = 12;
   /** RegularExpression Id. */
-  int POW = 13;
+  int MUL = 13;
   /** RegularExpression Id. */
-  int MOD = 14;
+  int DIV = 14;
   /** RegularExpression Id. */
-  int MOD1 = 15;
+  int DIV1 = 15;
   /** RegularExpression Id. */
-  int EQ = 16;
+  int POW = 16;
   /** RegularExpression Id. */
-  int EQ1 = 17;
+  int MOD = 17;
   /** RegularExpression Id. */
-  int NE = 18;
+  int MOD1 = 18;
   /** RegularExpression Id. */
-  int NE1 = 19;
+  int EQ = 19;
   /** RegularExpression Id. */
-  int GT = 20;
+  int EQ1 = 20;
   /** RegularExpression Id. */
-  int GT1 = 21;
+  int NE = 21;
   /** RegularExpression Id. */
-  int LT = 22;
+  int NE1 = 22;
   /** RegularExpression Id. */
-  int LT1 = 23;
+  int GT = 23;
   /** RegularExpression Id. */
-  int GTEQ = 24;
+  int GT1 = 24;
   /** RegularExpression Id. */
-  int GTEQ1 = 25;
+  int LT = 25;
   /** RegularExpression Id. */
-  int LTEQ = 26;
+  int LT1 = 26;
   /** RegularExpression Id. */
-  int LTEQ1 = 27;
+  int GTEQ = 27;
   /** RegularExpression Id. */
-  int OR = 28;
+  int GTEQ1 = 28;
   /** RegularExpression Id. */
-  int OR1 = 29;
+  int LTEQ = 29;
   /** RegularExpression Id. */
-  int AND = 30;
+  int LTEQ1 = 30;
   /** RegularExpression Id. */
-  int AND1 = 31;
+  int OR = 31;
   /** RegularExpression Id. */
-  int NOT = 32;
+  int OR1 = 32;
   /** RegularExpression Id. */
-  int NOT1 = 33;
+  int AND = 33;
   /** RegularExpression Id. */
-  int STCOMP = 34;
+  int AND1 = 34;
   /** RegularExpression Id. */
-  int EDCOMP = 35;
+  int NOT = 35;
   /** RegularExpression Id. */
-  int ARGSEP = 36;
+  int NOT1 = 36;
   /** RegularExpression Id. */
-  int STARR = 37;
+  int STCOMP = 37;
   /** RegularExpression Id. */
-  int EDARR = 38;
+  int EDCOMP = 38;
   /** RegularExpression Id. */
-  int NEW = 39;
+  int ARGSEP = 39;
   /** RegularExpression Id. */
-  int RETURN = 40;
+  int STARR = 40;
   /** RegularExpression Id. */
-  int IF = 41;
+  int EDARR = 41;
   /** RegularExpression Id. */
-  int ELSE = 42;
+  int ASSIGNMENT = 42;
   /** RegularExpression Id. */
-  int IN = 43;
+  int ADDASSIGNMENT = 43;
   /** RegularExpression Id. */
-  int FOR = 44;
+  int SUBASSIGNMENT = 44;
   /** RegularExpression Id. */
-  int WHILE = 45;
+  int MULASSIGNMENT = 45;
   /** RegularExpression Id. */
-  int BREAK = 46;
+  int DIVASSIGNMENT = 46;
   /** RegularExpression Id. */
-  int EXPORT = 47;
+  int POWASSIGNMENT = 47;
   /** RegularExpression Id. */
-  int STARTBLOCK = 48;
+  int MODASSIGNMENT = 48;
   /** RegularExpression Id. */
-  int ENDBLOCK = 49;
+  int INCASSIGNMENT = 49;
   /** RegularExpression Id. */
-  int ASSIGNMENT = 50;
+  int DECASSIGNMENT = 50;
   /** RegularExpression Id. */
-  int ADDASSIGNMENT = 51;
+  int NEW = 51;
   /** RegularExpression Id. */
-  int SUBASSIGNMENT = 52;
+  int RETURN = 52;
   /** RegularExpression Id. */
-  int MULASSIGNMENT = 53;
+  int IF = 53;
   /** RegularExpression Id. */
-  int DIVASSIGNMENT = 54;
+  int ELSE = 54;
   /** RegularExpression Id. */
-  int POWASSIGNMENT = 55;
+  int IN = 55;
   /** RegularExpression Id. */
-  int MODASSIGNMENT = 56;
+  int FOR = 56;
   /** RegularExpression Id. */
-  int INCASSIGNMENT = 57;
+  int WHILE = 57;
   /** RegularExpression Id. */
-  int DECASSIGNMENT = 58;
+  int BREAK = 58;
   /** RegularExpression Id. */
-  int STATEMENT = 59;
+  int EXPORT = 59;
   /** RegularExpression Id. */
   int LACTION = 60;
   /** RegularExpression Id. */
@@ -143,30 +143,47 @@ public interface ELParserConstants {
   /** RegularExpression Id. */
   int LSTRING = 71;
   /** RegularExpression Id. */
-  int QUOTE = 72;
+  int END_EXPRESSION = 72;
   /** RegularExpression Id. */
-  int ENDQUOTE = 74;
+  int QUOTE = 73;
   /** RegularExpression Id. */
-  int CHAR = 75;
+  int STARTBLOCK = 74;
   /** RegularExpression Id. */
-  int CNTRLESC = 76;
+  int ENDBLOCK = 75;
   /** RegularExpression Id. */
-  int HEX = 78;
+  int STATEMENT = 76;
   /** RegularExpression Id. */
-  int HEXESC = 79;
+  int END_SCRIPT = 77;
+  /** RegularExpression Id. */
+  int ENDQUOTE = 79;
+  /** RegularExpression Id. */
+  int CHAR = 80;
+  /** RegularExpression Id. */
+  int CNTRLESC = 81;
+  /** RegularExpression Id. */
+  int HEX = 83;
+  /** RegularExpression Id. */
+  int HEXESC = 84;
 
   /** Lexical state. */
   int DEFAULT = 0;
   /** Lexical state. */
-  int STRINGSTATE = 1;
+  int IN_EXPRESSION = 1;
   /** Lexical state. */
-  int ESCSTATE = 2;
+  int IN_SCRIPT = 2;
   /** Lexical state. */
-  int HEXSTATE = 3;
+  int STRINGSTATE = 3;
+  /** Lexical state. */
+  int ESCSTATE = 4;
+  /** Lexical state. */
+  int HEXSTATE = 5;
 
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
+    "<NON_EXPRESSION_TEXT>",
+    "\"#{\"",
+    "\"<#\"",
     "\" \"",
     "\"\\t\"",
     "\"\\n\"",
@@ -205,17 +222,6 @@ public interface ELParserConstants {
     "\",\"",
     "\"[\"",
     "\"]\"",
-    "\"new\"",
-    "\"return\"",
-    "\"if\"",
-    "\"else\"",
-    "\"in\"",
-    "\"for\"",
-    "\"while\"",
-    "\"break\"",
-    "\"export\"",
-    "\"{\"",
-    "\"}\"",
     "\"=\"",
     "\"+=\"",
     "\"-=\"",
@@ -225,7 +231,15 @@ public interface ELParserConstants {
     "\"%=\"",
     "\"++\"",
     "\"--\"",
-    "\";\"",
+    "\"new\"",
+    "\"return\"",
+    "\"if\"",
+    "\"else\"",
+    "\"in\"",
+    "\"for\"",
+    "\"while\"",
+    "\"break\"",
+    "\"export\"",
     "\"@\"",
     "<NLINT>",
     "<NLLONG>",
@@ -238,7 +252,12 @@ public interface ELParserConstants {
     "<ESCAPECHAR>",
     "<UESCAPECHAR>",
     "<LSTRING>",
+    "\"}\"",
     "\"\\\"\"",
+    "\"{\"",
+    "\"}\"",
+    "\";\"",
+    "\"#>\"",
     "\"\\\\\"",
     "<ENDQUOTE>",
     "<CHAR>",

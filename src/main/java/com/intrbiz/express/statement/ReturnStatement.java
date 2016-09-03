@@ -26,6 +26,6 @@ public class ReturnStatement extends DefaultStatement
 
     public String toString(String p)
     {
-        return p  + "return " + this.getOperator().toString() + ";";
+        return p  + "return " + this.getOperator().toString() + ";\r\n";
     }
 }
