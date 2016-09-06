@@ -13,13 +13,13 @@ public class TestScript
 {
     public static void main(String[] args)
     {
-        // the context
-        ExpressContext context = new DefaultContext(new PrintWriter(System.out));
-        context.setEntity("title", "Template Test", null);
-        context.setEntity("list", Arrays.asList("A", "B", "C"), null);
         // the loader
         TemplateLoader loader = new TemplateLoader();
         loader.addSource(new ClassPathTemplateSource());
+        // the context
+        ExpressContext context = new DefaultContext(new PrintWriter(System.out), loader);
+        context.setEntity("title", "Template Test", null);
+        context.setEntity("list", Arrays.asList("A", "B", "C"), null);
         // load a template
         ExpressTemplate template = loader.load(context, "test1");
         System.out.println(template);

@@ -9,6 +9,7 @@ import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
 import com.intrbiz.express.template.filter.PlainTextContentFilter;
+import com.intrbiz.express.template.loader.TemplateLoader;
 
 public class DefaultContext implements ExpressContext
 {
@@ -25,38 +26,41 @@ public class DefaultContext implements ExpressContext
     private final Writer writer;
     
     private ContentFilter contentFilter = new PlainTextContentFilter();
+    
+    private TemplateLoader templateLoader;
 
-    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Writer writer)
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Writer writer, TemplateLoader templateLoader)
     {
         super();
         this.extensions = extensions;
         this.resolver = resolver;
         this.writer = writer;
+        this.templateLoader = templateLoader;
     }
     
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
     {
-        this(extensions, resolver, null);
+        this(extensions, resolver, null, null);
     }
 
     public DefaultContext(ExpressExtensionRegistry registry)
     {
-        this(registry, null, null);
+        this(registry, null, null, null);
     }
 
     public DefaultContext(ExpressEntityResolver resolver)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver, null);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver, null, null);
     }
 
     public DefaultContext()
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null);
     }
     
-    public DefaultContext(Writer to)
+    public DefaultContext(Writer to, TemplateLoader templateLoader)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, to);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, to, templateLoader);
     }
 
     public Object getEntity(String name, Object source)
@@ -195,7 +199,7 @@ public class DefaultContext implements ExpressContext
     {
         return this.contentFilter;
     }
-    
+
     public void flush() throws ExpressException
     {
         if (this.writer != null)
@@ -209,5 +213,11 @@ public class DefaultContext implements ExpressContext
                 throw new ExpressException("Error flushing template output", e);
             }
         }
+    }
+    
+    @Override
+    public TemplateLoader getTemplateLoader()
+    {
+        return this.templateLoader;
     }
 }

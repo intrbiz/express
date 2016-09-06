@@ -81,6 +81,7 @@ PARSER_END(ELParser)
   | <WHILE  : "while" >
   | <BREAK  : "break" >
   | <EXPORT  : "export" >
+  | <INCLUDE : "include" >
   | <LACTION       : "@" >
   | <NLINT : <DIGITS> > 
   | <NLLONG : <DIGITS> "L" > 
@@ -926,9 +927,10 @@ private Statement readStatement(ExpressContext c) throws ExpressException :
      LOOKAHEAD(readForEachStatement(c)) s = readForEachStatement(c) |
      LOOKAHEAD(readForStatement(c)) s = readForStatement(c) |
      LOOKAHEAD(readWhileStatement(c)) s = readWhileStatement(c) |
-     s = readBreakStatement(c) |
-     s = readReturnStatement(c) |
-     s = readExportStatement(c) |
+     s = readBreakStatement(c)   |
+     s = readReturnStatement(c)  |
+     s = readExportStatement(c)  |
+     s = readIncludeStatement(c) |
      s = readDefaultStatement(c))
     { return s; }
 }
@@ -1023,6 +1025,15 @@ private Statement readForEachStatement(ExpressContext c) throws ExpressException
     blk = readStatements(c)
     <ENDBLOCK>
     { return new ForEachStatement(var, col, blk); }
+}
+
+private IncludeStatement readIncludeStatement(ExpressContext c) throws ExpressException :
+{
+    Operator o;
+}
+{
+    (<INCLUDE> o = readExpression(c) <STATEMENT>)
+    { return new IncludeStatement(o); }
 }
 
 private Statement readDefaultStatement(ExpressContext c) throws ExpressException :

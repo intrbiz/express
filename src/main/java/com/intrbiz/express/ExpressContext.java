@@ -5,6 +5,7 @@ import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
+import com.intrbiz.express.template.loader.TemplateLoader;
 
 public interface ExpressContext
 {
@@ -53,4 +54,6 @@ public interface ExpressContext
     ContentFilter getContentFilter();
     
     void flush() throws ExpressException;
+    
+    TemplateLoader getTemplateLoader();
 }

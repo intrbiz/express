@@ -119,51 +119,53 @@ public interface ELParserConstants {
   /** RegularExpression Id. */
   int EXPORT = 59;
   /** RegularExpression Id. */
-  int LACTION = 60;
+  int INCLUDE = 60;
   /** RegularExpression Id. */
-  int NLINT = 61;
+  int LACTION = 61;
   /** RegularExpression Id. */
-  int NLLONG = 62;
+  int NLINT = 62;
   /** RegularExpression Id. */
-  int NLFLOAT = 63;
+  int NLLONG = 63;
   /** RegularExpression Id. */
-  int NLDOUBLE = 64;
+  int NLFLOAT = 64;
   /** RegularExpression Id. */
-  int LBOOLEAN = 65;
+  int NLDOUBLE = 65;
   /** RegularExpression Id. */
-  int LNULL = 66;
+  int LBOOLEAN = 66;
   /** RegularExpression Id. */
-  int LENTITY = 67;
+  int LNULL = 67;
   /** RegularExpression Id. */
-  int HEXCHAR = 68;
+  int LENTITY = 68;
   /** RegularExpression Id. */
-  int ESCAPECHAR = 69;
+  int HEXCHAR = 69;
   /** RegularExpression Id. */
-  int UESCAPECHAR = 70;
+  int ESCAPECHAR = 70;
   /** RegularExpression Id. */
-  int LSTRING = 71;
+  int UESCAPECHAR = 71;
   /** RegularExpression Id. */
-  int END_EXPRESSION = 72;
+  int LSTRING = 72;
   /** RegularExpression Id. */
-  int QUOTE = 73;
+  int END_EXPRESSION = 73;
   /** RegularExpression Id. */
-  int STARTBLOCK = 74;
+  int QUOTE = 74;
   /** RegularExpression Id. */
-  int ENDBLOCK = 75;
+  int STARTBLOCK = 75;
   /** RegularExpression Id. */
-  int STATEMENT = 76;
+  int ENDBLOCK = 76;
   /** RegularExpression Id. */
-  int END_SCRIPT = 77;
+  int STATEMENT = 77;
   /** RegularExpression Id. */
-  int ENDQUOTE = 79;
+  int END_SCRIPT = 78;
   /** RegularExpression Id. */
-  int CHAR = 80;
+  int ENDQUOTE = 80;
   /** RegularExpression Id. */
-  int CNTRLESC = 81;
+  int CHAR = 81;
   /** RegularExpression Id. */
-  int HEX = 83;
+  int CNTRLESC = 82;
   /** RegularExpression Id. */
-  int HEXESC = 84;
+  int HEX = 84;
+  /** RegularExpression Id. */
+  int HEXESC = 85;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -240,6 +242,7 @@ public interface ELParserConstants {
     "\"while\"",
     "\"break\"",
     "\"export\"",
+    "\"include\"",
     "\"@\"",
     "<NLINT>",
     "<NLLONG>",
