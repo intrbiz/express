@@ -4,16 +4,19 @@ import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
 
-public class TextStatement extends Statement
+/**
+ * Evaluate the expression and write it to the context
+ */
+public class WriteStatement extends Statement
 {
     private Operator operator;
     
-    public TextStatement()
+    public WriteStatement()
     {
         super();
     }
     
-    public TextStatement(Operator operator)
+    public WriteStatement(Operator operator)
     {
         this();
         this.operator = operator;
@@ -21,7 +24,8 @@ public class TextStatement extends Statement
     
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        System.out.println("Text: " + this.getOperator().get(ctx, source));
+       String text = String.valueOf(this.getOperator().get(ctx, source));
+       ctx.write(text);
     }
 
     public Operator getOperator()

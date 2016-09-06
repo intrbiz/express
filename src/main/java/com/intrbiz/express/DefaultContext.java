@@ -1,9 +1,14 @@
 package com.intrbiz.express;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
+import com.intrbiz.express.template.filter.ContentFilter;
+import com.intrbiz.express.template.filter.PlainTextContentFilter;
 
 public class DefaultContext implements ExpressContext
 {
@@ -16,27 +21,42 @@ public class DefaultContext implements ExpressContext
     private final ExpressEntityResolver resolver;
     
     private boolean caching = true;
+    
+    private final Writer writer;
+    
+    private ContentFilter contentFilter = new PlainTextContentFilter();
 
-    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Writer writer)
     {
         super();
         this.extensions = extensions;
         this.resolver = resolver;
+        this.writer = writer;
+    }
+    
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
+    {
+        this(extensions, resolver, null);
     }
 
     public DefaultContext(ExpressExtensionRegistry registry)
     {
-        this(registry, null);
+        this(registry, null, null);
     }
 
     public DefaultContext(ExpressEntityResolver resolver)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver, null);
     }
 
     public DefaultContext()
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null);
+    }
+    
+    public DefaultContext(Writer to)
+    {
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, to);
     }
 
     public Object getEntity(String name, Object source)
@@ -123,5 +143,71 @@ public class DefaultContext implements ExpressContext
     public void setCaching(boolean caching)
     {
         this.caching = caching;
+    }
+
+    @Override
+    public void write(String content) throws ExpressException
+    {
+        if (this.writer != null)
+        {
+            try
+            {
+                this.contentFilter.filter(content, this.writer);
+            }
+            catch (IOException e)
+            {
+                throw new ExpressException("Error writing to template output", e);
+            }
+        }
+    }
+
+    @Override
+    public void writePrefiltered(String content) throws ExpressException
+    {
+        if (this.writer != null)
+        {
+            try
+            {
+                this.writer.write(content);
+            }
+            catch (IOException e)
+            {
+                throw new ExpressException("Error writing to template output", e);
+            }
+        }
+    }
+
+    @Override
+    public void setContentFilter(ContentFilter filter)
+    {
+        if (filter == null) filter = new PlainTextContentFilter();
+        this.contentFilter = filter;
+    }
+    
+    @Override
+    public void resetContentFilter()
+    {
+        this.contentFilter = new PlainTextContentFilter();
+    }
+
+    @Override
+    public ContentFilter getContentFilter()
+    {
+        return this.contentFilter;
+    }
+    
+    public void flush() throws ExpressException
+    {
+        if (this.writer != null)
+        {
+            try
+            {
+                this.writer.flush();
+            }
+            catch (IOException e)
+            {
+                throw new ExpressException("Error flushing template output", e);
+            }
+        }
     }
 }

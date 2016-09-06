@@ -16,6 +16,13 @@ public final class ELParser implements ELParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+  final private PlainWriteStatement readPlainWriteStatement(ExpressContext c) throws ParseException, ExpressException {
+  Token t;
+    t = jj_consume_token(NON_EXPRESSION_TEXT);
+    {if (true) return new PlainWriteStatement(t.image);}
+    throw new Error("Missing return statement in function");
+  }
+
   final private IntLiteral readIntLiteral(ExpressContext c) throws ParseException, ExpressException {
     Token t;
     t = jj_consume_token(NLINT);
@@ -1346,6 +1353,7 @@ public final class ELParser implements ELParserConstants {
     StatementBlock ret = new StatementBlock();
     Operator op;
     StatementBlock bl;
+    PlainWriteStatement pls;
     label_16:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1360,12 +1368,12 @@ public final class ELParser implements ELParserConstants {
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case NON_EXPRESSION_TEXT:
-        op = readPlainText(c);
-              ret.getStatements().add(new TextStatement(op));
+        pls = readPlainWriteStatement(c);
+              ret.getStatements().add(pls);
         break;
       case START_EXPRESSION:
         op = readWrappedExpression(c);
-              ret.getStatements().add(new TextStatement(op));
+              ret.getStatements().add(new WriteStatement(op));
         break;
       case START_SCRIPT:
         bl = readWrappedStatements(c);
@@ -1427,6 +1435,7 @@ public final class ELParser implements ELParserConstants {
     StatementBlock r = new StatementBlock(false);
     Statement s;
     Operator op;
+    PlainWriteStatement pls;
     label_18:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1498,12 +1507,12 @@ public final class ELParser implements ELParserConstants {
           }
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case NON_EXPRESSION_TEXT:
-            op = readPlainText(c);
-                      r.getStatements().add(new TextStatement(op));
+            pls = readPlainWriteStatement(c);
+                      r.getStatements().add(pls);
             break;
           case START_EXPRESSION:
             op = readWrappedExpression(c);
-                      r.getStatements().add(new TextStatement(op));
+                      r.getStatements().add(new WriteStatement(op));
             break;
           default:
             jj_la1[59] = jj_gen;
@@ -2010,6 +2019,13 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
+  private boolean jj_3R_120() {
+    if (jj_scan_token(EXPORT)) return true;
+    if (jj_3R_21()) return true;
+    if (jj_scan_token(STATEMENT)) return true;
+    return false;
+  }
+
   private boolean jj_3R_34() {
     Token xsp;
     xsp = jj_scanpos;
@@ -2026,13 +2042,6 @@ public final class ELParser implements ELParserConstants {
 
   private boolean jj_3R_61() {
     if (jj_scan_token(DECASSIGNMENT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_120() {
-    if (jj_scan_token(EXPORT)) return true;
-    if (jj_3R_21()) return true;
-    if (jj_scan_token(STATEMENT)) return true;
     return false;
   }
 
@@ -2061,15 +2070,15 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_33() {
-    if (jj_scan_token(IF)) return true;
-    return false;
-  }
-
   private boolean jj_3R_119() {
     if (jj_scan_token(RETURN)) return true;
     if (jj_3R_44()) return true;
     if (jj_scan_token(STATEMENT)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_33() {
+    if (jj_scan_token(IF)) return true;
     return false;
   }
 
@@ -2092,19 +2101,25 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_75() {
-    if (jj_3R_86()) return true;
-    return false;
-  }
-
   private boolean jj_3R_118() {
     if (jj_scan_token(BREAK)) return true;
     if (jj_scan_token(STATEMENT)) return true;
     return false;
   }
 
+  private boolean jj_3R_75() {
+    if (jj_3R_86()) return true;
+    return false;
+  }
+
   private boolean jj_3R_39() {
     if (jj_3R_55()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_121() {
+    if (jj_3R_44()) return true;
+    if (jj_scan_token(STATEMENT)) return true;
     return false;
   }
 
@@ -2115,12 +2130,6 @@ public final class ELParser implements ELParserConstants {
 
   private boolean jj_3R_37() {
     if (jj_3R_53()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_121() {
-    if (jj_3R_44()) return true;
-    if (jj_scan_token(STATEMENT)) return true;
     return false;
   }
 
@@ -2158,6 +2167,19 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
+  private boolean jj_3R_28() {
+    if (jj_scan_token(FOR)) return true;
+    if (jj_scan_token(STCOMP)) return true;
+    if (jj_3R_21()) return true;
+    if (jj_scan_token(IN)) return true;
+    if (jj_3R_44()) return true;
+    if (jj_scan_token(EDCOMP)) return true;
+    if (jj_scan_token(STARTBLOCK)) return true;
+    if (jj_3R_45()) return true;
+    if (jj_scan_token(ENDBLOCK)) return true;
+    return false;
+  }
+
   private boolean jj_3R_51() {
     Token xsp;
     xsp = jj_scanpos;
@@ -2176,19 +2198,6 @@ public final class ELParser implements ELParserConstants {
 
   private boolean jj_3_11() {
     if (jj_3R_26()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_28() {
-    if (jj_scan_token(FOR)) return true;
-    if (jj_scan_token(STCOMP)) return true;
-    if (jj_3R_21()) return true;
-    if (jj_scan_token(IN)) return true;
-    if (jj_3R_44()) return true;
-    if (jj_scan_token(EDCOMP)) return true;
-    if (jj_scan_token(STARTBLOCK)) return true;
-    if (jj_3R_45()) return true;
-    if (jj_scan_token(ENDBLOCK)) return true;
     return false;
   }
 
@@ -2239,11 +2248,6 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_133() {
-    if (jj_3R_136()) return true;
-    return false;
-  }
-
   private boolean jj_3R_29() {
     if (jj_scan_token(FOR)) return true;
     if (jj_scan_token(STCOMP)) return true;
@@ -2256,6 +2260,11 @@ public final class ELParser implements ELParserConstants {
     if (jj_scan_token(STARTBLOCK)) return true;
     if (jj_3R_45()) return true;
     if (jj_scan_token(ENDBLOCK)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_133() {
+    if (jj_3R_136()) return true;
     return false;
   }
 
@@ -2293,17 +2302,6 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_139() {
-    if (jj_scan_token(DOT)) return true;
-    if (jj_3R_21()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_111() {
-    if (jj_scan_token(HEXESC)) return true;
-    return false;
-  }
-
   private boolean jj_3R_30() {
     if (jj_scan_token(WHILE)) return true;
     if (jj_scan_token(STCOMP)) return true;
@@ -2312,6 +2310,17 @@ public final class ELParser implements ELParserConstants {
     if (jj_scan_token(STARTBLOCK)) return true;
     if (jj_3R_45()) return true;
     if (jj_scan_token(ENDBLOCK)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_139() {
+    if (jj_scan_token(DOT)) return true;
+    if (jj_3R_21()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_111() {
+    if (jj_scan_token(HEXESC)) return true;
     return false;
   }
 
@@ -2424,11 +2433,6 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_80() {
-    if (jj_3R_44()) return true;
-    return false;
-  }
-
   private boolean jj_3_16() {
     if (jj_scan_token(ELSE)) return true;
     if (jj_scan_token(IF)) return true;
@@ -2441,15 +2445,8 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3_10() {
-    if (jj_3R_21()) return true;
-    if (jj_scan_token(ASSIGNMENT)) return true;
+  private boolean jj_3R_80() {
     if (jj_3R_44()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_52() {
-    if (jj_scan_token(LBOOLEAN)) return true;
     return false;
   }
 
@@ -2468,6 +2465,18 @@ public final class ELParser implements ELParserConstants {
     }
     xsp = jj_scanpos;
     if (jj_3R_46()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3_10() {
+    if (jj_3R_21()) return true;
+    if (jj_scan_token(ASSIGNMENT)) return true;
+    if (jj_3R_44()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_52() {
+    if (jj_scan_token(LBOOLEAN)) return true;
     return false;
   }
 
@@ -2492,23 +2501,23 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
-  private boolean jj_3R_88() {
-    if (jj_scan_token(NLDOUBLE)) return true;
-    return false;
-  }
-
   private boolean jj_3_13() {
     if (jj_3R_28()) return true;
     return false;
   }
 
-  private boolean jj_3R_152() {
-    if (jj_3R_154()) return true;
+  private boolean jj_3_12() {
+    if (jj_3R_27()) return true;
     return false;
   }
 
-  private boolean jj_3_12() {
-    if (jj_3R_27()) return true;
+  private boolean jj_3R_88() {
+    if (jj_scan_token(NLDOUBLE)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_152() {
+    if (jj_3R_154()) return true;
     return false;
   }
 
@@ -2542,6 +2551,16 @@ public final class ELParser implements ELParserConstants {
     return false;
   }
 
+  private boolean jj_3R_101() {
+    if (jj_3R_29()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_100() {
+    if (jj_3R_28()) return true;
+    return false;
+  }
+
   private boolean jj_3R_87() {
     if (jj_scan_token(NLFLOAT)) return true;
     return false;
@@ -2551,16 +2570,6 @@ public final class ELParser implements ELParserConstants {
     if (jj_3R_21()) return true;
     if (jj_scan_token(ASSIGNMENT)) return true;
     if (jj_3R_44()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_101() {
-    if (jj_3R_29()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_100() {
-    if (jj_3R_28()) return true;
     return false;
   }
 

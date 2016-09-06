@@ -16,7 +16,7 @@ public class Print extends Function
 	{
 		Operator op = this.getParameters().get(0);
 		Object val = op.get(context, source);
-		System.out.println(val);
+		context.write(String.valueOf(val));
 		return val;
 	}
 	

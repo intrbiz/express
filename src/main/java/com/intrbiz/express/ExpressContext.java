@@ -4,6 +4,7 @@ import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
+import com.intrbiz.express.template.filter.ContentFilter;
 
 public interface ExpressContext
 {
@@ -38,4 +39,18 @@ public interface ExpressContext
     boolean isCaching();
     
     void setCaching(boolean caching);
+    
+    // template stuff
+    
+    void write(String content) throws ExpressException;
+    
+    void writePrefiltered(String content) throws ExpressException;
+    
+    void setContentFilter(ContentFilter filter);
+    
+    void resetContentFilter();
+    
+    ContentFilter getContentFilter();
+    
+    void flush() throws ExpressException;
 }

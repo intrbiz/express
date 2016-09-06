@@ -125,7 +125,14 @@ private PlainLiteral readPlainText(ExpressContext c) throws ExpressException :
   { return new PlainLiteral(t.image); }
 }
 
-
+private PlainWriteStatement readPlainWriteStatement(ExpressContext c) throws ExpressException :
+{
+  Token t;
+}
+{
+  t = <NON_EXPRESSION_TEXT>
+  { return new PlainWriteStatement(t.image); }
+}
 
 private IntLiteral readIntLiteral(ExpressContext c) throws ExpressException : 
 {
@@ -840,16 +847,17 @@ StatementBlock readFullStatements(ExpressContext c) throws ExpressException :
     StatementBlock ret = new StatementBlock();
     Operator op;
     StatementBlock bl;
+    PlainWriteStatement pls;
 }
 {
     (
         (
-            op = readPlainText(c)
-            { ret.getStatements().add(new TextStatement(op)); }
+            pls = readPlainWriteStatement(c)
+            { ret.getStatements().add(pls); }
         ) |
         (
             op = readWrappedExpression(c)
-            { ret.getStatements().add(new TextStatement(op)); }
+            { ret.getStatements().add(new WriteStatement(op)); }
         ) | 
         (
             bl = readWrappedStatements(c)
@@ -883,6 +891,7 @@ StatementBlock readStatements(ExpressContext c) throws ExpressException :
     StatementBlock r = new StatementBlock(false);
     Statement s;
     Operator op;
+    PlainWriteStatement pls;
 }
 { 
     (
@@ -894,12 +903,12 @@ StatementBlock readStatements(ExpressContext c) throws ExpressException :
             <END_SCRIPT>
             (
                 (
-                    op = readPlainText(c)
-                    { r.getStatements().add(new TextStatement(op)); }
+                    pls = readPlainWriteStatement(c)
+                    { r.getStatements().add(pls); }
                 ) |
                 (
                     op = readWrappedExpression(c)
-                    { r.getStatements().add(new TextStatement(op)); }
+                    { r.getStatements().add(new WriteStatement(op)); }
                 )
             )*
             <START_SCRIPT>

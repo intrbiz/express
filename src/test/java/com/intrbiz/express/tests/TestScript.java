@@ -1,29 +1,39 @@
 package com.intrbiz.express.tests;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 import com.intrbiz.express.DefaultContext;
 import com.intrbiz.express.ExpressContext;
-import com.intrbiz.express.value.ValueExpression;
-import com.intrbiz.express.value.ValueScript;
+import com.intrbiz.express.template.ExpressTemplate;
+import com.intrbiz.express.template.loader.TemplateLoader;
+import com.intrbiz.express.template.loader.impl.ClassPathTemplateSource;
 
 public class TestScript
 {
     public static void main(String[] args)
     {
-        ExpressContext context = new DefaultContext();
-        context.setEntity("l", Arrays.asList("A", "B", "C"), null);
-        //
-        ValueExpression ve = new ValueExpression(context, "One #{1 + 1} Three #{ 'Four' }");
-        System.out.println(ve);
-        System.out.println(ve.get(context, null));
-        //
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        //
-        ValueScript vs = new ValueScript(context, "Test #{ 1 } test <# if ( l != null ) { print('abc'); #> testing yay <# } #> Test <# for (x in l) { #> Test #{ x } <# } #>");
-        System.out.println(vs);
-        System.out.println(vs.execute(context, null));
+        // the context
+        ExpressContext context = new DefaultContext(new PrintWriter(System.out));
+        context.setEntity("title", "Template Test", null);
+        context.setEntity("list", Arrays.asList("A", "B", "C"), null);
+        // the loader
+        TemplateLoader loader = new TemplateLoader();
+        loader.addSource(new ClassPathTemplateSource());
+        // load a template
+        ExpressTemplate template = loader.load(context, "test1");
+        System.out.println(template);
+        for (int i = 0 ; i < 5; i++)
+        {
+            System.out.println("===================================================");
+            System.out.println("=== EXECUTE");
+            System.out.println("===================================================");
+            long start = System.currentTimeMillis();
+            template.encode(context, null);
+            long end = System.currentTimeMillis();
+            System.out.println("===================================================");
+            System.out.println("Took: " + (end - start) + "ms");
+            System.out.println("===================================================");
+        }
     }
 }

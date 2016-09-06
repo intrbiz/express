@@ -1,0 +1,27 @@
+<html>
+		<head>
+			<title>Test</title>
+		</head>
+		<body>
+			<h1>#{title}</h1>
+			<div>
+				<# if (! isempty(list)) { #>
+					<ul>
+						<# for (item in list) { #>
+							<li>#{item}</li>
+						<# } #>
+					</ul>
+				<# } #>
+				<# if (! isempty(list2)) { #>
+					<ul>
+						<# for (item in list2) { #>
+							<li>#{item}</li>
+						<# } #>
+					</ul>
+				<# } #>
+			</div>
+			<div>
+				<pre><# for (i = 0; i < 10; i++) { print(' * ' + i + '\n'); } #></pre>
+			</div>
+		</body>
+</html>
