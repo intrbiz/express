@@ -2,6 +2,7 @@ package com.intrbiz.express.operator;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
+import com.intrbiz.express.template.io.TemplateWriter;
 
 public class Print extends Function
 {
@@ -16,7 +17,8 @@ public class Print extends Function
 	{
 		Operator op = this.getParameters().get(0);
 		Object val = op.get(context, source);
-		context.write(String.valueOf(val));
+		TemplateWriter writer = context.getWriter();
+        if (writer != null) writer.write(String.valueOf(val));
 		return val;
 	}
 	

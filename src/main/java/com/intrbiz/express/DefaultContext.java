@@ -1,6 +1,5 @@
 package com.intrbiz.express;
 
-import java.io.IOException;
 import java.io.Writer;
 
 import com.intrbiz.express.action.ActionHandler;
@@ -8,7 +7,8 @@ import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
-import com.intrbiz.express.template.filter.PlainTextContentFilter;
+import com.intrbiz.express.template.filter.ContentFilterRegistry;
+import com.intrbiz.express.template.io.TemplateWriter;
 import com.intrbiz.express.template.loader.TemplateLoader;
 
 public class DefaultContext implements ExpressContext
@@ -23,19 +23,19 @@ public class DefaultContext implements ExpressContext
     
     private boolean caching = true;
     
-    private final Writer writer;
-    
-    private ContentFilter contentFilter = new PlainTextContentFilter();
-    
     private TemplateLoader templateLoader;
+    
+    private ContentFilterRegistry contentFilterRegistry;
+    
+    private TemplateWriter writer;
 
-    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Writer writer, TemplateLoader templateLoader)
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
     {
         super();
         this.extensions = extensions;
         this.resolver = resolver;
-        this.writer = writer;
         this.templateLoader = templateLoader;
+        this.contentFilterRegistry = contentFilterRegistry;
     }
     
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
@@ -58,9 +58,14 @@ public class DefaultContext implements ExpressContext
         this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null);
     }
     
-    public DefaultContext(Writer to, TemplateLoader templateLoader)
+    public DefaultContext(TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, to, templateLoader);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, templateLoader, contentFilterRegistry);
+    }
+    
+    public DefaultContext(TemplateLoader templateLoader)
+    {
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, templateLoader, ContentFilterRegistry.getDefault());
     }
 
     public Object getEntity(String name, Object source)
@@ -148,76 +153,44 @@ public class DefaultContext implements ExpressContext
     {
         this.caching = caching;
     }
-
-    @Override
-    public void write(String content) throws ExpressException
-    {
-        if (this.writer != null)
-        {
-            try
-            {
-                this.contentFilter.filter(content, this.writer);
-            }
-            catch (IOException e)
-            {
-                throw new ExpressException("Error writing to template output", e);
-            }
-        }
-    }
-
-    @Override
-    public void writePrefiltered(String content) throws ExpressException
-    {
-        if (this.writer != null)
-        {
-            try
-            {
-                this.writer.write(content);
-            }
-            catch (IOException e)
-            {
-                throw new ExpressException("Error writing to template output", e);
-            }
-        }
-    }
-
-    @Override
-    public void setContentFilter(ContentFilter filter)
-    {
-        if (filter == null) filter = new PlainTextContentFilter();
-        this.contentFilter = filter;
-    }
-    
-    @Override
-    public void resetContentFilter()
-    {
-        this.contentFilter = new PlainTextContentFilter();
-    }
-
-    @Override
-    public ContentFilter getContentFilter()
-    {
-        return this.contentFilter;
-    }
-
-    public void flush() throws ExpressException
-    {
-        if (this.writer != null)
-        {
-            try
-            {
-                this.writer.flush();
-            }
-            catch (IOException e)
-            {
-                throw new ExpressException("Error flushing template output", e);
-            }
-        }
-    }
     
     @Override
     public TemplateLoader getTemplateLoader()
     {
         return this.templateLoader;
+    }
+
+    @Override
+    public ContentFilterRegistry getContentFilterRegistry()
+    {
+        return this.contentFilterRegistry;
+    }
+
+    public void setTemplateLoader(TemplateLoader templateLoader)
+    {
+        this.templateLoader = templateLoader;
+    }
+
+    public void setContentFilterRegistry(ContentFilterRegistry contentFilterRegistry)
+    {
+        this.contentFilterRegistry = contentFilterRegistry;
+    }
+    
+    @Override
+    public TemplateWriter getWriter()
+    {
+        return this.writer;
+    }
+    
+    @Override
+    public void setupWriter(Writer to, ContentFilter defaultFilter)
+    {
+        this.writer = new TemplateWriter(this, to, defaultFilter);
+    }
+    
+    @Override
+    public void clearWriter()
+    {
+        this.writer = null;
     }
 }

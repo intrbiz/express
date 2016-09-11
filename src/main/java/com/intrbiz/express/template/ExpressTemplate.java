@@ -1,5 +1,7 @@
 package com.intrbiz.express.template;
 
+import java.io.Writer;
+
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.template.filter.ContentFilter;
@@ -50,20 +52,37 @@ public class ExpressTemplate
         return "Express Template " + this.name + " source=" + this.source.getClass().getSimpleName() + ", filter=" + this.defaultFilter.getContentType() + "\n" + this.script;
     }
 
-    public void encode(ExpressContext context, Object source) throws ExpressException
+    public void encode(ExpressContext context, Object source, Writer to) throws ExpressException
     {
         try
         {
-            // set the content filter
-            context.setContentFilter(this.defaultFilter);
+            // setup the writer
+            context.setupWriter(to, this.getDefaultFilter());
             // process the script
             this.script.execute(context, source);
             // flush
-            context.flush();
+            context.getWriter().flush();
         }
         finally
         {
-            context.resetContentFilter();
+            // reset the writer
+            context.clearWriter();
+        }
+    }
+    
+    public void include(ExpressContext context, Object source) throws ExpressException
+    {
+        try
+        {
+            // push our content filter
+            context.getWriter().pushContentFilter(this.getDefaultFilter());
+            // process the script
+            this.script.execute(context, source);
+        }
+        finally
+        {
+            // pop our content filter
+            context.getWriter().popContentFilter();
         }
     }
 }

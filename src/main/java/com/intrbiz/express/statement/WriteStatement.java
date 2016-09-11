@@ -3,6 +3,7 @@ package com.intrbiz.express.statement;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
+import com.intrbiz.express.template.io.TemplateWriter;
 
 /**
  * Evaluate the expression and write it to the context
@@ -24,8 +25,12 @@ public class WriteStatement extends Statement
     
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-       String text = String.valueOf(this.getOperator().get(ctx, source));
-       ctx.write(text);
+       TemplateWriter writer = ctx.getWriter();
+       if (writer != null)
+       {
+           String text = String.valueOf(this.getOperator().get(ctx, source));
+           writer.write(text);
+       }
     }
 
     public Operator getOperator()

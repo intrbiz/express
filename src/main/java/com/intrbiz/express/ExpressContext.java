@@ -1,10 +1,14 @@
 package com.intrbiz.express;
 
+import java.io.Writer;
+
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
+import com.intrbiz.express.template.filter.ContentFilterRegistry;
+import com.intrbiz.express.template.io.TemplateWriter;
 import com.intrbiz.express.template.loader.TemplateLoader;
 
 public interface ExpressContext
@@ -43,17 +47,13 @@ public interface ExpressContext
     
     // template stuff
     
-    void write(String content) throws ExpressException;
-    
-    void writePrefiltered(String content) throws ExpressException;
-    
-    void setContentFilter(ContentFilter filter);
-    
-    void resetContentFilter();
-    
-    ContentFilter getContentFilter();
-    
-    void flush() throws ExpressException;
+    ContentFilterRegistry getContentFilterRegistry();
     
     TemplateLoader getTemplateLoader();
+    
+    TemplateWriter getWriter();
+    
+    void setupWriter(Writer to, ContentFilter defaultFilter);
+    
+    void clearWriter();
 }

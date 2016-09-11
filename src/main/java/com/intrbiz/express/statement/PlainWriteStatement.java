@@ -2,6 +2,7 @@ package com.intrbiz.express.statement;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
+import com.intrbiz.express.template.io.TemplateWriter;
 
 /**
  * Write text to the context
@@ -23,7 +24,8 @@ public class PlainWriteStatement extends Statement
 
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        ctx.writePrefiltered(this.text);
+        TemplateWriter writer = ctx.getWriter();
+        if (writer != null) writer.writePrefiltered(this.text);
     }
 
     public String getText()

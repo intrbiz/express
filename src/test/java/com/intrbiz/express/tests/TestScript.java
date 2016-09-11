@@ -17,7 +17,7 @@ public class TestScript
         TemplateLoader loader = new TemplateLoader();
         loader.addSource(new ClassPathTemplateSource());
         // the context
-        ExpressContext context = new DefaultContext(new PrintWriter(System.out), loader);
+        ExpressContext context = new DefaultContext(loader);
         context.setEntity("title", "Template Test", null);
         context.setEntity("list", Arrays.asList("A", "B", "C"), null);
         // load a template
@@ -29,7 +29,7 @@ public class TestScript
             System.out.println("=== EXECUTE");
             System.out.println("===================================================");
             long start = System.currentTimeMillis();
-            template.encode(context, null);
+            template.encode(context, null, new PrintWriter(System.out));
             long end = System.currentTimeMillis();
             System.out.println("===================================================");
             System.out.println("Took: " + (end - start) + "ms");

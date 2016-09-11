@@ -384,6 +384,14 @@ private Operator readFunction(ExpressContext c) throws ExpressException :
     {
         f = new Print();
     }
+    else if ("pushfilter".equals(fn))
+    {
+        f = new PushFilter();
+    }
+    else if ("popfilter".equals(fn))
+    {
+        f = new PopFilter();
+    }
     else if (c != null )
     {
         f = c.getCustomFunction( fn );

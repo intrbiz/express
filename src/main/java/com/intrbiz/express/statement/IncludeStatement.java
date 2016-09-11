@@ -43,8 +43,8 @@ public class IncludeStatement extends Statement
             String templateName = String.valueOf(evaledTemplateName);
             // load the template
             ExpressTemplate template = loader.load(ctx, templateName);
-            // encode it
-            if (template != null) template.encode(ctx, source);
+            // include it
+            template.include(ctx, source);
         }
     }
 
