@@ -120,6 +120,12 @@ public class DefaultContext implements ExpressContext
         if (this.extensions == null) return null;
         return this.extensions.loadDecorator(name, entityType);
     }
+    
+    @Override
+    public ExpressExtensionRegistry getExpressExtensionRegistry()
+    {
+        return this.extensions;
+    }
 
     // Stack Control
 

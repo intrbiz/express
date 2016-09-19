@@ -19,6 +19,8 @@ public interface ExpressContext
     
     Decorator getCustomDecorator(String name, Class<?> entityType);
     
+    ExpressExtensionRegistry getExpressExtensionRegistry();
+    
     // entities
 
     Object getEntity(String name, Object source);

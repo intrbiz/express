@@ -82,6 +82,7 @@ PARSER_END(ELParser)
   | <BREAK  : "break" >
   | <EXPORT  : "export" >
   | <INCLUDE : "include" >
+  | <FUNCTION : "function" >
   | <LACTION       : "@" >
   | <NLINT : <DIGITS> > 
   | <NLLONG : <DIGITS> "L" > 
@@ -890,7 +891,7 @@ StatementBlock readWrappedStatements(ExpressContext c) throws ExpressException :
             s = readStatement(c)
             { r.getStatements().add(s); }
         )
-    )+
+    )*
     <END_SCRIPT>
     { return r; }
 }
@@ -935,10 +936,11 @@ private Statement readStatement(ExpressContext c) throws ExpressException :
      LOOKAHEAD(readForEachStatement(c)) s = readForEachStatement(c) |
      LOOKAHEAD(readForStatement(c)) s = readForStatement(c) |
      LOOKAHEAD(readWhileStatement(c)) s = readWhileStatement(c) |
-     s = readBreakStatement(c)   |
-     s = readReturnStatement(c)  |
-     s = readExportStatement(c)  |
-     s = readIncludeStatement(c) |
+     s = readBreakStatement(c)    |
+     s = readReturnStatement(c)   |
+     s = readExportStatement(c)   |
+     s = readIncludeStatement(c)  |
+     s = readFunctionStatement(c) |
      s = readDefaultStatement(c))
     { return s; }
 }
@@ -1033,6 +1035,37 @@ private Statement readForEachStatement(ExpressContext c) throws ExpressException
     blk = readStatements(c)
     <ENDBLOCK>
     { return new ForEachStatement(var, col, blk); }
+}
+
+private Statement readFunctionStatement(ExpressContext c) throws ExpressException :
+{
+    StatementBlock blk;
+    Token name;
+    Token arg;
+    List<String> args = new LinkedList<String>();
+}
+{
+    <FUNCTION>
+    name = <LENTITY>
+    <STCOMP>
+    (
+        arg = <LENTITY>
+        { args.add(arg.image); }
+    )?
+    (
+        <ARGSEP>
+        arg = <LENTITY>
+        { args.add(arg.image); }
+    )*
+    <EDCOMP>
+    <STARTBLOCK>
+    blk = readStatements(c)
+    <ENDBLOCK>
+    {
+        FunctionStatement func = new FunctionStatement(name.image, args, blk);
+        func.register(c);
+        return func;
+    }
 }
 
 private IncludeStatement readIncludeStatement(ExpressContext c) throws ExpressException :

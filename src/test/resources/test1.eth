@@ -1,9 +1,25 @@
 <html>
 		<head>
 			<title>Test</title>
+			<#
+				function add(a, b)
+				{
+					return a + b;
+				}
+				
+				function sum()
+				{
+					total = 0;
+					for(x in arguments)
+					{
+						total += x;
+					}
+					return total;
+				}
+			#>
 		</head>
 		<body>
-			<h1>#{title}</h1>
+			<h1>Text #{ add(1, 2) } #{ sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) }</h1>
 			<div>
 				<# if (! isempty(list)) { #>
 					<ul>
@@ -25,6 +41,13 @@
 			</div>
 			<div>
 				<# include 'test2'; #>
+			</div>
+			<div>
+				<pre>
+					<# pushfilter('text/plain'); #>
+					Test # test # test
+					<# popfilter(); #>
+				</pre>
 			</div>
 		</body>
 </html>
