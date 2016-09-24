@@ -1,5 +1,6 @@
 package com.intrbiz.express.template;
 
+import java.io.StringWriter;
 import java.io.Writer;
 
 import com.intrbiz.express.ExpressContext;
@@ -51,7 +52,28 @@ public class ExpressTemplate
     {
         return "Express Template " + this.name + " source=" + this.source.getClass().getSimpleName() + ", filter=" + this.defaultFilter.getContentType() + "\n" + this.script;
     }
+    
+    /**
+     * Encode this template to a String using the given context
+     * @param context
+     * @param source
+     * @return
+     * @throws ExpressException
+     */
+    public String encodeToString(ExpressContext context, Object source) throws ExpressException
+    {
+        StringWriter to = new StringWriter();
+        this.encode(context, source, to);
+        return to.toString();
+    }
 
+    /**
+     * Encode this template to the given writer using the given context
+     * @param context
+     * @param source
+     * @param to
+     * @throws ExpressException
+     */
     public void encode(ExpressContext context, Object source, Writer to) throws ExpressException
     {
         try

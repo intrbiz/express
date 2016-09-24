@@ -58,6 +58,11 @@ public class DefaultContext implements ExpressContext
         this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null);
     }
     
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, TemplateLoader templateLoader)
+    {
+        this(extensions, resolver, templateLoader, ContentFilterRegistry.getDefault());
+    }
+    
     public DefaultContext(TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
     {
         this(ExpressExtensionRegistry.getDefaultRegistry(), null, templateLoader, contentFilterRegistry);
