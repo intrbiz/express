@@ -5,6 +5,7 @@ import java.io.StringReader;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
+import com.intrbiz.express.operator.StringLiteral;
 import com.intrbiz.express.parser.ELParser;
 import com.intrbiz.express.parser.ParseException;
 import com.intrbiz.express.parser.TokenMgrError;
@@ -16,7 +17,9 @@ public class ELUtil
         ELParser parser = new ELParser(new StringReader(expression));
         try
         {
-            return parser.readFullExpression(context);
+            Operator op = parser.readFullExpression(context);
+            if (op == null) op = StringLiteral.EMPTY;
+            return op;
         }
         catch (TokenMgrError e)
         {

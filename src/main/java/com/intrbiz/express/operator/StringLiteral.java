@@ -159,4 +159,6 @@ public class StringLiteral extends Literal
     {
         return new TextValidator();
     }
+    
+    public static final StringLiteral EMPTY = new StringLiteral("", false);
 }
