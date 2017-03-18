@@ -10,7 +10,6 @@ public interface ActionHandler
     
     Object act(Object[] arguments) throws Exception;
     
-    
     public static class ActionArgument
     {
         private Class<?> type;

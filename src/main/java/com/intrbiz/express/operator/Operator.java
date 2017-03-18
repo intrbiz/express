@@ -17,7 +17,7 @@ public abstract class Operator
     
     public Converter<?> getConverter(ExpressContext context, Object source)  throws ExpressException
     {
-        throw new ExpressException("Cannot get converter,  expression contains a operator") ;
+        throw new ExpressException("Cannot get converter,  expression contains a operator");
     }
     
     public Object get(ExpressContext context, Object source) throws ExpressException
