@@ -109,7 +109,7 @@ public class ArrayInvoke extends BinaryOperator
         else if (entity instanceof DynamicEntity && prop instanceof String)
         {
             DynamicEntity de = (DynamicEntity) entity;
-            de.get((String) prop, context, source);
+            return de.get((String) prop, context, source);
         }
         else if (prop instanceof String)
         {
