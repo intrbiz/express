@@ -1,5 +1,7 @@
 package com.intrbiz.express.operator;
 
+import java.util.Collection;
+
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 
@@ -19,6 +21,14 @@ public class IntCast extends Function
         if (val instanceof Number)
         {
             return new Integer(((Number)val).intValue()) ;
+        }
+        else if (val instanceof Collection)
+        {
+            return ((Collection<?>) val).size();
+        }
+        else if (val instanceof Object[])
+        {
+            return ((Object[]) val).length;
         }
         return null ;
     }

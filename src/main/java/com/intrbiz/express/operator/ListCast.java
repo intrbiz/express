@@ -1,6 +1,7 @@
 package com.intrbiz.express.operator;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class ListCast extends Function
                 {
                     ret.add(i);
                 }
+            }
+            else if (p instanceof Object[])
+            {
+                Collections.addAll(ret, (Object[]) p);
             }
             else
             {
