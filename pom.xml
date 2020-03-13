@@ -16,19 +16,20 @@
   
 	<repositories>
 		<repository>
-			<id>snapshots</id>
-			<url>https://nexus.intrbiz.net/repository/intrbiz-snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
 			<id>intrbiz</id>
 			<name>Intrbiz</name>
-			<url>https://nexus.intrbiz.net/repository/intrbiz-release</url>
+			<url>https://nexus.intrbiz.net/repository/intrbiz</url>
 		</repository>
 	</repositories>
-	
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>intrbiz</id>
+			<name>Intrbiz</name>
+			<url>https://nexus.intrbiz.net/repository/intrbiz</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>snapshots</id>
