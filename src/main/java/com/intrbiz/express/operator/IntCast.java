@@ -24,6 +24,10 @@ public class IntCast extends Function
         {
             return new Integer(((Number)val).intValue()) ;
         }
+        else if (val instanceof String)
+        {
+            return Integer.parseInt((String) val);
+        }
         else if (val instanceof Collection)
         {
             return ((Collection<?>) val).size();

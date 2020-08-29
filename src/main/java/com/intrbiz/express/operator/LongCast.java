@@ -22,6 +22,10 @@ public class LongCast extends Function
         {
             return new Long(((Number)val).longValue()) ;
         }
+        else if (val instanceof String)
+        {
+            return Long.parseLong((String) val);
+        }
         return null ;
     }
 

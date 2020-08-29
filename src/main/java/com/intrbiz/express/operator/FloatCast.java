@@ -22,6 +22,10 @@ public class FloatCast extends Function
         {
             return new Float(((Number)val).floatValue()) ;
         }
+        else if (val instanceof String)
+        {
+            return Float.parseFloat((String) val);
+        }
         return null ;
     }
 

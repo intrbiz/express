@@ -21,6 +21,10 @@ public class DoubleCast extends Function
         {
             return new Double(((Number)val).doubleValue()) ;
         }
+        else if (val instanceof String)
+        {
+            return Double.parseDouble((String) val);
+        }
         return null ;
     }
 
