@@ -14,6 +14,8 @@ public class ELStatementFrame
         private static final long RETURN = 4;
 
         private static final long BREAK = 8;
+        
+        private static final long CONTINUE = 16;
     }
 
     private final ELStatementFrame parent;
@@ -110,6 +112,12 @@ public class ELStatementFrame
         if (! this.isFunction()) return this.parent.isBreak();
         return (this.state & STATES.BREAK) == STATES.BREAK;
     }
+    
+    public boolean isContinue()
+    {
+        if (! this.isFunction()) return this.parent.isContinue();
+        return (this.state & STATES.CONTINUE) == STATES.CONTINUE;
+    }
 
     public void doReturn(Object value)
     {
@@ -128,10 +136,16 @@ public class ELStatementFrame
         if (! this.isFunction()) this.parent.doBreak();
         this.state = STATES.BREAK | STATES.HALT;
     }
-
-    public void doResetBreak()
+    
+    public void doContinue()
     {
-        if (! this.isFunction()) this.parent.doResetBreak();
+        if (! this.isFunction()) this.parent.doContinue();
+        this.state = STATES.CONTINUE | STATES.HALT;
+    }
+
+    public void doReset()
+    {
+        if (! this.isFunction()) this.parent.doReset();
         this.state = STATES.RUNNING;
     }
 }

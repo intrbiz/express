@@ -5,13 +5,14 @@ import java.io.Writer;
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
+import com.intrbiz.express.security.Hidden;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
 import com.intrbiz.express.template.filter.ContentFilterRegistry;
 import com.intrbiz.express.template.io.TemplateWriter;
 import com.intrbiz.express.template.loader.TemplateLoader;
 
-public interface ExpressContext
+public interface ExpressContext extends Hidden
 {
     // customisable stuff
     
@@ -40,6 +41,18 @@ public interface ExpressContext
     void exitFrame();
 
     ELStatementFrame getFrame();
+    
+    // security
+    
+    void checkIteration();
+    
+    void checkOp();
+    
+    boolean checkJavaAccess(String className);
+    
+    boolean allowSetAccessible();
+    
+    boolean suppressMethodExceptions();
     
     // config
     

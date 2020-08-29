@@ -1,10 +1,10 @@
 package com.intrbiz.express.operator;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import com.intrbiz.converter.Converter;
 import com.intrbiz.express.ExpressContext;
@@ -22,7 +22,7 @@ import com.intrbiz.validator.Validator;
 public abstract class Function extends Operator
 {
 
-    private List<Operator> parameters = new LinkedList<Operator>();
+    private List<Operator> parameters = new ArrayList<Operator>();
 
     private Map<String, Operator> namedParameters = new TreeMap<String, Operator>();
 

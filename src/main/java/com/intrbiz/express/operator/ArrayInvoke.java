@@ -8,6 +8,8 @@ import com.intrbiz.converter.Converter;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
+import com.intrbiz.express.security.Hidden;
+import com.intrbiz.express.security.ReadOnly;
 import com.intrbiz.express.util.ELReflectUtil;
 import com.intrbiz.validator.Validator;
 
@@ -38,7 +40,7 @@ public class ArrayInvoke extends BinaryOperator
             Method method = ELReflectUtil.findGetter(onClass, property);
             if (method != null)
             {
-                method.setAccessible(true);
+                if (context.allowSetAccessible()) method.setAccessible(true);
                 cache = new MethodCache(method, onClass);
                 if (context.isCaching()) this.getterCache = cache;
             }
@@ -55,24 +57,36 @@ public class ArrayInvoke extends BinaryOperator
             Method method = ELReflectUtil.findSetter(onClass, property);
             if (method != null)
             {
-                method.setAccessible(true);
+                if (context.allowSetAccessible()) method.setAccessible(true);
                 cache = new MethodCache(method, onClass);
                 if (context.isCaching()) this.setterCache = cache;
             }
         }
         return cache == null ? null : cache.method;
     }
+    
+    protected void checkEntityAccess(Object entity, boolean set) throws ExpressException
+    {
+        if (entity instanceof Hidden)
+            throw new ExpressException("Illegal access to Hidden entity");
+        if (set && entity instanceof ReadOnly)
+            throw new ExpressException("Illegal access to ReadOnly entity");
+    }
 
     @SuppressWarnings("rawtypes")
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         // get the entity
         Object entity = this.getLeft().get(context, source);
+        if (entity == null) return null;
+        this.checkEntityAccess(entity, false);
         // get the prop
         Object prop = this.getRight().get(context, source);
+        if (prop == null) return null;
         // evaluate
-        if (entity == null || prop == null) return null;
         if (entity instanceof List<?> && prop instanceof Integer)
         {
             List list = (List) entity;
@@ -115,7 +129,7 @@ public class ArrayInvoke extends BinaryOperator
         {
             Method getter = this.getGetter(entity.getClass(), (String) prop, context);
             if (getter != null)
-                return ELReflectUtil.invokeMethod(getter, entity);
+                return ELReflectUtil.invokeMethod(context, getter, entity);
         }
         return null;
     }
@@ -126,10 +140,12 @@ public class ArrayInvoke extends BinaryOperator
     {
         // get the entity
         Object entity = this.getLeft().get(context, source);
+        if (entity == null) return;
+        this.checkEntityAccess(entity, true);
         // get the prop
         Object prop = this.getRight().get(context, source);
         // evaluate
-        if (entity == null || prop == null) return;
+        if (prop == null) return;
         if (entity instanceof List<?> && prop instanceof Integer)
         {
             List list = (List) entity;
@@ -172,7 +188,7 @@ public class ArrayInvoke extends BinaryOperator
         {
             Method setter = this.getSetter(entity.getClass(), (String) prop, context);
             if (setter != null)
-                ELReflectUtil.invokeMethod(setter, entity, value);
+                ELReflectUtil.invokeMethod(context, setter, entity, value);
         }
     }
 
@@ -181,10 +197,12 @@ public class ArrayInvoke extends BinaryOperator
     {
         // get the entity
         Object entity = this.getLeft().get(context, source);
+        if (entity == null) return null;
+        this.checkEntityAccess(entity, false);
         // get the prop
         Object prop = this.getRight().get(context, source);
+        if (prop == null) return null;
         // evaluate
-        if (entity == null || prop == null) return null;
         if (entity instanceof DynamicEntity && prop instanceof String)
         {
             DynamicEntity de = (DynamicEntity) entity;
@@ -211,10 +229,12 @@ public class ArrayInvoke extends BinaryOperator
     {
         // get the entity
         Object entity = this.getLeft().get(context, source);
+        if (entity == null) return null;
+        this.checkEntityAccess(entity, false);
         // get the prop
         Object prop = this.getRight().get(context, source);
+        if (prop == null) return null;
         // evaluate
-        if (entity == null || prop == null) return null;
         if (entity instanceof DynamicEntity && prop instanceof String)
         {
             DynamicEntity de = (DynamicEntity) entity;

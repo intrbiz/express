@@ -26,6 +26,8 @@ public class DateFormat extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         Operator arg1 = this.getParameters().get(0);
         Operator arg2 = this.getParameters().get(1);
         

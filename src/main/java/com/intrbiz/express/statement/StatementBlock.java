@@ -1,5 +1,6 @@
 package com.intrbiz.express.statement;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class StatementBlock extends Statement
     public StatementBlock(List<Statement> statements)
     {
         this.statements = statements;
+    }
+    
+    public StatementBlock(Statement... statements)
+    {
+        this(Arrays.asList(statements));
     }
 
     @Override

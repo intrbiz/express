@@ -20,6 +20,8 @@ public class LogicalNot extends UnaryOperator
 	@Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
+	    context.checkOp();
+	    
 		Operator val = this.getOperator();
 		Object eval = val.get(context, source);
 		if (eval == null)

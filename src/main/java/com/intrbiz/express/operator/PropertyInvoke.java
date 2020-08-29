@@ -1,6 +1,7 @@
 package com.intrbiz.express.operator;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 
 import com.intrbiz.converter.Converter;
@@ -8,6 +9,8 @@ import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.dynamic.DynamicEntity;
 import com.intrbiz.express.dynamic.EntityProxy;
+import com.intrbiz.express.security.Hidden;
+import com.intrbiz.express.security.ReadOnly;
 import com.intrbiz.express.util.ELReflectUtil;
 import com.intrbiz.express.value.ValueExpression;
 import com.intrbiz.validator.Validator;
@@ -57,6 +60,14 @@ public class PropertyInvoke extends Operator
 	{
 		return this.getLeft() + "." + this.getProperty();
 	}
+	
+	protected void checkEntityAccess(Object entity, boolean set) throws ExpressException
+	{
+	    if (entity instanceof Hidden)
+	        throw new ExpressException("Illegal access to Hidden entity");
+	    if (set && entity instanceof ReadOnly)
+	        throw new ExpressException("Illegal access to ReadOnly entity");
+	}
 
 	protected Object resolveEntity(ExpressContext context, Object source) throws ExpressException
 	{
@@ -90,7 +101,7 @@ public class PropertyInvoke extends Operator
 	        Method method = ELReflectUtil.findGetter(onClass, property);
 	        if (method != null)
 	        {
-	            method.setAccessible(true);
+	            if (context.allowSetAccessible()) method.setAccessible(true);
 	            cache = new MethodCache(method, onClass);
 	            if (context.isCaching()) this.getterCache = cache;
 	        }
@@ -107,7 +118,7 @@ public class PropertyInvoke extends Operator
             Method method = ELReflectUtil.findSetter(onClass, property);
             if (method != null)
             {
-                method.setAccessible(true);
+                if (context.allowSetAccessible()) method.setAccessible(true);
                 cache = new MethodCache(method, onClass);
                 if (context.isCaching()) this.setterCache = cache;
             }
@@ -156,12 +167,26 @@ public class PropertyInvoke extends Operator
 	@Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
+	    context.checkOp();
+	    
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
+		if (entity == null) return null;
+		this.checkEntityAccess(entity, false);
 		// eval the right hand side
 		String property = this.resolveProperty(context, source);
+		if (property == null) return null;
+		// helper for array length
+		if ("length".equals(property))
+		{
+		    if (entity instanceof Object[])
+		        return ((Object[]) entity).length;
+		    else if (entity instanceof Collection)
+		        return ((Collection) entity).size();
+            else if (entity instanceof Map)
+                return ((Map) entity).size();
+		}
 		// get the property
-		if (entity == null || property == null) return null;
 		if (entity instanceof DynamicEntity)
 		{
 			return ((DynamicEntity) entity).get(property, context, source);
@@ -174,7 +199,7 @@ public class PropertyInvoke extends Operator
 		{
 			Method getter = this.getGetter(entity.getClass(), property, context);
 			if (getter != null)
-			    return ELReflectUtil.invokeMethod(getter, entity);
+			    return ELReflectUtil.invokeMethod(context, getter, entity);
 		}
 		return null;
 	}
@@ -184,10 +209,12 @@ public class PropertyInvoke extends Operator
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
+		if (entity == null) return;
+		this.checkEntityAccess(entity, true);
 		// eval the right hand side
 		String property = this.resolveProperty(context, source);
+		if (property == null) return;
 		// get the property
-		if (entity == null || property == null) return;
 		if (entity instanceof DynamicEntity)
 		{
 			((DynamicEntity) entity).set(property, value, context, source);
@@ -196,7 +223,7 @@ public class PropertyInvoke extends Operator
 		{
 			Method setter = this.getSetter(entity.getClass(), property, context);
 			if (setter != null)
-			    ELReflectUtil.invokeMethod(setter, entity, value);
+			    ELReflectUtil.invokeMethod(context, setter, entity, value);
 		}
 	}
 
@@ -205,10 +232,12 @@ public class PropertyInvoke extends Operator
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
+		if (entity == null) return null;
+		this.checkEntityAccess(entity, false);
 		// eval the right hand side
 		String property = this.resolveProperty(context, source);
+		if (property == null) return null;
 		// get the property
-		if (entity == null || property == null) return null;
 		if (entity instanceof DynamicEntity)
 		{
 			return ((DynamicEntity) entity).getConverter(property, context, source);
@@ -227,10 +256,12 @@ public class PropertyInvoke extends Operator
 	{
 		// evaluate the left hand side to get the entity value
 		Object entity = this.resolveEntity(context, source);
+		if (entity == null) return null;
+		this.checkEntityAccess(entity, false);
 		// eval the right hand side
 		String property = this.resolveProperty(context, source);
+		if (property == null) return null;
 		// get the property
-		if (entity == null || property == null) return null;
 		if (entity instanceof DynamicEntity)
 		{
 			return ((DynamicEntity) entity).getValidator(property, context, source);

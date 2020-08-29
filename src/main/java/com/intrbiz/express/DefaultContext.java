@@ -5,6 +5,7 @@ import java.io.Writer;
 import com.intrbiz.express.action.ActionHandler;
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
+import com.intrbiz.express.security.Limiter;
 import com.intrbiz.express.stack.ELStatementFrame;
 import com.intrbiz.express.template.filter.ContentFilter;
 import com.intrbiz.express.template.filter.ContentFilterRegistry;
@@ -21,6 +22,10 @@ public class DefaultContext implements ExpressContext
 
     private final ExpressEntityResolver resolver;
     
+    private final Limiter iterationLimiter;
+    
+    private final Limiter opLimiter;
+    
     private boolean caching = true;
     
     private TemplateLoader templateLoader;
@@ -29,48 +34,55 @@ public class DefaultContext implements ExpressContext
     
     private TemplateWriter writer;
 
-    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Limiter iterationLimiter,  Limiter opLimiter, TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
     {
         super();
         this.extensions = extensions;
         this.resolver = resolver;
+        this.iterationLimiter = iterationLimiter == null ? Limiter.defaultIterationLimit() : iterationLimiter;
+        this.opLimiter = opLimiter == null ? Limiter.defaultOpLimit() : opLimiter;
         this.templateLoader = templateLoader;
         this.contentFilterRegistry = contentFilterRegistry;
     }
     
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver)
     {
-        this(extensions, resolver, null, null);
+        this(extensions, resolver, null, null, null, null);
+    }
+    
+    public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, Limiter iterationLimiter,  Limiter opLimiter)
+    {
+        this(extensions, resolver, iterationLimiter, opLimiter, null, null);
     }
 
     public DefaultContext(ExpressExtensionRegistry registry)
     {
-        this(registry, null, null, null);
+        this(registry, null, null, null, null, null);
     }
 
     public DefaultContext(ExpressEntityResolver resolver)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver, null, null);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), resolver, null, null, null, null);
     }
 
     public DefaultContext()
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null, null, null);
     }
     
     public DefaultContext(ExpressExtensionRegistry extensions, ExpressEntityResolver resolver, TemplateLoader templateLoader)
     {
-        this(extensions, resolver, templateLoader, ContentFilterRegistry.getDefault());
+        this(extensions, resolver, null, null, templateLoader, ContentFilterRegistry.getDefault());
     }
     
     public DefaultContext(TemplateLoader templateLoader, ContentFilterRegistry contentFilterRegistry)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, templateLoader, contentFilterRegistry);
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null, templateLoader, contentFilterRegistry);
     }
     
     public DefaultContext(TemplateLoader templateLoader)
     {
-        this(ExpressExtensionRegistry.getDefaultRegistry(), null, templateLoader, ContentFilterRegistry.getDefault());
+        this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null, templateLoader, ContentFilterRegistry.getDefault());
     }
 
     public Object getEntity(String name, Object source)
@@ -151,6 +163,36 @@ public class DefaultContext implements ExpressContext
     public ELStatementFrame getFrame()
     {
         return this.frame;
+    }
+
+    @Override
+    public void checkIteration()
+    {
+        this.iterationLimiter.check();
+    }
+
+    @Override
+    public void checkOp()
+    {
+        this.opLimiter.check();
+    }
+
+    @Override
+    public boolean allowSetAccessible()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean suppressMethodExceptions()
+    {
+        return true;
+    }
+    
+    @Override
+    public boolean checkJavaAccess(String className)
+    {
+        return true;
     }
 
     @Override

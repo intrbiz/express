@@ -64,6 +64,8 @@ public class ConcatOperator extends Operator
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         StringBuilder sb = new StringBuilder();
         for (Operator op : this.operators)
         {

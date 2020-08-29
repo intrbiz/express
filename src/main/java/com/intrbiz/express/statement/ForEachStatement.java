@@ -3,6 +3,7 @@ package com.intrbiz.express.statement;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
+import com.intrbiz.express.stack.ELStatementFrame;
 
 public class ForEachStatement extends ControlStatement
 {
@@ -27,22 +28,31 @@ public class ForEachStatement extends ControlStatement
         Object col = this.getCollection().get(ctx, source);
         if (col instanceof Iterable<?>)
         {
+            StatementBlock block = this.getBlock();
+            ELStatementFrame frame = ctx.getFrame();
             for (Object colObj : (Iterable<?>) col)
             {
+                ctx.checkIteration();
                 // set the entity
                 ctx.setEntity(this.getEntityName(), colObj, source);
                 // execute the block
-                this.getBlock().execute(ctx, source);
+                block.execute(ctx, source);
                 // check the context state
-                if (ctx.getFrame().isHalt())
+                if (frame.isHalt())
                 {
-                    if (ctx.getFrame().isBreak())
+                    if (frame.isBreak())
                     {
-                        ctx.getFrame().doResetBreak();
+                        frame.doReset();
                         break;
                     }
-                    else if (ctx.getFrame().isReturn())
+                    else if (frame.isContinue())
+                    {
+                        frame.doReset();
+                    }
+                    else if (frame.isReturn())
+                    {
                         return;
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.intrbiz.express.statement;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 import com.intrbiz.express.operator.Operator;
+import com.intrbiz.express.stack.ELStatementFrame;
 
 public class WhileStatement extends ControlStatement
 {
@@ -20,19 +21,29 @@ public class WhileStatement extends ControlStatement
     @Override
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        while ((Boolean) this.getTest().get(ctx, source))
+        Operator test = this.getTest();
+        StatementBlock block = this.getBlock();
+        ELStatementFrame frame = ctx.getFrame();
+        while ((Boolean) test.get(ctx, source))
         {
-            this.getBlock().execute(ctx, source);
+            ctx.checkIteration();
+            block.execute(ctx, source);
             // check the context state
-            if (ctx.getFrame().isHalt())
+            if (frame.isHalt())
             {
-                if (ctx.getFrame().isBreak())
+                if (frame.isBreak())
                 {
-                    ctx.getFrame().doResetBreak();
+                    frame.doReset();
                     break;
                 }
-                else if (ctx.getFrame().isReturn())
+                else if (frame.isContinue())
+                {
+                    frame.doReset();
+                }
+                else if (frame.isReturn())
+                {
                     return;
+                }
             }
         }
     }

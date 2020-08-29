@@ -21,7 +21,9 @@ public class DefaultStatement extends Statement
     
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        this.getOperator().get(ctx, source);
+        Operator operator = this.getOperator();
+        if (operator != null)
+            operator.get(ctx, source);
     }
 
     public Operator getOperator()

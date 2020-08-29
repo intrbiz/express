@@ -73,7 +73,7 @@ public class Sub extends BinaryOperator
 					// need a cast to long
 					return new Long(nleft.longValue() - nright.longValue());
 				}
-				if (left instanceof Integer && right instanceof Integer)
+				if (left instanceof Integer || right instanceof Integer)
 				{
 					// can cast as int
 					return new Integer(nleft.intValue() - nright.intValue());

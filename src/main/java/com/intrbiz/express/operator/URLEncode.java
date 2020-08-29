@@ -15,6 +15,8 @@ public class URLEncode extends Function
 	@Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
+	    context.checkOp();
+	    
 		Operator op = this.getParameters().get(0);
 		Object val = op.get(context, source);
 		if (val != null)

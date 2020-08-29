@@ -17,6 +17,8 @@ public class Coalesce extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
     	for (Operator o : this.getParameters())
     	{
     		Object r = o.get(context,source);

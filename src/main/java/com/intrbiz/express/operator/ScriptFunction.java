@@ -51,6 +51,7 @@ public class ScriptFunction extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
         // enter the root frame
         context.enterFrame(true);
         try

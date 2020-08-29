@@ -1,13 +1,17 @@
 package com.intrbiz.express.operator;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
+import com.intrbiz.express.security.Hidden;
+import com.intrbiz.express.security.ReadOnly;
 import com.intrbiz.express.util.ELReflectUtil;
 
 public class MethodInvoke extends Operator
@@ -91,15 +95,26 @@ public class MethodInvoke extends Operator
         ret.append(")");
         return ret.toString();
     }
+    
+    protected void checkEntityAccess(Object entity, boolean set) throws ExpressException
+    {
+        if (entity instanceof Hidden)
+            throw new ExpressException("Illegal access to Hidden entity");
+        if (set && entity instanceof ReadOnly)
+            throw new ExpressException("Illegal access to ReadOnly entity");
+    }
 
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         // what are we accessing methods on
         Object on = this.getLeft().get(context, source);
         if (on == null) return null;
+        this.checkAccess(on, false);
         // the class of the object we are accessing
-        Class<?> cls = on.getClass();
+        Class<?> cls = on instanceof Class<?> ? (Class<?>) on : on.getClass();
         // evaluate the arguments to assist in overload detection
         Object[] args = new Object[this.getArguments().size()];
         int i = 0;
@@ -110,12 +125,20 @@ public class MethodInvoke extends Operator
         // find the method to call
         Method method = this.getMethod(cls, args, context);
         if (method != null) 
-            return ELReflectUtil.invokeMethod(method, on, args);
+            return ELReflectUtil.invokeMethod(context, method, on, args);
         // maybe this method is a decorator (virtual method)
         Decorator decorator = this.getDecorator(cls, context);
         if (decorator != null) 
             return decorator.get(context, source);
         return null;
+    }
+    
+    protected void checkAccess(Object entity, boolean set) throws ExpressException
+    {
+        if (entity instanceof Hidden)
+            throw new ExpressException("Ilegal access to Hidden entity");
+        if (set && entity instanceof ReadOnly)
+            throw new ExpressException("Ilegal access to ReadOnly entity");
     }
     
     protected Decorator getDecorator(Class<?> onClass, ExpressContext context)
@@ -144,15 +167,30 @@ public class MethodInvoke extends Operator
         if (cache == null || onClass != cache.type)
         {
             cache = null;
+            Set<Method> nameMatched = new HashSet<>();
             for (Method method : onClass.getMethods())
             {
-                if (method.getName().equals(this.getName()) && ELReflectUtil.methodMatch(method, args))
+                if (method.getName().equals(this.getName()))
                 {
-                    method.setAccessible(true);
-                    cache = new MethodCache(method, onClass);
-                    if (context.isCaching()) this.methodCache = cache;
-                    break;
+                    if (ELReflectUtil.methodMatch(method, args))
+                    {
+                        if (context.allowSetAccessible()) method.setAccessible(true);
+                        cache = new MethodCache(method, onClass);
+                        if (context.isCaching()) this.methodCache = cache;
+                        break;
+                    }
+                    else
+                    {
+                        nameMatched.add(method);
+                    }
                 }
+            }
+            if (cache == null && nameMatched.size() == 1)
+            {
+                Method method = nameMatched.iterator().next();
+                if (context.allowSetAccessible()) method.setAccessible(true);
+                cache = new MethodCache(method, onClass);
+                if (context.isCaching()) this.methodCache = cache;
             }
         }
         return cache == null ? null : cache.method;

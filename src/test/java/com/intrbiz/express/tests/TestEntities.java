@@ -3,6 +3,7 @@ package com.intrbiz.express.tests;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Before;
@@ -93,5 +94,12 @@ public class TestEntities
         Object b = op.get(context, null);
         assertThat(b, is(instanceOf(String.class)));
         assertThat((String) b, is(equalTo("Some different value")));
+    }
+    
+    @Test()
+    public void testBuiltinArrays()
+    {
+        Object o = ELUtil.parseEL("#{Arrays}", this.context).get(context, null);
+        assertThat(o, is(equalTo(Arrays.class)));
     }
 }

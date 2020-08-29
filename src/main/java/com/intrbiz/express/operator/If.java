@@ -14,6 +14,8 @@ public class If extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         Operator ev = this.getParameters().get(0);
         Operator tr = this.getParameters().get(1);
         Operator fl = this.getParameters().get(2);

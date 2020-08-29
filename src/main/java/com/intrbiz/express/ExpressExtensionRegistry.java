@@ -7,11 +7,12 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.intrbiz.express.operator.Decorator;
 import com.intrbiz.express.operator.Function;
+import com.intrbiz.express.security.Hidden;
 
 /**
  * A registry of Express extensions
  */
-public class ExpressExtensionRegistry
+public class ExpressExtensionRegistry implements Hidden
 {
     private static final ExpressExtensionRegistry DEFAULT = new ExpressExtensionRegistry("default");
     
@@ -33,6 +34,15 @@ public class ExpressExtensionRegistry
         super();
         if (name == null) throw new NullPointerException("Name cannot be null");
         this.name = name;
+    }
+    
+    public ExpressExtensionRegistry(String name, ExpressExtensionRegistry... subRegistries)
+    {
+        this(name);
+        for (ExpressExtensionRegistry reg : subRegistries)
+        {
+            this.addSubRegistry(reg);
+        }
     }
     
     public final String getName()

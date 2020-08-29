@@ -21,6 +21,8 @@ public class LogicalAnd extends BinaryOperator
 	@Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
+	    context.checkOp();
+	    
 		Object left = this.getLeft().get(context, source);
 		Object right = this.getRight().get(context, source);
 		if (left instanceof Boolean && right instanceof Boolean)

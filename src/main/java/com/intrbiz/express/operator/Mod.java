@@ -21,6 +21,8 @@ public class Mod extends BinaryOperator
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         Object left = this.getLeft().get(context, source);
         Object right = this.getRight().get(context, source);
 
@@ -44,7 +46,7 @@ public class Mod extends BinaryOperator
                 // need a cast to long
                 return new Long(nleft.longValue() % nright.longValue());
             }
-            if (left instanceof Integer && right instanceof Integer)
+            if (left instanceof Integer || right instanceof Integer)
             {
                 // can cast as int
                 return new Integer(nleft.intValue() % nright.intValue());

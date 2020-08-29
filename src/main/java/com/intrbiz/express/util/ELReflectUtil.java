@@ -1,8 +1,15 @@
 package com.intrbiz.express.util;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import org.apache.log4j.Logger;
+
+import com.intrbiz.express.ExpressContext;
+import com.intrbiz.express.ExpressException;
 
 public class ELReflectUtil
 {
@@ -53,17 +60,72 @@ public class ELReflectUtil
         return null;
     }
     
-    public static Object invokeMethod(Method method, Object on, Object... args)
+    public static Object invokeMethod(ExpressContext context, Method method, Object on, Object... args)
     {
         try
         {
-            return method.invoke(on, args);
+            // map the argument types
+            Object[] mapped = args;
+            Class<?>[] types = method.getParameterTypes();
+            // map the inputs
+            if (types.length > 0)
+            {
+                mapped = new Object[types.length];
+                if (types[types.length - 1].isArray())
+                {
+                    // varargs support
+                    for (int i = 0; i < (types.length - 1) && i < args.length; i++)
+                    {
+                        mapped[i] = mapArgument(types[i], args[i]);
+                    }
+                    if (args.length >= types.length)
+                    {
+                        int offset = types.length - 1;
+                        int len = args.length - offset;
+                        Class<?> arrayType = types[offset];
+                        Class<?> elementType = arrayType.getComponentType();
+                        Object varargs = (Object[]) Array.newInstance(elementType, len);
+                        for (int i = offset; i < args.length && i < len; i++) {
+                            Array.set(varargs, i - offset, mapArgument(elementType, args[i]));
+                        }
+                        mapped[offset] = varargs;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < types.length && i < args.length; i++)
+                    {
+                        mapped[i] = mapArgument(types[i], args[i]);
+                    }
+                }
+            }
+            // invoke
+            return method.invoke(on, mapped);
+        }
+        catch (InvocationTargetException e)
+        {
+            if (context.suppressMethodExceptions())
+                logger.warn("Suppressing exception from " + method, e);
+            else
+                throw new ExpressException(e.getCause());
         }
         catch (Exception e)
         {
-            logger.warn("Suppressing exception from " + method, e);
+            if (context.suppressMethodExceptions())
+                logger.warn("Suppressing exception from " + method, e);
+            else
+                throw new ExpressException(e);
         }
         return null;
+    }
+    
+    public static Object mapArgument(Class<?> type, Object arg)
+    {
+        if (arg instanceof InvocationHandler)
+        {
+            return Proxy.newProxyInstance(arg.getClass().getClassLoader(), new Class<?>[] { type }, (InvocationHandler) arg);
+        }
+        return arg;
     }
     
     public static boolean methodMatch(Method m, Object[] args)
@@ -83,7 +145,45 @@ public class ELReflectUtil
                         return false;
                     }
                 }
-                else if (arg != null && (!type.isInstance(arg))) 
+                else if (arg != null && (! matchType(type, arg))) 
+                {
+                    return false;
+                }
+            }
+        }
+        else if (types.length > 0 && args.length > types.length && types[types.length - 1].isArray())
+        {
+            int offset = types.length - 1;
+            // possible var args
+            for (int i = 0; i < offset; i++)
+            {
+                Object arg = args[i];
+                Class<?> type = types[i];
+                //
+                if (isPrimitive(type))
+                {
+                    if (! primitiveInstanceOf(type, arg))
+                    {
+                        return false;
+                    }
+                }
+                else if (arg != null && (! matchType(type, arg))) 
+                {
+                    return false;
+                }
+            }
+            Class<?> type = types[offset].getComponentType();
+            for (int i = offset; i < args.length; i++)
+            {
+                Object arg = args[i];
+                if (isPrimitive(type))
+                {
+                    if (! primitiveInstanceOf(type, arg))
+                    {
+                        return false;
+                    }
+                }
+                else if (arg != null && (! matchType(type, arg))) 
                 {
                     return false;
                 }
@@ -94,6 +194,15 @@ public class ELReflectUtil
             return false;
         }
         return true;
+    }
+    
+    public static boolean matchType(Class<?> type, Object obj)
+    {
+        if (type.isInstance(obj))
+            return true;
+        if (obj instanceof InvocationHandler)
+            return true;
+        return false;
     }
     
     public static boolean isPrimitive(Class<?> parameterType)

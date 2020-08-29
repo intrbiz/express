@@ -26,6 +26,8 @@ public class Equals extends BinaryOperator
 	@Override
 	public Boolean get(ExpressContext context, Object source) throws ExpressException
 	{
+	    context.checkOp();
+	    
 		Object left = this.getLeft().get(context, source);
 		Object right = this.getRight().get(context, source);
 		if (left == null && right == null)

@@ -41,133 +41,165 @@ public interface ELParserConstants {
   /** RegularExpression Id. */
   int EQ1 = 20;
   /** RegularExpression Id. */
-  int NE = 21;
+  int EQ2 = 21;
   /** RegularExpression Id. */
-  int NE1 = 22;
+  int NE = 22;
   /** RegularExpression Id. */
-  int GT = 23;
+  int NE1 = 23;
   /** RegularExpression Id. */
-  int GT1 = 24;
+  int NE2 = 24;
   /** RegularExpression Id. */
-  int LT = 25;
+  int GT = 25;
   /** RegularExpression Id. */
-  int LT1 = 26;
+  int GT1 = 26;
   /** RegularExpression Id. */
-  int GTEQ = 27;
+  int LT = 27;
   /** RegularExpression Id. */
-  int GTEQ1 = 28;
+  int LT1 = 28;
   /** RegularExpression Id. */
-  int LTEQ = 29;
+  int GTEQ = 29;
   /** RegularExpression Id. */
-  int LTEQ1 = 30;
+  int GTEQ1 = 30;
   /** RegularExpression Id. */
-  int OR = 31;
+  int LTEQ = 31;
   /** RegularExpression Id. */
-  int OR1 = 32;
+  int LTEQ1 = 32;
   /** RegularExpression Id. */
-  int AND = 33;
+  int BITWISE_OR = 33;
   /** RegularExpression Id. */
-  int AND1 = 34;
+  int BITWISE_XOR = 34;
   /** RegularExpression Id. */
-  int NOT = 35;
+  int BITWISE_AND = 35;
   /** RegularExpression Id. */
-  int NOT1 = 36;
+  int BITWISE_NOT = 36;
   /** RegularExpression Id. */
-  int STCOMP = 37;
+  int BITSHIFT_LEFT = 37;
   /** RegularExpression Id. */
-  int EDCOMP = 38;
+  int BITSHIFT_RIGHT = 38;
   /** RegularExpression Id. */
-  int ARGSEP = 39;
+  int BITSHIFT_URIGHT = 39;
   /** RegularExpression Id. */
-  int STARR = 40;
+  int OR = 40;
   /** RegularExpression Id. */
-  int EDARR = 41;
+  int OR1 = 41;
   /** RegularExpression Id. */
-  int ASSIGNMENT = 42;
+  int AND = 42;
   /** RegularExpression Id. */
-  int ADDASSIGNMENT = 43;
+  int AND1 = 43;
   /** RegularExpression Id. */
-  int SUBASSIGNMENT = 44;
+  int NOT = 44;
   /** RegularExpression Id. */
-  int MULASSIGNMENT = 45;
+  int NOT1 = 45;
   /** RegularExpression Id. */
-  int DIVASSIGNMENT = 46;
+  int STCOMP = 46;
   /** RegularExpression Id. */
-  int POWASSIGNMENT = 47;
+  int EDCOMP = 47;
   /** RegularExpression Id. */
-  int MODASSIGNMENT = 48;
+  int ARGSEP = 48;
   /** RegularExpression Id. */
-  int INCASSIGNMENT = 49;
+  int STARR = 49;
   /** RegularExpression Id. */
-  int DECASSIGNMENT = 50;
+  int EDARR = 50;
   /** RegularExpression Id. */
-  int NEW = 51;
+  int ASSIGNMENT = 51;
   /** RegularExpression Id. */
-  int RETURN = 52;
+  int ADDASSIGNMENT = 52;
   /** RegularExpression Id. */
-  int IF = 53;
+  int SUBASSIGNMENT = 53;
   /** RegularExpression Id. */
-  int ELSE = 54;
+  int MULASSIGNMENT = 54;
   /** RegularExpression Id. */
-  int IN = 55;
+  int DIVASSIGNMENT = 55;
   /** RegularExpression Id. */
-  int FOR = 56;
+  int POWASSIGNMENT = 56;
   /** RegularExpression Id. */
-  int WHILE = 57;
+  int MODASSIGNMENT = 57;
   /** RegularExpression Id. */
-  int BREAK = 58;
+  int INCASSIGNMENT = 58;
   /** RegularExpression Id. */
-  int EXPORT = 59;
+  int DECASSIGNMENT = 59;
   /** RegularExpression Id. */
-  int INCLUDE = 60;
+  int ARROW = 60;
   /** RegularExpression Id. */
-  int FUNCTION = 61;
+  int STATEMENT = 61;
   /** RegularExpression Id. */
-  int LACTION = 62;
+  int NEW = 62;
   /** RegularExpression Id. */
-  int NLINT = 63;
+  int RETURN = 63;
   /** RegularExpression Id. */
-  int NLLONG = 64;
+  int IF = 64;
   /** RegularExpression Id. */
-  int NLFLOAT = 65;
+  int ELSE = 65;
   /** RegularExpression Id. */
-  int NLDOUBLE = 66;
+  int IN = 66;
   /** RegularExpression Id. */
-  int LBOOLEAN = 67;
+  int FOR = 67;
   /** RegularExpression Id. */
-  int LNULL = 68;
+  int WHILE = 68;
   /** RegularExpression Id. */
-  int LENTITY = 69;
+  int BREAK = 69;
   /** RegularExpression Id. */
-  int HEXCHAR = 70;
+  int CONTINUE = 70;
   /** RegularExpression Id. */
-  int ESCAPECHAR = 71;
+  int EXPORT = 71;
   /** RegularExpression Id. */
-  int UESCAPECHAR = 72;
+  int INCLUDE = 72;
   /** RegularExpression Id. */
-  int LSTRING = 73;
+  int FUNCTION = 73;
   /** RegularExpression Id. */
-  int END_EXPRESSION = 74;
+  int LACTION = 74;
   /** RegularExpression Id. */
-  int QUOTE = 75;
+  int COLON = 75;
   /** RegularExpression Id. */
-  int STARTBLOCK = 76;
+  int NLINT = 76;
   /** RegularExpression Id. */
-  int ENDBLOCK = 77;
+  int NLLONG = 77;
   /** RegularExpression Id. */
-  int STATEMENT = 78;
+  int NLFLOAT = 78;
   /** RegularExpression Id. */
-  int END_SCRIPT = 79;
+  int NLDOUBLE = 79;
   /** RegularExpression Id. */
-  int ENDQUOTE = 81;
+  int LBOOLEAN = 80;
   /** RegularExpression Id. */
-  int CHAR = 82;
+  int LNULL = 81;
   /** RegularExpression Id. */
-  int CNTRLESC = 83;
+  int LENTITY = 82;
   /** RegularExpression Id. */
-  int HEX = 85;
+  int HEXCHAR = 83;
   /** RegularExpression Id. */
-  int HEXESC = 86;
+  int ESCAPECHAR = 84;
+  /** RegularExpression Id. */
+  int UESCAPECHAR = 85;
+  /** RegularExpression Id. */
+  int LSTRING = 86;
+  /** RegularExpression Id. */
+  int STARTMAP = 87;
+  /** RegularExpression Id. */
+  int ENDMAP = 88;
+  /** RegularExpression Id. */
+  int END_EXPRESSION = 89;
+  /** RegularExpression Id. */
+  int QUOTE = 90;
+  /** RegularExpression Id. */
+  int STARTBLOCK = 91;
+  /** RegularExpression Id. */
+  int ENDBLOCK = 92;
+  /** RegularExpression Id. */
+  int END_SCRIPT = 93;
+  /** RegularExpression Id. */
+  int SINGLE_LINE_COMMENT = 96;
+  /** RegularExpression Id. */
+  int MULTI_LINE_COMMENT = 97;
+  /** RegularExpression Id. */
+  int ENDQUOTE = 100;
+  /** RegularExpression Id. */
+  int CHAR = 101;
+  /** RegularExpression Id. */
+  int CNTRLESC = 102;
+  /** RegularExpression Id. */
+  int HEX = 104;
+  /** RegularExpression Id. */
+  int HEXESC = 105;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -176,11 +208,17 @@ public interface ELParserConstants {
   /** Lexical state. */
   int IN_SCRIPT = 2;
   /** Lexical state. */
-  int STRINGSTATE = 3;
+  int IN_MAP = 3;
   /** Lexical state. */
-  int ESCSTATE = 4;
+  int IN_SINGLE_LINE_COMMENT = 4;
   /** Lexical state. */
-  int HEXSTATE = 5;
+  int IN_MULTI_LINE_COMMENT = 5;
+  /** Lexical state. */
+  int STRINGSTATE = 6;
+  /** Lexical state. */
+  int ESCSTATE = 7;
+  /** Lexical state. */
+  int HEXSTATE = 8;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -205,8 +243,10 @@ public interface ELParserConstants {
     "\"mod\"",
     "\"==\"",
     "\"eq\"",
+    "\"===\"",
     "\"!=\"",
     "\"ne\"",
+    "\"!==\"",
     "\">\"",
     "\"gt\"",
     "\"<\"",
@@ -215,9 +255,16 @@ public interface ELParserConstants {
     "\"gteq\"",
     "\"<=\"",
     "\"lteq\"",
-    "\"||\"",
+    "\"|\"",
+    "<BITWISE_XOR>",
+    "\"&\"",
+    "\"~\"",
+    "\"<<\"",
+    "\">>\"",
+    "<BITSHIFT_URIGHT>",
+    "<OR>",
     "\"or\"",
-    "\"&&\"",
+    "<AND>",
     "\"and\"",
     "\"!\"",
     "\"not\"",
@@ -235,6 +282,8 @@ public interface ELParserConstants {
     "\"%=\"",
     "\"++\"",
     "\"--\"",
+    "\"->\"",
+    "\";\"",
     "\"new\"",
     "\"return\"",
     "\"if\"",
@@ -243,10 +292,12 @@ public interface ELParserConstants {
     "\"for\"",
     "\"while\"",
     "\"break\"",
+    "\"continue\"",
     "\"export\"",
     "\"include\"",
     "\"function\"",
     "\"@\"",
+    "\":\"",
     "<NLINT>",
     "<NLLONG>",
     "<NLFLOAT>",
@@ -258,12 +309,18 @@ public interface ELParserConstants {
     "<ESCAPECHAR>",
     "<UESCAPECHAR>",
     "<LSTRING>",
+    "\"{\"",
+    "\"}\"",
     "\"}\"",
     "\"\\\"\"",
     "\"{\"",
     "\"}\"",
-    "\";\"",
     "\"#>\"",
+    "\"//\"",
+    "\"/*\"",
+    "<SINGLE_LINE_COMMENT>",
+    "\"*/\"",
+    "<token of kind 98>",
     "\"\\\\\"",
     "<ENDQUOTE>",
     "<CHAR>",

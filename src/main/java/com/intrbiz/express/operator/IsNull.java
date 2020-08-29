@@ -14,6 +14,8 @@ public class IsNull extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         Operator ev = this.getParameters().get(0);
         Object evo = ev.get(context,source);
         return evo == null;

@@ -29,8 +29,11 @@ public class TestScript
             System.out.println("=== EXECUTE");
             System.out.println("===================================================");
             long start = System.currentTimeMillis();
-            template.encode(context, null, new PrintWriter(System.out));
+            PrintWriter writer = new PrintWriter(System.out);
+            template.encode(context, null, writer);
+            writer.flush();
             long end = System.currentTimeMillis();
+            System.out.println();
             System.out.println("===================================================");
             System.out.println("Took: " + (end - start) + "ms");
             System.out.println("===================================================");

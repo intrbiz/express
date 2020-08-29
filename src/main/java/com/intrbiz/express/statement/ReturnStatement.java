@@ -20,12 +20,12 @@ public class ReturnStatement extends DefaultStatement
     @Override
     public void execute(ExpressContext ctx, Object source) throws ExpressException
     {
-        Object ret = this.getOperator().get(ctx, source);
-        ctx.getFrame().doReturn(ret);
+        Operator operator = this.getOperator();
+        ctx.getFrame().doReturn(operator == null ? null : operator.get(ctx, source));
     }
 
     public String toString(String p)
     {
-        return p  + "return " + this.getOperator().toString() + ";\r\n";
+        return p  + "return " + (this.getOperator() == null ? "" : this.getOperator().toString()) + ";\r\n";
     }
 }

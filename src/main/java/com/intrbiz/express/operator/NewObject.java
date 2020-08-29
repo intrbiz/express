@@ -63,6 +63,8 @@ public class NewObject extends Operator
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         try
         {
             Class<?> cls = Class.forName(this.getClassName());

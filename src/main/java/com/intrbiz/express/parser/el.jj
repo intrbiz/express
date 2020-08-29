@@ -15,107 +15,282 @@ import java.util.*;
 @SuppressWarnings("all")
 public final class ELParser {
 
+	public static Function loadFunction(String fn, ExpressContext c, boolean verify) throws ExpressException
+	{
+		Function f = null;
+	    if ("coalesce".equals(fn))
+	    {
+	      f = new Coalesce();
+	    }
+	    else if ("dateformat".equals(fn))
+	    {
+	      f = new DateFormat();
+	    }
+	    else if ("double".equals(fn))
+	    {
+	      f = new DoubleCast();
+	    }
+	    else if ("float".equals(fn))
+	    {
+	      f = new FloatCast();
+	    }
+	    else if ("long".equals(fn))
+	    {
+	      f = new LongCast();
+	    }
+	    else if ("int".equals(fn))
+	    {
+	      f = new IntCast();
+	    }
+	    else if ("byte".equals(fn))
+	    {
+	      f = new ByteCast();
+	    }
+	    else if ("string".equals(fn))
+	    {
+	      f = new StringCast();
+	    }
+	    else if ("list".equals(fn))
+	    {
+	      f = new ListCast();
+	    }
+	    else if ("set".equals(fn))
+	    {
+	      f = new SetCast();
+	    }
+	    else if ("map".equals(fn))
+	    {
+	      f = new MapCast();
+	    }
+	    else if ("stream".equals(fn))
+	    {
+	      f = new StreamCast();
+	    }
+	    else if ("java".equals(fn))
+	    {
+	      f = new Java();
+	    }
+	    else if ("getuuid".equals(fn))
+	    {
+	      f = new GetUUID();
+	    }
+	    else if ("if".equals(fn))
+	    {
+	      f = new If();
+	    }
+	    else if ("instanceof".equals(fn))
+	    {
+	      f = new InstanceOf();
+	    }
+	    else if ("isempty".equals(fn))
+	    {
+	      f = new IsEmpty();
+	    }
+	    else if ("isnull".equals(fn))
+	    {
+	      f = new IsNull();
+	    }
+	    else if ("join".equals(fn))
+	    {
+	      f = new Join();
+	    }
+	    else if ("urlencode".equals(fn))
+	    {
+	      f = new URLEncode();
+	    }
+	    else if ("urldecode".equals(fn))
+	    {
+	      f = new URLDecode();
+	    }
+	    else if ("print".equals(fn))
+	    {
+	        f = new Print();
+	    }
+	    else if ("pushfilter".equals(fn))
+	    {
+	        f = new PushFilter();
+	    }
+	    else if ("popfilter".equals(fn))
+	    {
+	        f = new PopFilter();
+	    }
+	    else if (c != null )
+	    {
+	        f = c.getCustomFunction( fn );
+	    }
+	    // validate we could load the function
+	    if (f == null)
+	    {
+	    	if (verify)
+	    	{
+	    		return new FunctionProxy(fn);
+	    	}
+	    	else
+	    	{
+	        	throw new ExpressException("Could not load function: " + fn);
+        	}
+	    }
+    	return f;
+    }
+    
+    private boolean verify = false;
+    
+    public boolean isVerify()
+    {
+    	return this.verify;
+	}
+	
+	public ELParser verify()
+	{
+		this.verify = true;
+		return this;
+	} 
+
 }
 
 PARSER_END(ELParser)
 
 <DEFAULT> TOKEN:
 {
-    <NON_EXPRESSION_TEXT: (~["#", "<"])+ | ("#" (~["{", "#"])+) | "#" | ("<" (~["#", "<"])+) | "<" >
-  | <START_EXPRESSION: "#{" > : IN_EXPRESSION
-  | <START_SCRIPT: "<#" > : IN_SCRIPT
+    <NON_EXPRESSION_TEXT : (~["#", "<"])+ | ("#" (~["{", "#"])+) | "#" | ("<" (~["#", "<"])+) | "<" >
+  | <START_EXPRESSION    : "#{" > : IN_EXPRESSION
+  | <START_SCRIPT        : "<#" > : IN_SCRIPT
 }
 
 
-<IN_EXPRESSION, IN_SCRIPT> SKIP : { " " | "\t" | "\n" | "\r" | "\r\n" }
-<IN_EXPRESSION, IN_SCRIPT> TOKEN : 
+<IN_EXPRESSION, IN_SCRIPT, IN_MAP> SKIP  : { " " | "\t" | "\n" | "\r" | "\r\n" }
+<IN_EXPRESSION, IN_SCRIPT, IN_MAP> TOKEN : 
 { 
-    <#DIGITS : (["0"-"9"])+ > 
-  | <DOT : "." >
-  | <ADD : "+" >
-  | <SUB : "-" >
-  | <MUL : "*" >
-  | <DIV : "/" >
-  | <DIV1 : "div" >
-  | <POW : "^" >
-  | <MOD : "%" >
-  | <MOD1 : "mod" >
-  | <EQ : "==" >
-  | <EQ1 : "eq" >
-  | <NE : "!=" >
-  | <NE1 : "ne" >
-  | <GT : ">" >
-  | <GT1 : "gt" >
-  | <LT : "<" >
-  | <LT1 : "lt" >
-  | <GTEQ : ">=" >
-  | <GTEQ1 : "gteq" >
-  | <LTEQ : "<=" >
-  | <LTEQ1 : "lteq" >
-  | <OR : "||" >
-  | <OR1 : "or" >
-  | <AND : "&&" >
-  | <AND1 : "and" >
-  | <NOT : "!" >
-  | <NOT1 : "not" >
-  | <STCOMP : "(" >
-  | <EDCOMP : ")" >
-  | <ARGSEP : "," >
-  | <STARR  : "[" >
-  | <EDARR  : "]" >
-  | <ASSIGNMENT : "=" >
-  | <ADDASSIGNMENT : "+=" >
-  | <SUBASSIGNMENT : "-=" >
-  | <MULASSIGNMENT : "*=" >
-  | <DIVASSIGNMENT : "/=" >
-  | <POWASSIGNMENT : "^=" >
-  | <MODASSIGNMENT : "%=" >
-  | <INCASSIGNMENT : "++" >
-  | <DECASSIGNMENT : "--" >
-  | <NEW    : "new" >
-  | <RETURN : "return" >
-  | <IF     : "if" >
-  | <ELSE   : "else" >
-  | <IN     : "in" >
-  | <FOR    : "for" >
-  | <WHILE  : "while" >
-  | <BREAK  : "break" >
-  | <EXPORT  : "export" >
-  | <INCLUDE : "include" >
-  | <FUNCTION : "function" >
-  | <LACTION       : "@" >
-  | <NLINT : <DIGITS> > 
-  | <NLLONG : <DIGITS> "L" > 
-  | <NLFLOAT : <DIGITS> "." <DIGITS> > 
-  | <NLDOUBLE : <DIGITS> "." <DIGITS> "D" | <DIGITS> "D" > 
-  | <LBOOLEAN : "true" | "TRUE" | "false" | "FALSE" > 
-  | <LNULL : "null" | "NULL" >
-  | <LENTITY : ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z","0"-"9","_"])* >
-  | <#HEXCHAR : ["a"-"f","A"-"F","0"-"9"]> 
-  | <#ESCAPECHAR : "\\" ["n","t","b","r","f","\\","'","\"", "/"] > 
-  | <#UESCAPECHAR : "\\u" <HEXCHAR><HEXCHAR><HEXCHAR><HEXCHAR> > 
-  | <LSTRING : "\'" ( (~["\'","\\","\n","\r"]) | <ESCAPECHAR> | <UESCAPECHAR>)* "\'" >
+    <#DIGITS         : (["0"-"9"])+ > 
+  | <DOT             : "." >
+  | <ADD             : "+" >
+  | <SUB             : "-" >
+  | <MUL             : "*" >
+  | <DIV             : "/" >
+  | <DIV1            : "div" >
+  | <POW             : "^" >
+  | <MOD             : "%" >
+  | <MOD1            : "mod" >
+  | <EQ              : "==" >
+  | <EQ1             : "eq" >
+  | <EQ2             : "===" >
+  | <NE              : "!=" >
+  | <NE1             : "ne" >
+  | <NE2             : "!==" >
+  | <GT              : ">" >
+  | <GT1             : "gt" >
+  | <LT              : "<" >
+  | <LT1             : "lt" >
+  | <GTEQ            : ">=" >
+  | <GTEQ1           : "gteq" >
+  | <LTEQ            : "<=" >
+  | <LTEQ1           : "lteq" >
+  | <BITWISE_OR      : "|" >
+  | <BITWISE_XOR     : <BITWISE_OR> <POW> >
+  | <BITWISE_AND     : "&" >
+  | <BITWISE_NOT     : "~" >
+  | <BITSHIFT_LEFT   : "<<" >
+  | <BITSHIFT_RIGHT  : ">>" >
+  | <BITSHIFT_URIGHT : <BITSHIFT_RIGHT> ">" >
+  | <OR              : <BITWISE_OR> <BITWISE_OR> >
+  | <OR1             : "or" >
+  | <AND             : <BITWISE_AND> <BITWISE_AND> >
+  | <AND1            : "and" >
+  | <NOT             : "!" >
+  | <NOT1            : "not" >
+  | <STCOMP          : "(" >
+  | <EDCOMP          : ")" >
+  | <ARGSEP          : "," >
+  | <STARR           : "[" >
+  | <EDARR           : "]" >
+  | <ASSIGNMENT      : "=" >
+  | <ADDASSIGNMENT   : "+=" >
+  | <SUBASSIGNMENT   : "-=" >
+  | <MULASSIGNMENT   : "*=" >
+  | <DIVASSIGNMENT   : "/=" >
+  | <POWASSIGNMENT   : "^=" >
+  | <MODASSIGNMENT   : "%=" >
+  | <INCASSIGNMENT   : "++" >
+  | <DECASSIGNMENT   : "--" >
+  | <ARROW           : "->" >
+  | <STATEMENT       : ";" >
+  | <NEW             : "new" >
+  | <RETURN          : "return" >
+  | <IF              : "if" >
+  | <ELSE            : "else" >
+  | <IN              : "in" >
+  | <FOR             : "for" >
+  | <WHILE           : "while" >
+  | <BREAK           : "break" >
+  | <CONTINUE        : "continue" >
+  | <EXPORT          : "export" >
+  | <INCLUDE         : "include" >
+  | <FUNCTION        : "function" >
+  | <LACTION         : "@" >
+  | <COLON           : ":" >
+  | <NLINT           : <DIGITS> > 
+  | <NLLONG          : <DIGITS> "L" > 
+  | <NLFLOAT         : <DIGITS> "." <DIGITS> > 
+  | <NLDOUBLE        : <DIGITS> "." <DIGITS> "D" | <DIGITS> "D" > 
+  | <LBOOLEAN        : "true" | "TRUE" | "false" | "FALSE" > 
+  | <LNULL           : "null" | "NULL" >
+  | <LENTITY         : ["a"-"z","A"-"Z","_"] (["a"-"z","A"-"Z","0"-"9","_"])* >
+  | <#HEXCHAR        : ["a"-"f","A"-"F","0"-"9"]> 
+  | <#ESCAPECHAR     : "\\" ["n","t","b","r","f","\\","'","\"", "/"] > 
+  | <#UESCAPECHAR    : "\\u" <HEXCHAR><HEXCHAR><HEXCHAR><HEXCHAR> > 
+  | <LSTRING         : "\'" ( (~["\'","\\","\n","\r"]) | <ESCAPECHAR> | <UESCAPECHAR>)* "\'" >
+}
+
+<IN_EXPRESSION> TOKEN : 
+{
+	<STARTMAP        : "{" > : IN_MAP
+}
+
+<IN_MAP> TOKEN:
+{
+    <ENDMAP : "}" >  : IN_EXPRESSION
 }
 
 <IN_EXPRESSION> TOKEN :
 {
-    <END_EXPRESSION: "}" > : DEFAULT
-  | <QUOTE : "\"" > : STRINGSTATE
+    <END_EXPRESSION  : "}" > : DEFAULT
+  | <QUOTE           : "\"" > : STRINGSTATE
 }
 
 <IN_SCRIPT> TOKEN : 
 {
-    <STARTBLOCK : "{" >
-  | <ENDBLOCK   : "}" >
-  | <STATEMENT  : ";" >
-  | <END_SCRIPT : "#>" > : DEFAULT
+    <STARTBLOCK      : "{" >
+  | <ENDBLOCK        : "}" >
+  | <END_SCRIPT      : "#>" > : DEFAULT
 }
+
+<IN_SCRIPT> MORE :
+{ 
+    "//" : IN_SINGLE_LINE_COMMENT
+  | "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT> SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n"> : IN_SCRIPT
+}
+
+<IN_MULTI_LINE_COMMENT> SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/"> : IN_SCRIPT
+}
+
+<IN_SINGLE_LINE_COMMENT, IN_MULTI_LINE_COMMENT> MORE :
+{
+  <~[]>
+}
+
 
 <STRINGSTATE> MORE  : { "\\" : ESCSTATE }
 <STRINGSTATE> TOKEN : { <ENDQUOTE : <QUOTE> > : IN_EXPRESSION | <CHAR : ~["\"","\\"]> }
-<ESCSTATE> TOKEN : { <CNTRLESC : ["\'","\\","/","b","f","n","r","t"]> : STRINGSTATE }
-<ESCSTATE> MORE  : { "u" : HEXSTATE }
-<HEXSTATE> TOKEN : { <#HEX : ["a"-"f","A"-"F","0"-"9"]> | <HEXESC : <HEX><HEX><HEX><HEX> > : STRINGSTATE }
+<ESCSTATE>    TOKEN : { <CNTRLESC : ["\'","\\","/","b","f","n","r","t"]> : STRINGSTATE }
+<ESCSTATE>    MORE  : { "u" : HEXSTATE }
+<HEXSTATE>    TOKEN : { <#HEX : ["a"-"f","A"-"F","0"-"9"]> | <HEXESC : <HEX><HEX><HEX><HEX> > : STRINGSTATE }
 
 
 private PlainLiteral readPlainText(ExpressContext c) throws ExpressException :
@@ -230,8 +405,11 @@ private String readEntityName(ExpressContext c) throws ExpressException :
     Token t;
 }
 {
-    t = <LENTITY>
-    { return t.image;}
+	(
+    	t = <LENTITY> |
+    	t = <IN>
+	)
+    { return t.image; }
 }
 
 private Entity readEntityLiteral(ExpressContext c) throws ExpressException : 
@@ -243,7 +421,7 @@ private Entity readEntityLiteral(ExpressContext c) throws ExpressException :
     {return new Entity( en );}
 }
 
-private Literal readNLiteral(ExpressContext c) throws ExpressException :
+private Literal readNumberLiteral(ExpressContext c) throws ExpressException :
 {
     Literal l;
 }
@@ -258,7 +436,7 @@ private Operator readLiteral(ExpressContext c) throws ExpressException :
 }
 {
     ( 
-        l = readNLiteral(c)             | 
+        l = readNumberLiteral(c)        | 
         l = readBooleanLiteral(c)       | 
         l = readStringLiteral(c)        | 
         l = readNullLiteral(c)          | 
@@ -272,7 +450,7 @@ private Operator readFunction(ExpressContext c) throws ExpressException :
     Token ift;
     String fn;
     Function f = null;
-    List<Operator> args = new LinkedList<Operator>();
+    List<Operator> args = new ArrayList<Operator>();
     Map<String,Operator> namedArgs = new TreeMap<String,Operator>();
     Operator a;
     String argName;
@@ -321,91 +499,10 @@ private Operator readFunction(ExpressContext c) throws ExpressException :
      <EDCOMP>
     )
     {
-    if ("coalesce".equals(fn))
-    {
-      f = new Coalesce();
-    }
-    else if ("dateformat".equals(fn))
-    {
-      f = new DateFormat();
-    }
-    else if ("double".equals(fn))
-    {
-      f = new DoubleCast();
-    }
-    else if ("float".equals(fn))
-    {
-      f = new FloatCast();
-    }
-    else if ("long".equals(fn))
-    {
-      f = new LongCast();
-    }
-    else if ("int".equals(fn))
-    {
-      f = new IntCast();
-    }
-    else if ("string".equals(fn))
-    {
-      f = new StringCast();
-    }
-    else if ("list".equals(fn))
-    {
-      f = new ListCast();
-    }
-    else if ("getuuid".equals(fn))
-    {
-      f = new GetUUID();
-    }
-    else if ("if".equals(fn))
-    {
-      f = new If();
-    }
-    else if ("instanceof".equals(fn))
-    {
-      f = new InstanceOf();
-    }
-    else if ("isempty".equals(fn))
-    {
-      f = new IsEmpty();
-    }
-    else if ("isnull".equals(fn))
-    {
-      f = new IsNull();
-    }
-    else if ("urlencode".equals(fn))
-    {
-      f = new URLEncode();
-    }
-    else if ("urldecode".equals(fn))
-    {
-      f = new URLDecode();
-    }
-    else if ("print".equals(fn))
-    {
-        f = new Print();
-    }
-    else if ("pushfilter".equals(fn))
-    {
-        f = new PushFilter();
-    }
-    else if ("popfilter".equals(fn))
-    {
-        f = new PopFilter();
-    }
-    else if (c != null )
-    {
-        f = c.getCustomFunction( fn );
-    }
-    
-    if (f == null)
-    {
-          throw new ExpressException("Could not get function: " + fn);
-    }
-
-    f.setParameters(args);
-    f.setNamedParameters(namedArgs);
-    return f;
+    	f = loadFunction(fn, c, this.verify);
+    	f.setParameters(args);
+    	f.setNamedParameters(namedArgs);
+    	return f;
     }
 }
 
@@ -460,6 +557,83 @@ private Operator readAction(ExpressContext c) throws ExpressException :
     }
 }
 
+private Operator readComplex(ExpressContext c) throws ExpressException :
+{
+    Operator p;
+}
+{
+	<STCOMP>
+    p = readExpression(c) 
+    <EDCOMP>
+    { return new Complex(p); }
+}
+
+private Operator readNewList(ExpressContext c) throws ExpressException :
+{
+	ListLiteral l = new ListLiteral();
+    Operator e;
+}
+{
+	<STARR>
+	(
+		e = readExpression(c)
+		{ l.addElement(e); }
+	)?
+	(
+		<ARGSEP>
+		e = readExpression(c)
+		{ l.addElement(e); }
+	)*
+	<EDARR>
+    { return l; }
+}
+
+private Operator readNewMap(ExpressContext c) throws ExpressException :
+{
+	MapLiteral l = new MapLiteral();
+	StringLiteral sl;
+	String k;
+    Operator e;
+}
+{
+	(<STARTMAP> | <STARTBLOCK>)
+	(
+		(
+			(
+				(
+					k = readEntityName(c)
+				) |
+				(
+					sl = readStringLiteral(c)
+					{ k = sl.getValue(); }
+				)
+			)
+			<COLON>
+			e = readExpression(c)
+		)
+		{ l.putElement(k, e); }
+	)?
+	(
+		<ARGSEP>
+		(
+			(
+				(
+					k = readEntityName(c)
+				) |
+				(
+					sl = readStringLiteral(c)
+					{ k = sl.getValue(); }
+				)
+			)
+			<COLON>
+			e = readExpression(c)
+		)
+		{ l.putElement(k, e); }
+	)*
+	(<ENDMAP> | <ENDBLOCK>)
+    { return l; }
+}
+
 private Operator readValue(ExpressContext c) throws ExpressException : 
 {
     Operator v;
@@ -467,7 +641,8 @@ private Operator readValue(ExpressContext c) throws ExpressException :
 {
     v = readValuePrefix(c)
     (
-    v = readValueSuffix(c,v)
+        LOOKAHEAD(2)
+    	v = readValueSuffix(c,v)
     )*
     { return v; }
 }
@@ -478,12 +653,9 @@ private Operator readValuePrefix(ExpressContext c) throws ExpressException :
 }
 {
     (
-        (
-            <STCOMP> 
-            p = readExpression(c) 
-            <EDCOMP> 
-            { p = new Complex(p); }
-        ) |
+    	LOOKAHEAD(readComplex(c))   p = readComplex(c)  |
+    	LOOKAHEAD(readNewList(c))   p = readNewList(c)  |
+    	LOOKAHEAD(readNewMap(c))    p = readNewMap(c)   |
         LOOKAHEAD(readAction(c))    p = readAction(c)   |
         LOOKAHEAD(readFunction(c))  p = readFunction(c) |
         LOOKAHEAD(readLiteral(c))   p = readLiteral(c)
@@ -496,7 +668,11 @@ private Operator readValueSuffix(ExpressContext c, Operator l) throws ExpressExc
     Operator o;
 }
 {
-    (LOOKAHEAD(readMethodInvoke(c,l)) o = readMethodInvoke(c,l) | o = readPropertyInvoke(c,l) | o = readArrayInvoke(c,l))
+    (
+    	LOOKAHEAD(readMethodInvoke(c,l)) o = readMethodInvoke(c,l)   | 
+                                         o = readPropertyInvoke(c,l) | 
+                                         o = readArrayInvoke(c,l)
+    )
     { return o; }
 }
 
@@ -579,7 +755,11 @@ private Operator readUnary(ExpressContext c) throws ExpressException :
 {
       ((<NOT> | <NOT1>)
        o = readValue(c)
-       { return new LogicalNot(o); })    
+       { return new LogicalNot(o); })
+    | 
+      (<BITWISE_NOT>
+       o = readValue(c)
+       { return new BitwiseNot(o); })
     | 
       (<SUB>
        o = readValue(c)
@@ -616,10 +796,65 @@ private Operator readOperator(ExpressContext c) throws ExpressException :
     Operator o;
 }
 {
-    (o = readNew(c)
-     | o = readValue(c)
-     | o = readUnary(c))
+    (
+        o = readNew(c)    |
+        o = readValue(c)  |
+        o = readUnary(c)
+    )
     { return o; }
+}
+
+private Operator readLambda(ExpressContext c) throws ExpressException :
+{
+    Token arg;
+    List<String> args = new LinkedList<String>();
+    StatementBlock blk = null;
+    Operator op = null;
+}
+{
+    (
+        <STCOMP>
+        (
+            arg = <LENTITY>
+            { args.add(arg.image); }
+        )?
+        (
+            <ARGSEP>
+            arg = <LENTITY>
+            { args.add(arg.image); }
+        )*
+        <EDCOMP>
+        <ARROW>
+        (
+        	LOOKAHEAD(3)
+            (
+                (<STARTMAP> | <STARTBLOCK>)
+                blk = readStatements(c)
+                (<ENDMAP> | <ENDBLOCK>)
+            ) |
+            (
+                op = readOrExpression(c)
+            )
+        )
+    )
+    { return new Lambda(args, blk, op); }
+}
+
+private Operator readFunctionReference(ExpressContext c) throws ExpressException :
+{
+    Token name;
+}
+{
+    (
+		<COLON>
+		<COLON>
+        name = <LENTITY>
+    )
+    {
+    	// validate the function exists at parse time, even though we don't use it right now.
+    	loadFunction(name.image, c, this.verify); 
+    	return new FunctionReference(name.image); 
+    }
 }
 
 Operator readExpression(ExpressContext c) throws ExpressException :
@@ -627,8 +862,12 @@ Operator readExpression(ExpressContext c) throws ExpressException :
     Operator o;
 }
 {
-    (LOOKAHEAD(readAssignment(c)) o = readAssignment(c) |
-     o = readOrExpression(c))
+    (
+    	LOOKAHEAD(readFunctionReference(c)) o = readFunctionReference(c) |
+        LOOKAHEAD(readLambda(c))            o = readLambda(c)            |
+        LOOKAHEAD(readAssignment(c))        o = readAssignment(c)        |
+                                            o = readOrExpression(c)
+    )
     { return o; }
 }
 
@@ -733,11 +972,53 @@ private Operator readAndExpression(ExpressContext c) throws ExpressException :
     Operator r;
 }
 {
-    (l = readEqualityExpression(c)
+    (l = readBitwiseOrExpression(c)
       ((<AND> | <AND1>)
-       r = readEqualityExpression(c)
+       r = readBitwiseOrExpression(c)
        {l = new LogicalAnd(l,r); }
       )*)
+    { return l; }
+}
+
+private Operator readBitwiseOrExpression(ExpressContext c) throws ExpressException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readBitwiseXorExpression(c)
+     (<BITWISE_OR>
+      r = readBitwiseXorExpression(c)
+      { l = new BitwiseOr(l, r); }
+     )*)
+    { return l; }
+}
+
+private Operator readBitwiseXorExpression(ExpressContext c) throws ExpressException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readBitwiseAndExpression(c)
+     (<BITWISE_XOR>
+      r = readBitwiseAndExpression(c)
+      { l = new BitwiseXor(l, r); }
+     )*)
+    { return l; }
+}
+
+private Operator readBitwiseAndExpression(ExpressContext c) throws ExpressException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readEqualityExpression(c)
+     (<BITWISE_AND>
+      r = readEqualityExpression(c)
+      { l = new BitwiseAnd(l, r); }
+     )*)
     { return l; }
 }
 
@@ -751,17 +1032,13 @@ private Operator readEqualityExpression(ExpressContext c) throws ExpressExceptio
      l = readCompareExpression(c)
      (
       (
-       (
-        <EQ> | <EQ1>
-       )
+       (<EQ> | <EQ1> | <EQ2>)
        r = readCompareExpression(c)
        { l = new Equals(l,r); }
       )
       |
       (
-       (
-        <NE> | <NE1>
-       )
+       (<NE> | <NE1> | <NE2>)
        r = readCompareExpression(c)
        { l = new NotEquals(l,r); }
       )
@@ -776,21 +1053,43 @@ private Operator readCompareExpression(ExpressContext c) throws ExpressException
     Operator r;
 }
 {
-    (l = readAddExpression(c)
+    (l = readBitShiftExpression(c)
       (
     ((<GT> | <GT1>)
-     r = readAddExpression(c)
+     r = readBitShiftExpression(c)
      { l = new GT(l,r); })
     |((<LT> | <LT1>)
-     r = readAddExpression(c)
+     r = readBitShiftExpression(c)
      { l = new LT(l,r); })
     |((<GTEQ> | <GTEQ1>)
-     r = readAddExpression(c)
+     r = readBitShiftExpression(c)
      { l = new GTEQ(l,r); })
     |((<LTEQ> | <LTEQ1>)
-     r = readAddExpression(c)
+     r = readBitShiftExpression(c)
      { l = new LTEQ(l,r); })
       )*)
+    { return l; }
+}
+
+private Operator readBitShiftExpression(ExpressContext c) throws ExpressException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (l = readAddExpression(c)
+      (
+         (<BITSHIFT_LEFT>
+           r = readAddExpression(c)
+           { l = new BitshiftLeft(l,r); })
+        |(<BITSHIFT_RIGHT>
+           r = readAddExpression(c)
+           { l = new BitshiftRight(l,r); })
+        |(<BITSHIFT_URIGHT>
+           r = readAddExpression(c)
+           { l = new BitshiftUnsignedRight(l,r); })
+      )*
+    )
     { return l; }
 }
 
@@ -802,12 +1101,15 @@ private Operator readAddExpression(ExpressContext c) throws ExpressException :
 {
     (l = readMulExpression(c)
       (
-         (<ADD>
-           r = readMulExpression(c)
-           { l = new Add(l,r); })
-        |(<SUB>
-           r = readMulExpression(c)
-           { l = new Sub(l,r); })
+         LOOKAHEAD(2)
+         (
+	         (<ADD>
+	           r = readMulExpression(c)
+	           { l = new Add(l,r); })
+	        |(<SUB>
+	           r = readMulExpression(c)
+	           { l = new Sub(l,r); })
+        )
       )*
     )
     { return l; }
@@ -932,16 +1234,19 @@ private Statement readStatement(ExpressContext c) throws ExpressException :
     Statement s;
 }
 {
-    (LOOKAHEAD(readIfStatement(c)) s = readIfStatement(c) |
-     LOOKAHEAD(readForEachStatement(c)) s = readForEachStatement(c) |
-     LOOKAHEAD(readForStatement(c)) s = readForStatement(c) |
-     LOOKAHEAD(readWhileStatement(c)) s = readWhileStatement(c) |
-     s = readBreakStatement(c)    |
-     s = readReturnStatement(c)   |
-     s = readExportStatement(c)   |
-     s = readIncludeStatement(c)  |
-     s = readFunctionStatement(c) |
-     s = readDefaultStatement(c))
+    (
+    	LOOKAHEAD(readIfStatement(c))      s = readIfStatement(c)      |
+     	LOOKAHEAD(readForEachStatement(c)) s = readForEachStatement(c) |
+     	LOOKAHEAD(readForStatement(c))     s = readForStatement(c)     |
+     	LOOKAHEAD(readWhileStatement(c))   s = readWhileStatement(c)   |
+     	s = readBreakStatement(c)                                      |
+     	s = readContinueStatement(c)                                      |
+     	s = readReturnStatement(c)                                     |
+     	s = readExportStatement(c)                                     |
+     	s = readIncludeStatement(c)                                    |
+     	s = readFunctionStatement(c)                                   |
+     	s = readDefaultStatement(c)
+    )
     { return s; }
 }
 
@@ -950,6 +1255,7 @@ private Statement readIfStatement(ExpressContext c) throws ExpressException :
     StatementBlock tb;
     StatementBlock fb = null;
     StatementBlock eib;
+    Statement st;
     Operator eit;
     List<IfStatement.ElseIfStatement> eis = new LinkedList<IfStatement.ElseIfStatement>();
     Operator t;
@@ -959,23 +1265,54 @@ private Statement readIfStatement(ExpressContext c) throws ExpressException :
     <STCOMP>
     t = readExpression(c)
     <EDCOMP>
-    <STARTBLOCK>
-    tb = readStatements(c)
-    <ENDBLOCK>
-    (LOOKAHEAD(2) <ELSE>
-     <IF>
-     <STCOMP>
-     eit = readExpression(c)
-     <EDCOMP>
-     <STARTBLOCK>
-     eib = readStatements(c)
-     <ENDBLOCK>
-     { eis.add(new IfStatement.ElseIfStatement(eit, eib)); }
+    (
+        LOOKAHEAD(3)
+    	(
+    		(<STARTMAP> | <STARTBLOCK>)
+	    	tb = readStatements(c)
+		    (<ENDMAP> | <ENDBLOCK>)
+		) |
+		(
+			st = readStatement(c)
+			{ tb = new StatementBlock(st); }
+		)
+	)
+    (
+    	LOOKAHEAD(2)
+    	<ELSE>
+     	<IF>
+	    <STCOMP>
+     	eit = readExpression(c)
+     	<EDCOMP>
+     	(
+	     	LOOKAHEAD(3)
+	     	(
+	     		(<STARTMAP> | <STARTBLOCK>)
+	     		eib = readStatements(c)
+	     		(<ENDMAP> | <ENDBLOCK>)
+	     	) |
+			(
+				st = readStatement(c)
+				{ eib = new StatementBlock(st); }
+			)
+		)
+     	{ eis.add(new IfStatement.ElseIfStatement(eit, eib)); }
     )*
-    (<ELSE>
-     <STARTBLOCK>
-     fb = readStatements(c)
-     <ENDBLOCK>
+    (
+	    LOOKAHEAD(2)
+    	<ELSE>
+    	(
+	    	LOOKAHEAD(3)
+    		(
+     			(<STARTMAP> | <STARTBLOCK>)
+	     		fb = readStatements(c)
+    	 		(<ENDMAP> | <ENDBLOCK>)
+    	 	) |
+    	 	(
+	    	 	st = readStatement(c)
+				{ fb = new StatementBlock(st); }
+    	 	)
+     	)
     )?
     { return new IfStatement(t, tb, eis, fb); }
 }
@@ -990,9 +1327,9 @@ private Statement readWhileStatement(ExpressContext c) throws ExpressException :
     <STCOMP>
     t = readExpression(c)
     <EDCOMP>
-    <STARTBLOCK>
+    (<STARTMAP> | <STARTBLOCK>)
     b = readStatements(c)
-    <ENDBLOCK>
+    (<ENDMAP> | <ENDBLOCK>)
     { return new WhileStatement(t,b); }
 }
 
@@ -1012,9 +1349,9 @@ private Statement readForStatement(ExpressContext c) throws ExpressException :
     <STATEMENT>
     i = readAssignment(c)
     <EDCOMP>
-    <STARTBLOCK>
+    (<STARTMAP> | <STARTBLOCK>)
     b = readStatements(c)
-    <ENDBLOCK>
+    (<ENDMAP> | <ENDBLOCK>)
     { return new ForStatement(a, t, i, b); }
 }
 
@@ -1028,12 +1365,12 @@ private Statement readForEachStatement(ExpressContext c) throws ExpressException
     <FOR>
     <STCOMP>
     var = readEntityName(c)
-    <IN>
+    (<IN> | <COLON>)
     col = readExpression(c)
     <EDCOMP>
-    <STARTBLOCK>
+    (<STARTMAP> | <STARTBLOCK>)
     blk = readStatements(c)
-    <ENDBLOCK>
+    (<ENDMAP> | <ENDBLOCK>)
     { return new ForEachStatement(var, col, blk); }
 }
 
@@ -1058,9 +1395,9 @@ private Statement readFunctionStatement(ExpressContext c) throws ExpressExceptio
         { args.add(arg.image); }
     )*
     <EDCOMP>
-    <STARTBLOCK>
+    (<STARTMAP> | <STARTBLOCK>)
     blk = readStatements(c)
-    <ENDBLOCK>
+    (<ENDMAP> | <ENDBLOCK>)
     {
         FunctionStatement func = new FunctionStatement(name.image, args, blk);
         func.register(c);
@@ -1073,17 +1410,21 @@ private IncludeStatement readIncludeStatement(ExpressContext c) throws ExpressEx
     Operator o;
 }
 {
-    (<INCLUDE> o = readExpression(c) <STATEMENT>)
+    <INCLUDE>
+    o = readExpression(c)
+    <STATEMENT>
     { return new IncludeStatement(o); }
 }
 
 private Statement readDefaultStatement(ExpressContext c) throws ExpressException :
 {
-    Operator o;
+    Operator o = null;
 }
 {
-    ( o = readExpression(c) <STATEMENT>
-    )
+    (
+    	o = readExpression(c)
+    )?
+    <STATEMENT>
     { return new DefaultStatement(o); }
 }
 
@@ -1091,19 +1432,30 @@ private Statement readBreakStatement(ExpressContext c) throws ExpressException :
 {
 }
 {
-    (<BREAK>
-     <STATEMENT>)
+    <BREAK>
+    <STATEMENT>
     { return new BreakStatement(); }
+}
+
+private Statement readContinueStatement(ExpressContext c) throws ExpressException :
+{
+}
+{
+    <CONTINUE>
+    <STATEMENT>
+    { return new ContinueStatement(); }
 }
 
 private Statement readReturnStatement(ExpressContext c) throws ExpressException :
 {
-    Operator o;
+    Operator o = null;
 }
 {
-    (<RETURN>
-     o = readExpression(c)
-     <STATEMENT>)
+    <RETURN>
+    (
+    	o = readExpression(c)
+	)?
+    <STATEMENT>
     { return new ReturnStatement(o); }
 }
 
@@ -1112,8 +1464,8 @@ private Statement readExportStatement(ExpressContext c) throws ExpressException 
     String varName;
 }
 {
-    (<EXPORT>
-     varName = readEntityName(c)
-     <STATEMENT>)
+    <EXPORT>
+    varName = readEntityName(c)
+    <STATEMENT>
     { return new ExportStatement(varName); }
 }

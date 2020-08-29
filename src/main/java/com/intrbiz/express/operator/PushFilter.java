@@ -18,6 +18,8 @@ public class PushFilter extends Function
 	@Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+	    context.checkOp();
+	    
 	    TemplateWriter writer = context.getWriter();
 	    if (writer != null)
 	    {

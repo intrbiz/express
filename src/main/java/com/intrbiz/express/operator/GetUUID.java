@@ -15,6 +15,8 @@ public class GetUUID extends Function
     @Override
     public Object get(ExpressContext context,Object source) throws ExpressException
     {
+        context.checkOp();
+        
     	return UUIDFactory.uuid();
     }
 

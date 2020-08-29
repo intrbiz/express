@@ -19,6 +19,8 @@ public class ListCast extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
+        context.checkOp();
+        
         List<Object> ret = new LinkedList<Object>();
         for (Operator o : this.getParameters())
         {

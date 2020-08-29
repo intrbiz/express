@@ -25,21 +25,27 @@ public class ScriptedFunction extends Function
     @Override
     public Object get(ExpressContext context, Object source) throws ExpressException
     {
-        // enter the root frame
-        context.enterFrame(true);
-        try
+        // Eval the arguments before creating a frame
+        Object[] arguments = new Object[this.argumentNames.length];
         {
-            // we don't need to eval the arguments right now, we can leave that to chaining
-            // expose our parameters as variables
             int i = 0;
             for (Operator parameter : this.getParameters())
             {
                 if (i < this.argumentNames.length)
-                    context.getFrame().setEntity(this.argumentNames[i], parameter);
+                    arguments[i] = parameter.get(context, source);
                 i++;
             }
+        }
+        // enter the function frame
+        context.enterFrame(true);
+        try
+        {
+            for (int i = 0; i < arguments.length; i++)
+            {
+                context.getFrame().setEntity(this.argumentNames[i], arguments[i]);
+            }
             // expose our arguments directly
-            context.getFrame().setEntity("arguments", this.getParameters());
+            context.getFrame().setEntity("_arguments", this.getParameters());
             // expose our named parameters as variables
             for (Entry<String, Operator> namedParameter : this.getNamedParameters().entrySet())
             {
