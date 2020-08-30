@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
@@ -35,6 +36,10 @@ public class ListCast extends Function
                 {
                     ret.add(i);
                 }
+            }
+            else if (p instanceof Map)
+            {
+                ret.addAll( ((Map<?,?>) p).entrySet() );
             }
             else if (p instanceof Object[])
             {

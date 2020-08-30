@@ -1,5 +1,9 @@
 package com.intrbiz.express.operator;
 
+import java.util.Collection;
+import java.util.Map;
+
+import com.intrbiz.Util;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 
@@ -17,7 +21,8 @@ public class LogicalNot extends UnaryOperator
 		this.setOperator(o);
 	}
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public Object get(ExpressContext context, Object source) throws ExpressException
 	{
 	    context.checkOp();
@@ -33,6 +38,22 @@ public class LogicalNot extends UnaryOperator
 			boolean beval = ((Boolean) eval).booleanValue();
 			return new Boolean(!beval);
 		}
+		else if (eval instanceof String)
+        {
+            return Util.isEmpty((String) eval);
+        }
+        else if (eval instanceof Collection)
+        {
+            return Util.isEmpty((Collection) eval);
+        }
+        else if (eval instanceof Map)
+        {
+            return Util.isEmpty((Map) eval);
+        }
+        else if (eval instanceof Object[])
+        {
+            return Util.isEmpty((Object[]) eval);
+        }
 		return false;
 	}
 
