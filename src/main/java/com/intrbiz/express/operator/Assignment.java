@@ -5,7 +5,6 @@ import com.intrbiz.express.ExpressException;
 
 public class Assignment extends BinaryOperator
 {
-
     public Assignment()
     {
         super("=");

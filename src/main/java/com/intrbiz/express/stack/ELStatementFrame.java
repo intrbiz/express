@@ -89,6 +89,11 @@ public class ELStatementFrame
         }
     }
     
+    public void declareEntity(String name, Object value)
+    {
+        this.entities.put(name, value);
+    }
+    
     public boolean isRunning()
     {
         if (! this.isFunction()) return this.parent.isRunning();

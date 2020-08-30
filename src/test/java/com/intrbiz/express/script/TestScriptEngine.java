@@ -527,4 +527,86 @@ public class TestScriptEngine
             "                        .publish();\n"
         );
     }
+    
+    @Test
+    public void testScriptExample6()
+    {
+        factory.verifyUnwrapped(
+            "/* API Error? */\n" + 
+            "                    if (r.status() != 200)\n" + 
+            "                    { \n" + 
+            "                        bergamot.error('HAProxy API returned: ' + r.status());\n" + 
+            "                    }\n" + 
+            "                    else\n" + 
+            "                    {\n" + 
+            "                        /* Parse the CSV into something useful */\n" + 
+            "                        stats = parseStats(r.content());\n" + 
+            "                        /* Get the stats */\n" + 
+            "                        proxy = stats[check.getParameter('proxy_name')];\n" + 
+            "                        if (! proxy)\n" + 
+            "                        {\n" + 
+            "                            bergamot.error('HAProxy has no such proxy: ' + check.getParameter('proxy_name'));\n" + 
+            "                        }\n" + 
+            "                        else\n" + 
+            "                        {\n" + 
+            "                            bergamot.applyGreaterThanThreshold(int(proxy.frontend.scur), 'Current ' + proxy.frontend.scur + ' of ' + proxy.frontend.slim + ' sessions.  ' + proxy.frontend.smax + ' max, ' + proxy.frontend.stot + ' total.');\n" + 
+            "                            bergamot.readings()\n" + 
+            "                            .longGaugeReading('current_sessions',  null, long(proxy.frontend.scur))\n" + 
+            "                            .longGaugeReading('max_sessions', null, long(proxy.frontend.smax))\n" + 
+            "                            .longGaugeReading('total_sessions', null, long(proxy.frontend.stot))\n" + 
+            "                            .longGaugeReading('sessions_limit', null, long(proxy.frontend.slim))\n" + 
+            "                            .publish();\n" + 
+            "                        }\n" + 
+            "                    }"
+        );
+    }
+    
+    @Test
+    public void testScriptExample7()
+    {
+        factory.verifyUnwrapped(
+            "/* API Error? */\n" + 
+            "                    if (r.status() != 200)\n" + 
+            "                    { \n" + 
+            "                        bergamot.error('HAProxy API returned: ' + r.status());\n" + 
+            "                    }\n" + 
+            "                    else\n" + 
+            "                    {\n" + 
+            "                        /* Parse the CSV into something useful */\n" + 
+            "                        stats = parseStats(r.content());\n" + 
+            "                        /* Get the stats */\n" + 
+            "                        proxy = stats[check.getParameter('proxy_name')];\n" + 
+            "                        if (proxy == null || proxy.backend == null)\n" + 
+            "                        {\n" + 
+            "                            bergamot.error('HAProxy has no such proxy: ' + check.getParameter('proxy_name'));\n" + 
+            "                        }\n" + 
+            "                        else\n" + 
+            "                        {\n" + 
+            "                            bergamot.info('In: ' + (long(proxy.backend.bin) / 1048576L) + ' MiB , Out: ' + (long(proxy.backend.bout) / 1048576L) + ' MiB');\n" + 
+            "                            bergamot.readings()\n" + 
+            "                            .longGauge('in',  'B', long(proxy.backend.bin))\n" + 
+            "                            .longGauge('out', 'B', long(proxy.backend.bout))\n" + 
+            "                            .publish();\n" + 
+            "                        }\n" + 
+            "                    }"
+        );
+    }
+    
+    @Test
+    public void testVar()
+    {
+        ExpressScriptEngine script = factory.parseUnwrapped(
+            "var x = 'test: ';\n" + 
+            "var sum = 0;\n" + 
+            "for (var i = 0; i < 10; i++)\n" + 
+            "{\n" + 
+            "    var j = i;\n" + 
+            "    sum += i;\n" + 
+            "}\n" + 
+            "return x + sum;"
+        );
+        Object result = script.execute(script.createContext(), null);
+        assertThat(result, is(instanceOf(String.class)));
+        assertThat(result.toString(), is(equalTo("test: 45")));
+    }
 }

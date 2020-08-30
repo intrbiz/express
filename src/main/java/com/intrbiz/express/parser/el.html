@@ -105,6 +105,7 @@
 | &lt;EXPORT: "export"&gt;
 | &lt;INCLUDE: "include"&gt;
 | &lt;FUNCTION: "function"&gt;
+| &lt;VAR: "var"&gt;
 | &lt;LACTION: "@"&gt;
 | &lt;COLON: ":"&gt;
 | &lt;NLINT: &lt;DIGITS&gt;&gt;
@@ -468,7 +469,7 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">readAssignment</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod32">readOrExpression</A> ( ( &lt;INCASSIGNMENT&gt; ) | ( &lt;DECASSIGNMENT&gt; ) )? ( ( &lt;ASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;POWASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;DIVASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MULASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MODASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;ADDASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;SUBASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) )? )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( <A HREF="#prod32">readOrExpression</A> ) | ( &lt;VAR&gt; <A HREF="#prod11">readEntityName</A> ) ) ( ( &lt;INCASSIGNMENT&gt; ) | ( &lt;DECASSIGNMENT&gt; ) | ( &lt;ASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;POWASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;DIVASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MULASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MODASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;ADDASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;SUBASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) )? )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">readOrExpression</A></TD>

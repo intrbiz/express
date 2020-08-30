@@ -85,6 +85,7 @@ public class DefaultContext implements ExpressContext
         this(ExpressExtensionRegistry.getDefaultRegistry(), null, null, null, templateLoader, ContentFilterRegistry.getDefault());
     }
 
+    @Override
     public Object getEntity(String name, Object source)
     {
         if (this.frame != null && this.frame.containsEntity(name))
@@ -108,6 +109,7 @@ public class DefaultContext implements ExpressContext
         return this.resolver.getAction(name, source);
     }
 
+    @Override
     public void setEntity(String name, Object value, Object source)
     {
         if (this.frame != null)
@@ -116,6 +118,16 @@ public class DefaultContext implements ExpressContext
             this.root.setEntity(name, value);
     }
 
+    @Override
+    public void declareEntity(String name, Object value, Object source)
+    {
+        if (this.frame != null)
+            this.frame.declareEntity(name, value);
+        else
+            this.root.declareEntity(name, value);        
+    }
+
+    @Override
     public void exportEntity(String name, Object value, Object source)
     {
         // Export the entity to the root of the stack
@@ -146,11 +158,13 @@ public class DefaultContext implements ExpressContext
 
     // Stack Control
 
+    @Override
     public void enterFrame(boolean function)
     {
         this.frame = new ELStatementFrame(this.frame, function);
     }
 
+    @Override
     public void exitFrame()
     {
         if (this.frame != null)
@@ -160,6 +174,7 @@ public class DefaultContext implements ExpressContext
         }
     }
 
+    @Override
     public ELStatementFrame getFrame()
     {
         return this.frame;

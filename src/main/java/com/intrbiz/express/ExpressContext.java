@@ -30,6 +30,8 @@ public interface ExpressContext extends Hidden
     
     void exportEntity(String name, Object value, Object source);
     
+    void declareEntity(String name, Object value, Object source);
+    
     // actions
     
     ActionHandler getAction(String name, Object source);

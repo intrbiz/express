@@ -226,6 +226,7 @@ PARSER_END(ELParser)
   | <EXPORT          : "export" >
   | <INCLUDE         : "include" >
   | <FUNCTION        : "function" >
+  | <VAR             : "var" >
   | <LACTION         : "@" >
   | <COLON           : ":" >
   | <NLINT           : <DIGITS> > 
@@ -915,39 +916,66 @@ Operator readFullExpression(ExpressContext c) throws ExpressException :
 private Operator readAssignment(ExpressContext c) throws ExpressException :
 {
     Operator l;
+    String e;
     Operator r;
 }
 {
-    (l = readOrExpression(c)
-     (
-      (<INCASSIGNMENT>
-       { l = new Assignment(l, new Add(l, new IntLiteral(1))); }) |
-      (<DECASSIGNMENT>
-       { l = new Assignment(l, new Sub(l, new IntLiteral(1))); })
-     )?
-     (
-      (<ASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, r); }) |
-      (<POWASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Pow(l, r)); }) |
-      (<DIVASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Div(l, r)); }) |
-      (<MULASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Mul(l, r)); }) |
-      (<MODASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Mod(l, r)); }) |
-      (<ADDASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Add(l, r)); }) |
-      (<SUBASSIGNMENT>
-       r = readOrExpression(c)
-       { l = new Assignment(l, new Sub(l, r)); })
-     )?
+    (
+    	(
+    		(
+    			l = readOrExpression(c)
+			) |
+			(
+				<VAR>
+				e = readEntityName(c)
+				{ l = new Var(e); }
+			)
+		)
+     	(
+      		(
+      			<INCASSIGNMENT>
+       			{ l = new Assignment(l, new Add(l, new IntLiteral(1))); }
+   			) |
+      		(
+      			<DECASSIGNMENT>
+       			{ l = new Assignment(l, new Sub(l, new IntLiteral(1))); }
+   			) |
+      		(
+      			<ASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, r); }
+   			) |
+      		(
+      			<POWASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Pow(l, r)); }
+   			) |
+      		(
+      			<DIVASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Div(l, r)); }
+   			) |
+      		(
+      			<MULASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Mul(l, r)); }
+   			) |
+      		(
+      			<MODASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Mod(l, r)); }
+   			) |
+      		(
+      			<ADDASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Add(l, r)); }
+   			) |
+      		(
+      			<SUBASSIGNMENT>
+       			r = readOrExpression(c)
+       			{ l = new Assignment(l, new Sub(l, r)); }
+   			)
+     	)?
     )
     { return l; }
 }
