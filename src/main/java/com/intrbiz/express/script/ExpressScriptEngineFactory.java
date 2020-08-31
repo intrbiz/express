@@ -78,15 +78,15 @@ public class ExpressScriptEngineFactory
         }
         catch (TokenMgrError e)
         {
-            throw new ExpressException("Error parsing script: [" + script + "]", e);
+            throw new ExpressException("Error parsing script (" + e.getMessage() + "): [" + script + "]", e);
         }
         catch (ExpressException ee)
         {
-            throw new ExpressException("Error parsing script: [" + script + "]", ee);
+            throw new ExpressException("Error parsing script (" + ee.getMessage() + "): [" + script + "]", ee);
         }
         catch (ParseException pe)
         {
-            throw new ExpressException("Error parsing script: [" + script + "]", pe);
+            throw new ExpressException("Error parsing script (" + pe.getMessage() + "): [" + script + "]", pe);
         }
     }
     

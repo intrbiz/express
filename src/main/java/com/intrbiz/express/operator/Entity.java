@@ -19,6 +19,7 @@ public class Entity extends Literal
     private static final Map<String, Object> BUILTIN = new HashMap<>();
     
     static {
+        BUILTIN.put("Math", Math.class);
         BUILTIN.put("Arrays", Arrays.class);
         BUILTIN.put("Collections", Collections.class);
         BUILTIN.put("Collectors", Collectors.class);
