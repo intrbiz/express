@@ -25,13 +25,11 @@ public class LogicalAnd extends BinaryOperator
 	    
 		Object left = this.getLeft().get(context, source);
 		Object right = this.getRight().get(context, source);
-		if (left instanceof Boolean && right instanceof Boolean)
-		{
-			boolean l = ((Boolean) left).booleanValue();
-			boolean r = ((Boolean) right).booleanValue();
-			return l && r;
-		}
-		return new Boolean(false);
+		
+		boolean l =  left instanceof Boolean ?  ((Boolean) left).booleanValue() :  left != null;
+        boolean r = right instanceof Boolean ? ((Boolean) right).booleanValue() : right != null;
+        
+        return l && r;
 	}
 
 	@Override

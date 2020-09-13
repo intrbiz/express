@@ -198,6 +198,8 @@ PARSER_END(ELParser)
   | <AND1            : "and" >
   | <NOT             : "!" >
   | <NOT1            : "not" >
+  | <XOR             : <POW> <POW> >
+  | <XOR1            : "xor" >
   | <STCOMP          : "(" >
   | <EDCOMP          : ")" >
   | <ARGSEP          : "," >
@@ -832,7 +834,7 @@ private Operator readLambda(ExpressContext c) throws ExpressException :
                 (<ENDMAP> | <ENDBLOCK>)
             ) |
             (
-                op = readOrExpression(c)
+                op = readTernary(c)
             )
         )
     )
@@ -865,7 +867,7 @@ Operator readExpression(ExpressContext c) throws ExpressException :
     	LOOKAHEAD(readFunctionReference(c)) o = readFunctionReference(c) |
         LOOKAHEAD(readLambda(c))            o = readLambda(c)            |
         LOOKAHEAD(readAssignment(c))        o = readAssignment(c)        |
-                                            o = readOrExpression(c)
+                                            o = readTernary(c)
     )
     { return o; }
 }
@@ -919,7 +921,7 @@ private Operator readTernary(ExpressContext c) throws ExpressException :
 }
 {
 	(
-  	  o = readOrExpression(c)
+  	  o = readXorExpression(c)
 	  (
 	    (
 	  	  <TERNARY>
@@ -996,6 +998,23 @@ private Operator readAssignment(ExpressContext c) throws ExpressException :
        			{ l = new Assignment(l, new Sub(l, r)); }
    			)
      	)?
+    )
+    { return l; }
+}
+
+private Operator readXorExpression(ExpressContext c) throws ExpressException :
+{
+    Operator l;
+    Operator r;
+}
+{
+    (
+      l = readOrExpression(c)
+      (
+     	(<XOR> | <XOR1>)
+      	r = readOrExpression(c)
+      	{ l = new LogicalXor(l, r); }
+      )*
     )
     { return l; }
 }

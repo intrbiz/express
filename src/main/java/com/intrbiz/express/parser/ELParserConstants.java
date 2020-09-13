@@ -91,119 +91,123 @@ public interface ELParserConstants {
   /** RegularExpression Id. */
   int NOT1 = 45;
   /** RegularExpression Id. */
-  int STCOMP = 46;
+  int XOR = 46;
   /** RegularExpression Id. */
-  int EDCOMP = 47;
+  int XOR1 = 47;
   /** RegularExpression Id. */
-  int ARGSEP = 48;
+  int STCOMP = 48;
   /** RegularExpression Id. */
-  int STARR = 49;
+  int EDCOMP = 49;
   /** RegularExpression Id. */
-  int EDARR = 50;
+  int ARGSEP = 50;
   /** RegularExpression Id. */
-  int ASSIGNMENT = 51;
+  int STARR = 51;
   /** RegularExpression Id. */
-  int ADDASSIGNMENT = 52;
+  int EDARR = 52;
   /** RegularExpression Id. */
-  int SUBASSIGNMENT = 53;
+  int ASSIGNMENT = 53;
   /** RegularExpression Id. */
-  int MULASSIGNMENT = 54;
+  int ADDASSIGNMENT = 54;
   /** RegularExpression Id. */
-  int DIVASSIGNMENT = 55;
+  int SUBASSIGNMENT = 55;
   /** RegularExpression Id. */
-  int POWASSIGNMENT = 56;
+  int MULASSIGNMENT = 56;
   /** RegularExpression Id. */
-  int MODASSIGNMENT = 57;
+  int DIVASSIGNMENT = 57;
   /** RegularExpression Id. */
-  int INCASSIGNMENT = 58;
+  int POWASSIGNMENT = 58;
   /** RegularExpression Id. */
-  int DECASSIGNMENT = 59;
+  int MODASSIGNMENT = 59;
   /** RegularExpression Id. */
-  int ARROW = 60;
+  int INCASSIGNMENT = 60;
   /** RegularExpression Id. */
-  int STATEMENT = 61;
+  int DECASSIGNMENT = 61;
   /** RegularExpression Id. */
-  int NEW = 62;
+  int ARROW = 62;
   /** RegularExpression Id. */
-  int RETURN = 63;
+  int STATEMENT = 63;
   /** RegularExpression Id. */
-  int IF = 64;
+  int NEW = 64;
   /** RegularExpression Id. */
-  int ELSE = 65;
+  int RETURN = 65;
   /** RegularExpression Id. */
-  int IN = 66;
+  int IF = 66;
   /** RegularExpression Id. */
-  int FOR = 67;
+  int ELSE = 67;
   /** RegularExpression Id. */
-  int WHILE = 68;
+  int IN = 68;
   /** RegularExpression Id. */
-  int BREAK = 69;
+  int FOR = 69;
   /** RegularExpression Id. */
-  int CONTINUE = 70;
+  int WHILE = 70;
   /** RegularExpression Id. */
-  int EXPORT = 71;
+  int BREAK = 71;
   /** RegularExpression Id. */
-  int INCLUDE = 72;
+  int CONTINUE = 72;
   /** RegularExpression Id. */
-  int FUNCTION = 73;
+  int EXPORT = 73;
   /** RegularExpression Id. */
-  int VAR = 74;
+  int INCLUDE = 74;
   /** RegularExpression Id. */
-  int LACTION = 75;
+  int FUNCTION = 75;
   /** RegularExpression Id. */
-  int COLON = 76;
+  int VAR = 76;
   /** RegularExpression Id. */
-  int TERNARY = 77;
+  int LACTION = 77;
   /** RegularExpression Id. */
-  int NLINT = 78;
+  int COLON = 78;
   /** RegularExpression Id. */
-  int NLLONG = 79;
+  int TERNARY = 79;
   /** RegularExpression Id. */
-  int NLFLOAT = 80;
+  int NLINT = 80;
   /** RegularExpression Id. */
-  int NLDOUBLE = 81;
+  int NLLONG = 81;
   /** RegularExpression Id. */
-  int LBOOLEAN = 82;
+  int NLFLOAT = 82;
   /** RegularExpression Id. */
-  int LNULL = 83;
+  int NLDOUBLE = 83;
   /** RegularExpression Id. */
-  int LENTITY = 84;
+  int LBOOLEAN = 84;
   /** RegularExpression Id. */
-  int HEXCHAR = 85;
+  int LNULL = 85;
   /** RegularExpression Id. */
-  int ESCAPECHAR = 86;
+  int LENTITY = 86;
   /** RegularExpression Id. */
-  int UESCAPECHAR = 87;
+  int HEXCHAR = 87;
   /** RegularExpression Id. */
-  int LSTRING = 88;
+  int ESCAPECHAR = 88;
   /** RegularExpression Id. */
-  int STARTMAP = 89;
+  int UESCAPECHAR = 89;
   /** RegularExpression Id. */
-  int ENDMAP = 90;
+  int LSTRING = 90;
   /** RegularExpression Id. */
-  int END_EXPRESSION = 91;
+  int STARTMAP = 91;
   /** RegularExpression Id. */
-  int QUOTE = 92;
+  int ENDMAP = 92;
   /** RegularExpression Id. */
-  int STARTBLOCK = 93;
+  int END_EXPRESSION = 93;
   /** RegularExpression Id. */
-  int ENDBLOCK = 94;
+  int QUOTE = 94;
   /** RegularExpression Id. */
-  int END_SCRIPT = 95;
+  int STARTBLOCK = 95;
   /** RegularExpression Id. */
-  int SINGLE_LINE_COMMENT = 98;
+  int ENDBLOCK = 96;
   /** RegularExpression Id. */
-  int MULTI_LINE_COMMENT = 99;
+  int END_SCRIPT = 97;
   /** RegularExpression Id. */
-  int ENDQUOTE = 102;
+  int SINGLE_LINE_COMMENT = 100;
   /** RegularExpression Id. */
-  int CHAR = 103;
+  int MULTI_LINE_COMMENT = 101;
   /** RegularExpression Id. */
-  int CNTRLESC = 104;
+  int ENDQUOTE = 104;
   /** RegularExpression Id. */
-  int HEX = 106;
+  int CHAR = 105;
   /** RegularExpression Id. */
-  int HEXESC = 107;
+  int CNTRLESC = 106;
+  /** RegularExpression Id. */
+  int HEX = 108;
+  /** RegularExpression Id. */
+  int HEXESC = 109;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -272,6 +276,8 @@ public interface ELParserConstants {
     "\"and\"",
     "\"!\"",
     "\"not\"",
+    "<XOR>",
+    "\"xor\"",
     "\"(\"",
     "\")\"",
     "\",\"",
@@ -326,7 +332,7 @@ public interface ELParserConstants {
     "\"/*\"",
     "<SINGLE_LINE_COMMENT>",
     "\"*/\"",
-    "<token of kind 100>",
+    "<token of kind 102>",
     "\"\\\\\"",
     "<ENDQUOTE>",
     "<CHAR>",

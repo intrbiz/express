@@ -315,4 +315,42 @@ public class TestLogic
         assertThat(o, is(instanceOf(String.class)));
         assertThat(o, is(equalTo("Test2")));        
     }
+    
+    // xor
+    
+    @Test
+    public void testXor1()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true ^^ true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
+    
+    @Test
+    public void testXor2()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{true xor false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testXor3()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{false ^^ true}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(true)));
+    }
+    
+    @Test
+    public void testXor4()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{false xor false}");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(Boolean.class)));
+        assertThat((Boolean) o, is(equalTo(false)));
+    }
 }

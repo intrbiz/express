@@ -3,15 +3,15 @@ package com.intrbiz.express.operator;
 import com.intrbiz.express.ExpressContext;
 import com.intrbiz.express.ExpressException;
 
-public class LogicalOr extends BinaryOperator
+public class LogicalXor extends BinaryOperator
 {
 
-    public LogicalOr()
+    public LogicalXor()
     {
-        super("||");
+        super("^^");
     }
 
-    public LogicalOr(Operator l, Operator r)
+    public LogicalXor(Operator l, Operator r)
     {
     	this();
     	this.setLeft(l);
@@ -28,8 +28,8 @@ public class LogicalOr extends BinaryOperator
         
         boolean l =  left instanceof Boolean ?  ((Boolean) left).booleanValue() :  left != null;
         boolean r = right instanceof Boolean ? ((Boolean) right).booleanValue() : right != null;
-
-        return l || r;
+        
+        return (l && !r) || (!l && r);
     }
 
 
