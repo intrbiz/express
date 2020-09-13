@@ -387,217 +387,211 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) ( ( ( ( <A HREF="#prod11">readEntityName</A> ) | ( <A HREF="#prod8">readStringLiteral</A> ) ) &lt;COLON&gt; <A HREF="#prod16">readExpression</A> ) )? ( &lt;ARGSEP&gt; ( ( ( <A HREF="#prod11">readEntityName</A> ) | ( <A HREF="#prod8">readStringLiteral</A> ) ) &lt;COLON&gt; <A HREF="#prod16">readExpression</A> ) )* ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">readValue</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">readValuePrefix</A> ( <A HREF="#prod23">readValueSuffix</A> )*</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">readValuePrefix</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod18">readComplex</A> | <A HREF="#prod19">readNewList</A> | <A HREF="#prod20">readNewMap</A> | <A HREF="#prod17">readAction</A> | <A HREF="#prod15">readFunction</A> | <A HREF="#prod14">readLiteral</A> )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">readValueSuffix</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod24">readMethodInvoke</A> | <A HREF="#prod25">readPropertyInvoke</A> | <A HREF="#prod26">readArrayInvoke</A> )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">readPropertyInvoke</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DOT&gt; <A HREF="#prod11">readEntityName</A></TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">readArrayInvoke</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;STARR&gt; <A HREF="#prod16">readExpression</A> &lt;EDARR&gt;</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">readMethodInvoke</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;DOT&gt; <A HREF="#prod11">readEntityName</A> &lt;STCOMP&gt; ( ( ( <A HREF="#prod11">readEntityName</A> &lt;ASSIGNMENT&gt; <A HREF="#prod16">readExpression</A> ) | ( <A HREF="#prod16">readExpression</A> ) ) ( &lt;ARGSEP&gt; ( ( <A HREF="#prod11">readEntityName</A> &lt;ASSIGNMENT&gt; <A HREF="#prod16">readExpression</A> ) | ( <A HREF="#prod16">readExpression</A> ) ) )* )? &lt;EDCOMP&gt; )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">readUnary</A></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;NOT&gt; | &lt;NOT1&gt; ) <A HREF="#prod21">readValue</A> )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;BITWISE_NOT&gt; <A HREF="#prod21">readValue</A> )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
-<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SUB&gt; <A HREF="#prod21">readValue</A> )</TD>
-</TR>
-<TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">readNew</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">readNew</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;NEW&gt; <A HREF="#prod11">readEntityName</A> ( &lt;DOT&gt; <A HREF="#prod11">readEntityName</A> )* &lt;STCOMP&gt; ( <A HREF="#prod16">readExpression</A> ( &lt;ARGSEP&gt; <A HREF="#prod16">readExpression</A> )* )? &lt;EDCOMP&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">readOperator</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">readValue</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod28">readNew</A> | <A HREF="#prod21">readValue</A> | <A HREF="#prod27">readUnary</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod23">readValuePrefix</A> ( <A HREF="#prod24">readValueSuffix</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">readLambda</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">readValuePrefix</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;STCOMP&gt; ( &lt;LENTITY&gt; )? ( &lt;ARGSEP&gt; &lt;LENTITY&gt; )* &lt;EDCOMP&gt; &lt;ARROW&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod32">readOrExpression</A> ) ) )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod18">readComplex</A> | <A HREF="#prod19">readNewList</A> | <A HREF="#prod20">readNewMap</A> | <A HREF="#prod21">readNew</A> | <A HREF="#prod17">readAction</A> | <A HREF="#prod15">readFunction</A> | <A HREF="#prod14">readLiteral</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">readFunctionReference</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">readValueSuffix</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod25">readMethodInvoke</A> | <A HREF="#prod26">readPropertyInvoke</A> | <A HREF="#prod27">readArrayInvoke</A> )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">readPropertyInvoke</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;DOT&gt; <A HREF="#prod11">readEntityName</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">readArrayInvoke</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;STARR&gt; <A HREF="#prod16">readExpression</A> &lt;EDARR&gt;</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">readMethodInvoke</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;DOT&gt; <A HREF="#prod11">readEntityName</A> &lt;STCOMP&gt; ( ( ( <A HREF="#prod11">readEntityName</A> &lt;ASSIGNMENT&gt; <A HREF="#prod16">readExpression</A> ) | ( <A HREF="#prod16">readExpression</A> ) ) ( &lt;ARGSEP&gt; ( ( <A HREF="#prod11">readEntityName</A> &lt;ASSIGNMENT&gt; <A HREF="#prod16">readExpression</A> ) | ( <A HREF="#prod16">readExpression</A> ) ) )* )? &lt;EDCOMP&gt; )</TD>
+</TR>
+ <!-- Special token -->
+ <TR>
+  <TD>
+<PRE>
+/*	
+  
+*/</PRE>
+  </TD>
+ </TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">readUnary</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( &lt;NOT&gt; | &lt;NOT1&gt; ) <A HREF="#prod28">readUnary</A> ) | ( &lt;BITWISE_NOT&gt; <A HREF="#prod28">readUnary</A> ) | ( &lt;SUB&gt; <A HREF="#prod28">readUnary</A> ) | ( <A HREF="#prod22">readValue</A> ) )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">readLambda</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;STCOMP&gt; ( &lt;LENTITY&gt; )? ( &lt;ARGSEP&gt; &lt;LENTITY&gt; )* &lt;EDCOMP&gt; &lt;ARROW&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod31">readOrExpression</A> ) ) )</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">readFunctionReference</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;COLON&gt; &lt;COLON&gt; &lt;LENTITY&gt; )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">readExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod33">readFunctionReference</A> | <A HREF="#prod30">readLambda</A> | <A HREF="#prod34">readAssignment</A> | <A HREF="#prod32">readOrExpression</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod32">readFunctionReference</A> | <A HREF="#prod29">readLambda</A> | <A HREF="#prod33">readAssignment</A> | <A HREF="#prod31">readOrExpression</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod35">readWrappedExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">readWrappedExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;START_EXPRESSION&gt; <A HREF="#prod16">readExpression</A> &lt;END_EXPRESSION&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod36">readFullExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod35">readFullExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod1">readPlainText</A> | <A HREF="#prod35">readWrappedExpression</A> ) )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod1">readPlainText</A> | <A HREF="#prod34">readWrappedExpression</A> ) )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">readAssignment</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">readAssignment</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( <A HREF="#prod32">readOrExpression</A> ) | ( &lt;VAR&gt; <A HREF="#prod11">readEntityName</A> ) ) ( ( &lt;INCASSIGNMENT&gt; ) | ( &lt;DECASSIGNMENT&gt; ) | ( &lt;ASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;POWASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;DIVASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MULASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;MODASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;ADDASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) | ( &lt;SUBASSIGNMENT&gt; <A HREF="#prod32">readOrExpression</A> ) )? )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( ( <A HREF="#prod31">readOrExpression</A> ) | ( &lt;VAR&gt; <A HREF="#prod11">readEntityName</A> ) ) ( ( &lt;INCASSIGNMENT&gt; ) | ( &lt;DECASSIGNMENT&gt; ) | ( &lt;ASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;POWASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;DIVASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;MULASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;MODASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;ADDASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) | ( &lt;SUBASSIGNMENT&gt; <A HREF="#prod31">readOrExpression</A> ) )? )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">readOrExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">readOrExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod37">readAndExpression</A> ( ( &lt;OR&gt; | &lt;OR1&gt; ) <A HREF="#prod37">readAndExpression</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod36">readAndExpression</A> ( ( &lt;OR&gt; | &lt;OR1&gt; ) <A HREF="#prod36">readAndExpression</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod37">readAndExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod36">readAndExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod38">readBitwiseOrExpression</A> ( ( &lt;AND&gt; | &lt;AND1&gt; ) <A HREF="#prod38">readBitwiseOrExpression</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod37">readBitwiseOrExpression</A> ( ( &lt;AND&gt; | &lt;AND1&gt; ) <A HREF="#prod37">readBitwiseOrExpression</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod38">readBitwiseOrExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod37">readBitwiseOrExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod39">readBitwiseXorExpression</A> ( &lt;BITWISE_OR&gt; <A HREF="#prod39">readBitwiseXorExpression</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod38">readBitwiseXorExpression</A> ( &lt;BITWISE_OR&gt; <A HREF="#prod38">readBitwiseXorExpression</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod39">readBitwiseXorExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod38">readBitwiseXorExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod40">readBitwiseAndExpression</A> ( &lt;BITWISE_XOR&gt; <A HREF="#prod40">readBitwiseAndExpression</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod39">readBitwiseAndExpression</A> ( &lt;BITWISE_XOR&gt; <A HREF="#prod39">readBitwiseAndExpression</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod40">readBitwiseAndExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod39">readBitwiseAndExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod41">readEqualityExpression</A> ( &lt;BITWISE_AND&gt; <A HREF="#prod41">readEqualityExpression</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod40">readEqualityExpression</A> ( &lt;BITWISE_AND&gt; <A HREF="#prod40">readEqualityExpression</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod41">readEqualityExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod40">readEqualityExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod42">readCompareExpression</A> ( ( ( &lt;EQ&gt; | &lt;EQ1&gt; | &lt;EQ2&gt; ) <A HREF="#prod42">readCompareExpression</A> ) | ( ( &lt;NE&gt; | &lt;NE1&gt; | &lt;NE2&gt; ) <A HREF="#prod42">readCompareExpression</A> ) )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod41">readCompareExpression</A> ( ( ( &lt;EQ&gt; | &lt;EQ1&gt; | &lt;EQ2&gt; ) <A HREF="#prod41">readCompareExpression</A> ) | ( ( &lt;NE&gt; | &lt;NE1&gt; | &lt;NE2&gt; ) <A HREF="#prod41">readCompareExpression</A> ) )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod42">readCompareExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod41">readCompareExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod43">readBitShiftExpression</A> ( ( ( &lt;GT&gt; | &lt;GT1&gt; ) <A HREF="#prod43">readBitShiftExpression</A> ) | ( ( &lt;LT&gt; | &lt;LT1&gt; ) <A HREF="#prod43">readBitShiftExpression</A> ) | ( ( &lt;GTEQ&gt; | &lt;GTEQ1&gt; ) <A HREF="#prod43">readBitShiftExpression</A> ) | ( ( &lt;LTEQ&gt; | &lt;LTEQ1&gt; ) <A HREF="#prod43">readBitShiftExpression</A> ) )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod42">readBitShiftExpression</A> ( ( ( &lt;GT&gt; | &lt;GT1&gt; ) <A HREF="#prod42">readBitShiftExpression</A> ) | ( ( &lt;LT&gt; | &lt;LT1&gt; ) <A HREF="#prod42">readBitShiftExpression</A> ) | ( ( &lt;GTEQ&gt; | &lt;GTEQ1&gt; ) <A HREF="#prod42">readBitShiftExpression</A> ) | ( ( &lt;LTEQ&gt; | &lt;LTEQ1&gt; ) <A HREF="#prod42">readBitShiftExpression</A> ) )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod43">readBitShiftExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod42">readBitShiftExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod44">readAddExpression</A> ( ( &lt;BITSHIFT_LEFT&gt; <A HREF="#prod44">readAddExpression</A> ) | ( &lt;BITSHIFT_RIGHT&gt; <A HREF="#prod44">readAddExpression</A> ) | ( &lt;BITSHIFT_URIGHT&gt; <A HREF="#prod44">readAddExpression</A> ) )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod43">readAddExpression</A> ( ( &lt;BITSHIFT_LEFT&gt; <A HREF="#prod43">readAddExpression</A> ) | ( &lt;BITSHIFT_RIGHT&gt; <A HREF="#prod43">readAddExpression</A> ) | ( &lt;BITSHIFT_URIGHT&gt; <A HREF="#prod43">readAddExpression</A> ) )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod44">readAddExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod43">readAddExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod45">readMulExpression</A> ( ( ( &lt;ADD&gt; <A HREF="#prod45">readMulExpression</A> ) | ( &lt;SUB&gt; <A HREF="#prod45">readMulExpression</A> ) ) )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod44">readMulExpression</A> ( ( ( &lt;ADD&gt; <A HREF="#prod44">readMulExpression</A> ) | ( &lt;SUB&gt; <A HREF="#prod44">readMulExpression</A> ) ) )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod45">readMulExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod44">readMulExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod46">readPowExpression</A> ( ( &lt;MUL&gt; <A HREF="#prod46">readPowExpression</A> ) | ( ( &lt;DIV&gt; | &lt;DIV1&gt; ) <A HREF="#prod46">readPowExpression</A> ) | ( &lt;MOD&gt; <A HREF="#prod46">readPowExpression</A> ) )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod45">readPowExpression</A> ( ( &lt;MUL&gt; <A HREF="#prod45">readPowExpression</A> ) | ( ( &lt;DIV&gt; | &lt;DIV1&gt; ) <A HREF="#prod45">readPowExpression</A> ) | ( &lt;MOD&gt; <A HREF="#prod45">readPowExpression</A> ) )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod46">readPowExpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod45">readPowExpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod29">readOperator</A> ( &lt;POW&gt; <A HREF="#prod29">readOperator</A> )* )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod28">readUnary</A> ( &lt;POW&gt; <A HREF="#prod28">readUnary</A> )* )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod47">readFullStatements</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod46">readFullStatements</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod2">readPlainWriteStatement</A> ) | ( <A HREF="#prod35">readWrappedExpression</A> ) | ( <A HREF="#prod48">readWrappedStatements</A> ) )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod2">readPlainWriteStatement</A> ) | ( <A HREF="#prod34">readWrappedExpression</A> ) | ( <A HREF="#prod47">readWrappedStatements</A> ) )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod48">readWrappedStatements</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod47">readWrappedStatements</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;START_SCRIPT&gt; ( ( <A HREF="#prod49">readStatement</A> ) )* &lt;END_SCRIPT&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;START_SCRIPT&gt; ( ( <A HREF="#prod48">readStatement</A> ) )* &lt;END_SCRIPT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">readStatements</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">readStatements</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod49">readStatement</A> ) | ( &lt;END_SCRIPT&gt; ( ( <A HREF="#prod2">readPlainWriteStatement</A> ) | ( <A HREF="#prod35">readWrappedExpression</A> ) )* &lt;START_SCRIPT&gt; ) )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( <A HREF="#prod48">readStatement</A> ) | ( &lt;END_SCRIPT&gt; ( ( <A HREF="#prod2">readPlainWriteStatement</A> ) | ( <A HREF="#prod34">readWrappedExpression</A> ) )* &lt;START_SCRIPT&gt; ) )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod49">readStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod48">readStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod50">readIfStatement</A> | <A HREF="#prod51">readForEachStatement</A> | <A HREF="#prod52">readForStatement</A> | <A HREF="#prod53">readWhileStatement</A> | <A HREF="#prod54">readBreakStatement</A> | <A HREF="#prod55">readContinueStatement</A> | <A HREF="#prod56">readReturnStatement</A> | <A HREF="#prod57">readExportStatement</A> | <A HREF="#prod58">readIncludeStatement</A> | <A HREF="#prod59">readFunctionStatement</A> | <A HREF="#prod60">readDefaultStatement</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod49">readIfStatement</A> | <A HREF="#prod50">readForEachStatement</A> | <A HREF="#prod51">readForStatement</A> | <A HREF="#prod52">readWhileStatement</A> | <A HREF="#prod53">readBreakStatement</A> | <A HREF="#prod54">readContinueStatement</A> | <A HREF="#prod55">readReturnStatement</A> | <A HREF="#prod56">readExportStatement</A> | <A HREF="#prod57">readIncludeStatement</A> | <A HREF="#prod58">readFunctionStatement</A> | <A HREF="#prod59">readDefaultStatement</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod50">readIfStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod49">readIfStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod49">readStatement</A> ) ) ( &lt;ELSE&gt; &lt;IF&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod49">readStatement</A> ) ) )* ( &lt;ELSE&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod49">readStatement</A> ) ) )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod48">readStatement</A> ) ) ( &lt;ELSE&gt; &lt;IF&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod48">readStatement</A> ) ) )* ( &lt;ELSE&gt; ( ( ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; ) ) | ( <A HREF="#prod48">readStatement</A> ) ) )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod53">readWhileStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod52">readWhileStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHILE&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;WHILE&gt; &lt;STCOMP&gt; <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod52">readForStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod51">readForStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;STCOMP&gt; <A HREF="#prod34">readAssignment</A> &lt;STATEMENT&gt; <A HREF="#prod16">readExpression</A> &lt;STATEMENT&gt; <A HREF="#prod34">readAssignment</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;STCOMP&gt; <A HREF="#prod33">readAssignment</A> &lt;STATEMENT&gt; <A HREF="#prod16">readExpression</A> &lt;STATEMENT&gt; <A HREF="#prod33">readAssignment</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod51">readForEachStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod50">readForEachStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;STCOMP&gt; <A HREF="#prod11">readEntityName</A> ( &lt;IN&gt; | &lt;COLON&gt; ) <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;STCOMP&gt; <A HREF="#prod11">readEntityName</A> ( &lt;IN&gt; | &lt;COLON&gt; ) <A HREF="#prod16">readExpression</A> &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod59">readFunctionStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod58">readFunctionStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FUNCTION&gt; &lt;LENTITY&gt; &lt;STCOMP&gt; ( &lt;LENTITY&gt; )? ( &lt;ARGSEP&gt; &lt;LENTITY&gt; )* &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod31">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FUNCTION&gt; &lt;LENTITY&gt; &lt;STCOMP&gt; ( &lt;LENTITY&gt; )? ( &lt;ARGSEP&gt; &lt;LENTITY&gt; )* &lt;EDCOMP&gt; ( &lt;STARTMAP&gt; | &lt;STARTBLOCK&gt; ) <A HREF="#prod30">readStatements</A> ( &lt;ENDMAP&gt; | &lt;ENDBLOCK&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod58">readIncludeStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod57">readIncludeStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;INCLUDE&gt; <A HREF="#prod16">readExpression</A> &lt;STATEMENT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod60">readDefaultStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod59">readDefaultStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod16">readExpression</A> )? &lt;STATEMENT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod54">readBreakStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod53">readBreakStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;BREAK&gt; &lt;STATEMENT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod55">readContinueStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod54">readContinueStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;CONTINUE&gt; &lt;STATEMENT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod56">readReturnStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod55">readReturnStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;RETURN&gt; ( <A HREF="#prod16">readExpression</A> )? &lt;STATEMENT&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod57">readExportStatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod56">readExportStatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;EXPORT&gt; <A HREF="#prod11">readEntityName</A> &lt;STATEMENT&gt;</TD>
 </TR>

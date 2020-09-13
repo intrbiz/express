@@ -635,6 +635,30 @@ private Operator readNewMap(ExpressContext c) throws ExpressException :
     { return l; }
 }
 
+private Operator readNew(ExpressContext c) throws ExpressException :
+{
+    StringBuilder name = new StringBuilder();
+    String cn;
+    List<Operator> args = new LinkedList<Operator>();
+    Operator a;
+}
+{
+    (<NEW>
+     cn = readEntityName(c)
+     { name.append(cn); }
+     (<DOT>
+      cn = readEntityName(c)
+      { name.append(".").append(cn); })*
+     <STCOMP>
+     (a = readExpression(c)
+      { args.add(a); }
+      (<ARGSEP>
+       a = readExpression(c)
+       { args.add(a); })*)?
+     <EDCOMP>)
+    { return new NewObject(name.toString(), args); }
+}
+
 private Operator readValue(ExpressContext c) throws ExpressException : 
 {
     Operator v;
@@ -657,6 +681,7 @@ private Operator readValuePrefix(ExpressContext c) throws ExpressException :
     	LOOKAHEAD(readComplex(c))   p = readComplex(c)  |
     	LOOKAHEAD(readNewList(c))   p = readNewList(c)  |
     	LOOKAHEAD(readNewMap(c))    p = readNewMap(c)   |
+    	LOOKAHEAD(readNew(c))       p = readNew(c)   |
         LOOKAHEAD(readAction(c))    p = readAction(c)   |
         LOOKAHEAD(readFunction(c))  p = readFunction(c) |
         LOOKAHEAD(readLiteral(c))   p = readLiteral(c)
@@ -754,53 +779,25 @@ private Operator readUnary(ExpressContext c) throws ExpressException :
     Operator o;
 }
 {
-      ((<NOT> | <NOT1>)
-       o = readValue(c)
-       { return new LogicalNot(o); })
-    | 
-      (<BITWISE_NOT>
-       o = readValue(c)
-       { return new BitwiseNot(o); })
-    | 
-      (<SUB>
-       o = readValue(c)
-       { return new Sub(null, o); })
-}
-
-
-private Operator readNew(ExpressContext c) throws ExpressException :
-{
-    StringBuilder name = new StringBuilder();
-    String cn;
-    List<Operator> args = new LinkedList<Operator>();
-    Operator a;
-}
-{
-    (<NEW>
-     cn = readEntityName(c)
-     { name.append(cn); }
-     (<DOT>
-      cn = readEntityName(c)
-      { name.append(".").append(cn); })*
-     <STCOMP>
-     (a = readExpression(c)
-      { args.add(a); }
-      (<ARGSEP>
-       a = readExpression(c)
-       { args.add(a); })*)?
-     <EDCOMP>)
-    { return new NewObject(name.toString(), args); }
-}
-
-private Operator readOperator(ExpressContext c) throws ExpressException :
-{
-    Operator o;
-}
-{
-    (
-        o = readNew(c)    |
-        o = readValue(c)  |
-        o = readUnary(c)
+	(
+	  (
+	  	(<NOT> | <NOT1>)
+	   	o = readUnary(c)
+	   	{ o = new LogicalNot(o); }
+	  ) | 
+	  (
+	  	<BITWISE_NOT>
+	   	o = readUnary(c)
+	   	{ o = new BitwiseNot(o); }
+	  )| 
+	  (
+	  	<SUB>
+	   	o = readUnary(c)
+	   	{ o = new Sub(null, o); }
+	  ) |
+	  (
+	  	o = readValue(c)
+	  )
     )
     { return o; }
 }
@@ -986,11 +983,14 @@ private Operator readOrExpression(ExpressContext c) throws ExpressException :
     Operator r;
 }
 {
-    (l = readAndExpression(c)
-     ((<OR> | <OR1>)
-      r = readAndExpression(c)
-      { l = new LogicalOr(l, r); }
-     )*)
+    (
+      l = readAndExpression(c)
+      (
+     	(<OR> | <OR1>)
+      	r = readAndExpression(c)
+      	{ l = new LogicalOr(l, r); }
+      )*
+    )
     { return l; }
 }
 
@@ -1170,10 +1170,10 @@ private Operator readPowExpression(ExpressContext c) throws ExpressException :
     Operator r;
 }
 {
-    ( l = readOperator(c)
+    ( l = readUnary(c)
       ( 
     <POW>
-     r = readOperator(c)
+     r = readUnary(c)
      { l = new Pow(l,r); }
       )*)
     { return l; }
