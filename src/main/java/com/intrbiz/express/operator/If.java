@@ -22,7 +22,7 @@ public class If extends Function
         
         Object evo = ev.get(context,source);
         
-        if (evo instanceof Boolean && ((Boolean)evo) == true )
+        if (evo instanceof Boolean ? ((Boolean)evo).booleanValue() : evo != null)
         {
             return tr.get(context,source);
         }

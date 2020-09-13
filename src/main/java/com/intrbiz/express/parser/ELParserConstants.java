@@ -153,55 +153,57 @@ public interface ELParserConstants {
   /** RegularExpression Id. */
   int COLON = 76;
   /** RegularExpression Id. */
-  int NLINT = 77;
+  int TERNARY = 77;
   /** RegularExpression Id. */
-  int NLLONG = 78;
+  int NLINT = 78;
   /** RegularExpression Id. */
-  int NLFLOAT = 79;
+  int NLLONG = 79;
   /** RegularExpression Id. */
-  int NLDOUBLE = 80;
+  int NLFLOAT = 80;
   /** RegularExpression Id. */
-  int LBOOLEAN = 81;
+  int NLDOUBLE = 81;
   /** RegularExpression Id. */
-  int LNULL = 82;
+  int LBOOLEAN = 82;
   /** RegularExpression Id. */
-  int LENTITY = 83;
+  int LNULL = 83;
   /** RegularExpression Id. */
-  int HEXCHAR = 84;
+  int LENTITY = 84;
   /** RegularExpression Id. */
-  int ESCAPECHAR = 85;
+  int HEXCHAR = 85;
   /** RegularExpression Id. */
-  int UESCAPECHAR = 86;
+  int ESCAPECHAR = 86;
   /** RegularExpression Id. */
-  int LSTRING = 87;
+  int UESCAPECHAR = 87;
   /** RegularExpression Id. */
-  int STARTMAP = 88;
+  int LSTRING = 88;
   /** RegularExpression Id. */
-  int ENDMAP = 89;
+  int STARTMAP = 89;
   /** RegularExpression Id. */
-  int END_EXPRESSION = 90;
+  int ENDMAP = 90;
   /** RegularExpression Id. */
-  int QUOTE = 91;
+  int END_EXPRESSION = 91;
   /** RegularExpression Id. */
-  int STARTBLOCK = 92;
+  int QUOTE = 92;
   /** RegularExpression Id. */
-  int ENDBLOCK = 93;
+  int STARTBLOCK = 93;
   /** RegularExpression Id. */
-  int END_SCRIPT = 94;
+  int ENDBLOCK = 94;
   /** RegularExpression Id. */
-  int SINGLE_LINE_COMMENT = 97;
+  int END_SCRIPT = 95;
   /** RegularExpression Id. */
-  int MULTI_LINE_COMMENT = 98;
+  int SINGLE_LINE_COMMENT = 98;
   /** RegularExpression Id. */
-  int ENDQUOTE = 101;
+  int MULTI_LINE_COMMENT = 99;
   /** RegularExpression Id. */
-  int CHAR = 102;
+  int ENDQUOTE = 102;
   /** RegularExpression Id. */
-  int CNTRLESC = 103;
+  int CHAR = 103;
   /** RegularExpression Id. */
-  int HEX = 105;
+  int CNTRLESC = 104;
   /** RegularExpression Id. */
-  int HEXESC = 106;
+  int HEX = 106;
+  /** RegularExpression Id. */
+  int HEXESC = 107;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -301,6 +303,7 @@ public interface ELParserConstants {
     "\"var\"",
     "\"@\"",
     "\":\"",
+    "\"?\"",
     "<NLINT>",
     "<NLLONG>",
     "<NLFLOAT>",
@@ -323,7 +326,7 @@ public interface ELParserConstants {
     "\"/*\"",
     "<SINGLE_LINE_COMMENT>",
     "\"*/\"",
-    "<token of kind 99>",
+    "<token of kind 100>",
     "\"\\\\\"",
     "<ENDQUOTE>",
     "<CHAR>",

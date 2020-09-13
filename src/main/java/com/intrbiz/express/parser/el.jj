@@ -229,6 +229,7 @@ PARSER_END(ELParser)
   | <VAR             : "var" >
   | <LACTION         : "@" >
   | <COLON           : ":" >
+  | <TERNARY         : "?" >
   | <NLINT           : <DIGITS> > 
   | <NLLONG          : <DIGITS> "L" > 
   | <NLFLOAT         : <DIGITS> "." <DIGITS> > 
@@ -910,6 +911,28 @@ Operator readFullExpression(ExpressContext c) throws ExpressException :
     }
 }
 
+private Operator readTernary(ExpressContext c) throws ExpressException :
+{
+    Operator o;
+    Operator m;
+    Operator a;
+}
+{
+	(
+  	  o = readOrExpression(c)
+	  (
+	    (
+	  	  <TERNARY>
+	  	  m = readTernary(c)
+	  	  <COLON>
+	  	  a = readTernary(c)
+	  	)
+	  	{ o = new Ternary(o, m, a); }
+	  )?
+    )
+    { return o; }
+}
+
 private Operator readAssignment(ExpressContext c) throws ExpressException :
 {
     Operator l;
@@ -920,7 +943,7 @@ private Operator readAssignment(ExpressContext c) throws ExpressException :
     (
     	(
     		(
-    			l = readOrExpression(c)
+    			l = readTernary(c)
 			) |
 			(
 				<VAR>
@@ -939,37 +962,37 @@ private Operator readAssignment(ExpressContext c) throws ExpressException :
    			) |
       		(
       			<ASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, r); }
    			) |
       		(
       			<POWASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Pow(l, r)); }
    			) |
       		(
       			<DIVASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Div(l, r)); }
    			) |
       		(
       			<MULASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Mul(l, r)); }
    			) |
       		(
       			<MODASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Mod(l, r)); }
    			) |
       		(
       			<ADDASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Add(l, r)); }
    			) |
       		(
       			<SUBASSIGNMENT>
-       			r = readOrExpression(c)
+       			r = readTernary(c)
        			{ l = new Assignment(l, new Sub(l, r)); }
    			)
      	)?

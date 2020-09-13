@@ -277,6 +277,42 @@ public class TestLogic
         ValueExpression ve = new ValueExpression(this.context, "#{! not false}");
         Object o = ve.get(this.context, null);
         assertThat(o, is(instanceOf(Boolean.class)));
-        assertThat((Boolean) o, is(equalTo(false)));
+        assertThat((Boolean) o, is(equalTo(false)));        
+    }
+    
+    @Test
+    public void testTernary()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{ true ? 'Test1' : 'Test2' }");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat(o, is(equalTo("Test1")));        
+    }
+    
+    @Test
+    public void testTwoTernary()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{ false ? 'Test1' : true ? 'Test2' : 'Test3' }");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat(o, is(equalTo("Test2")));        
+    }
+    
+    @Test
+    public void testIf()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{ if(true, 'Test1', 'Test2') }");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat(o, is(equalTo("Test1")));        
+    }
+    
+    @Test
+    public void testTwoIf()
+    {
+        ValueExpression ve = new ValueExpression(this.context, "#{ if(false, 'Test1', if(true, 'Test2', 'Test3')) }");
+        Object o = ve.get(this.context, null);
+        assertThat(o, is(instanceOf(String.class)));
+        assertThat(o, is(equalTo("Test2")));        
     }
 }
