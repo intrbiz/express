@@ -609,4 +609,29 @@ public class TestScriptEngine
         assertThat(result, is(instanceOf(String.class)));
         assertThat(result.toString(), is(equalTo("test: 45")));
     }
+    
+    @Test
+    public void testTernaryReturn()
+    {
+        ExpressScriptEngine script = factory.parseUnwrapped(
+            "var x = 1;\n" + 
+            "return x > 0 ? 'Test1' : 'Test2';"
+        );
+        Object result = script.execute(script.createContext(), null);
+        assertThat(result, is(instanceOf(String.class)));
+        assertThat(result, is(equalTo("Test1")));
+    }
+    
+    @Test
+    public void testTernaryAssignment()
+    {
+        ExpressScriptEngine script = factory.parseUnwrapped(
+            "var x = 1;\n" +
+            "var y = x < 0 ? 2 : 3;\n" +
+            "return y;"
+        );
+        Object result = script.execute(script.createContext(), null);
+        assertThat(result, is(instanceOf(Integer.class)));
+        assertThat(result, is(equalTo(3)));
+    }
 }
